@@ -1,0 +1,14 @@
+{
+  "name": "frozen",
+  "version": "0.0.1",
+  "description": "learning programming",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karpych1717/Frozen.git"
+  },
+  "author": "karpych1717"
+}
