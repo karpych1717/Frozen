@@ -28,9 +28,7 @@ let test = new Stack
 
 test.push(1)
 test.push(2)
-d = test.pop()
-log("got :", d)
+log("got :", test.pop())
 test.push(3)
 test.push(4)
-d = test.pop()
-log("got :", d)
+log("got :", test.pop())
