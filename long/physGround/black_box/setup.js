@@ -1,10 +1,16 @@
-const _terminal = document.getElementById('textarea')
+function canvasSetUp (id = 'canvas', context = '2d', width = 750, height = 500) {
+  const cvs = document.getElementById(id)
+  const ctx = cvs.getContext(context)
+  cvs.width = width
+  cvs.height = height
+
+  return { cvs, ctx }
+}
 
 function log (...input) {
-  const output = input.map(element => normaliseSingleInput(element)).join(' ')
-
-  _terminal.value += `${output}\n`
-  _terminal.scrollTop = _terminal.scrollHeight
+  console.log('------ start log: ------')
+  console.log(...input)
+  console.log('------- end log. -------')
 }
 
 function toDeg (angleInRad) {
