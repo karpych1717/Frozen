@@ -1,34 +1,35 @@
 class Stack {
-  var = new Array(1)
-  pos = 0
-  len = 1
-  push (num) {
-    if (this.pos === this.len) {
+  constructor () {
+    this.arr = new Array(1)
+    this.position  = 0
+    this.len = 1
+  }
+  unshift (num) {
+    if (this.position === this.len) {
       this.len += this.len
-      let var2 = new Array(this.len)
-      for (let i=0; i<this.pos; i++) {
-        var2[i] = this.var[i]
+      let arr2 = new Array(this.len)
+      for (let i=0; i<this.position; i++) {
+        arr2[i] = this.arr[i]
       }
-      this.var = var2
+      this.arr = arr2
     }
-    this.var[this.pos] = num
-    this.pos++
-    log(this.var)
+    this.arr[this.position] = num
+    this.position++
+    log(this.arr)
   }
   pop () {
-    this.pos--
-    const ans = this.var[this.pos]
-    this.var[this.pos] = undefined
-    log(this.var)
+    this.position--
+    const ans = this.arr[this.position]
+    log(this.arr)
     return ans
   }
 }
 
 let test = new Stack
 
-test.push(1)
-test.push(2)
+test.unshift(1)
+test.unshift(2)
 log("got :", test.pop())
-test.push(3)
-test.push(4)
+test.unshift(3)
+test.unshift(4)
 log("got :", test.pop())

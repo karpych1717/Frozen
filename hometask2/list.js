@@ -1,44 +1,44 @@
 class List {
-  var = new Array(1)
-  pos = 0
-  out = 0
-  len = 1
-  push (num) {
-    if (this.pos === this.len) {
-      if (this.out !== 0) {
-        for (let i=this.out; i<this.pos; i++) {
-          this.var[i - this.out] = this.var[i]
-          this.var[i] = 0
+  constructor () {
+    this.arr = new Array(1)
+    this.input  = 0
+    this.output = 0
+    this.len = 1
+  }
+  unshift (num) {
+    if (this.input === this.len) {
+      if (this.output !== 0) {
+        for (let i=this.output; i<this.input; i++) {
+          this.arr[i - this.output] = this.arr[i]
         }
-        this.pos -= this.out
-        this.out = 0
+        this.input -= this.output
+        this.output = 0
       } else {
         this.len += this.len
-        let var2 = new Array(this.len)
-        for (let i=0; i<this.pos; i++) {
-          var2[i] = this.var[i]
+        let arr2 = new Array(this.len)
+        for (let i=0; i<this.input; i++) {
+          arr2[i] = this.arr[i]
         }
-        this.var = var2
+        this.arr = arr2
       }
     }
-    this.var[this.pos] = num
-    this.pos++
-    log(this.var)
+    this.arr[this.input] = num
+    this.input++
+    log(this.arr)
   }
   pop () {
-    const ans = this.var[this.out]
-    this.var[this.out] = undefined
-    this.out++
-    log(this.var)
+    const ans = this.arr[this.output]
+    this.output++
+    log(this.arr)
     return ans
   }
 }
 
 test = new List()
 
-test.push(1)
-test.push(2)
+test.unshift(1)
+test.unshift(2)
 log("got :", test.pop())
-test.push(3)
-test.push(4)
+test.unshift(3)
+test.unshift(4)
 log("got :", test.pop())
