@@ -3,6 +3,7 @@
 const { cvs, ctx } = canvasSetUp()
 
 cvs.addEventListener('pointerdown', handleClick)
+cvs.addEventListener('pointermove', handleClick)
 
 let x = new Array(10000)
 let y = new Array(10000)
