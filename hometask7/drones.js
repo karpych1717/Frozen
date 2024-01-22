@@ -1,17 +1,19 @@
 /* global canvasSetUp, log, toDeg, toRad */
-
 const WIDTH = 750
 const HEIGHT = 500
 const GAPWIDTH = WIDTH * 4 / 5
 const GAPHEIGHT = HEIGHT * 4 / 5
 const SPEED = 0.3
+const dots = Array(10).fill().map(() => Array(10).fill(false))
 
-let dots = Array(10).fill().map(() => Array(10).fill(false))
 let mode = false
 let xcord = 1
 let ycord = 1
 let angle
+let time
 let x = 0
+let k = 0
+let b = 0
 let told = 0
 let x1 = -100
 let y1 = -100
@@ -22,30 +24,50 @@ const { cvs, ctx } = canvasSetUp()
 cvs.addEventListener('pointerdown', handleClick)
 cvs.addEventListener('pointermove', handleMove)
 
-function circle (x, y, r, l, color) {
+function drawcircle (x, y, r, l, color) {
+  ctx.save()
   ctx.lineWidth = l
   ctx.strokeStyle = color
   ctx.beginPath()
   ctx.arc(x, y, r, 0, 2 * Math.PI)
   ctx.stroke()
+  ctx.restore()
 }
 
-function rect (x, y, w, h, l, color) {
-  ctx.lineWidth = l
-  ctx.strokeStyle = color
-  ctx.beginPath()
-  ctx.rect(x, y, h, w)
-  ctx.stroke()
-}
+function drawdrone (x, time, told, angle) {
+  ctx.save()
+  const x3 = -50
+  const y3 = -50 * k + b
+  const x4 = WIDTH + 50
+  const y4 = (WIDTH + 50) * k + b
+  const x5 = x + Math.cos(angle) * (time - told) * SPEED
+  const y5 = (x + Math.cos(angle) * (time - told) * SPEED) * k + b
 
-function drone (x, y, o) {
-  ctx.lineWidth = 1
+  const deviation1 = Math.cos(angle + Math.PI * 0.5) * 10
+  const deviation3 = Math.sin(angle + Math.PI * 0.5) * 10
+  const deviation2 = Math.cos(angle + Math.PI * 1.5) * 10
+  const deviation4 = Math.sin(angle + Math.PI * 1.5) * 10
+
+  ctx.lineWidth = 2
   ctx.strokeStyle = 'white'
   ctx.beginPath()
-  ctx.moveTo(x, y)
-  ctx.lineTo(x + Math.cos(1.25 + Math.PI/2 - o) * 40, y + Math.sin(1.25 + Math.PI/2 - o) * 40)
-  ctx.lineTo(x + Math.cos(1.89 + Math.PI/2 - o) * 40, y + Math.sin(1.89 + Math.PI/2 - o) * 40)
-  ctx.lineTo(x, y)
+  if (x1 !== x2) {
+    ctx.moveTo(x3 - deviation1, y3 + deviation3)
+    ctx.lineTo(x4 - deviation1, y4 + deviation3)
+    ctx.moveTo(x3 - deviation2, y3 + deviation4)
+    ctx.lineTo(x4 - deviation2, y4 + deviation4)
+  } else {
+    ctx.moveTo(x1 - 10, HEIGHT)
+    ctx.lineTo(x1 - 10, 0)
+    ctx.moveTo(x1 + 10, HEIGHT)
+    ctx.lineTo(x1 + 10, 0)
+  }
+  ctx.stroke()
+  ctx.beginPath()
+  ctx.moveTo(x5, y5)
+  ctx.lineTo(x5 + Math.cos(1.25 + Math.PI / 2 - angle) * 40, y5 + Math.sin(1.25 + Math.PI / 2 - angle) * 40)
+  ctx.lineTo(x5 + Math.cos(1.89 + Math.PI / 2 - angle) * 40, y5 + Math.sin(1.89 + Math.PI / 2 - angle) * 40)
+  ctx.lineTo(x5, y5)
   ctx.fill()
   ctx.stroke()
 }
@@ -53,12 +75,13 @@ function drone (x, y, o) {
 function drawdots () {
   for (let i = 1; i <= 10; i++) {
     for (let j = 1; j <= 10; j++) {
-      if (dots[i - 1][j - 1]) circle(WIDTH / 10 + GAPWIDTH * i / 11, HEIGHT / 10 + GAPHEIGHT * j / 11, 7, 2, "red")
+      if (dots[i - 1][j - 1]) drawcircle(WIDTH / 10 + GAPWIDTH * i / 11, HEIGHT / 10 + GAPHEIGHT * j / 11, 7, 2, "red")
     }
   }
 }
 
 function field() {
+  ctx.save()
   ctx.beginPath()
   ctx.lineWidth = 2
   ctx.strokeStyle = 'lime'
@@ -77,6 +100,7 @@ function field() {
     ctx.lineTo(WIDTH / 10 + GAPWIDTH, HEIGHT / 10 + GAPHEIGHT * i / 11)
   }
   ctx.stroke()
+  ctx.restore()
 }
 
 function handleMove (event) {
@@ -108,6 +132,7 @@ function handleClick (event) {
       x = 0
       k = (y2 - y1) / (x2 - x1)
       b = y1 - k * x1
+      angle = Math.atan((y2 - y1) / (x2 - x1)) * -1
       if (x * k + b > HEIGHT) x = (HEIGHT - b) / k
       else if (x * k + b < 0) x = -b / k
     }
@@ -139,7 +164,7 @@ function calculatedots() {
         }
       }
     }
-    
+    // rotate data if drone is rotated
     //if (x1 > x2 || (x1 === x2 && y1 < y2)) {leftdots += rightdots; rightdots = leftdots - rightdots; leftdots -= rightdots;}
   }
   log(leftdots, rightdots)
@@ -152,38 +177,25 @@ function render (time) {
   field()
   drawdots()
   if (!(x1 === x2 && y1 === y2)) {
-    angle = Math.atan((y2 - y1) / (x2 - x1)) * -1
-    ctx.lineWidth = 2
-    ctx.strokeStyle = 'white'
-    ctx.beginPath()
-    if (x1 !== x2) {
-      k = (y2 - y1) / (x2 - x1)
-      b = y1 - k * x1
-      drone(x + Math.cos(angle) * (time - told) * SPEED, (x + Math.cos(angle) * (time - told) * SPEED) * k + b, angle)
-      ctx.moveTo(-50 + Math.cos(angle + Math.PI * 0.5) * -10, -50 * k + b + Math.sin(angle + Math.PI * 0.5) * 10)
-      ctx.lineTo(WIDTH + 50 + Math.cos(angle + Math.PI * 0.5) * -10, (WIDTH + 50) * k + b + Math.sin(angle + Math.PI * 0.5) * 10)
-      ctx.moveTo(-50 + Math.cos(angle + Math.PI * 1.5) * -10, -50 * k + b + Math.sin(angle + Math.PI * 1.5) * 10)
-      ctx.lineTo(WIDTH + 50 + Math.cos(angle + Math.PI * 1.5) * -10, (WIDTH + 50) * k + b + Math.sin(angle + Math.PI * 1.5) * 10)
-    } else {
-      ctx.moveTo(x1 - 10, HEIGHT)
-      ctx.lineTo(x1 - 10, 0)
-      ctx.moveTo(x1 + 10, HEIGHT)
-      ctx.lineTo(x1 + 10, 0)
+    drawdrone(x, time, told, angle)
+    const position = x + Math.cos(angle) * (time - told) * SPEED
+    if (position < 0 || position > WIDTH || position * k + b < 0 || position * k + b > HEIGHT) {
+      x1 = -100
+      y1 = -100
+      x2 = -100
+      y2 = -100
     }
-    ctx.stroke()
-    if (x + Math.cos(angle) * (time - told) * SPEED < 0 || x + Math.cos(angle) * (time - told) * SPEED > WIDTH) {x1 = -100; y1 = -100; x2 = -100; y2 = -100;}
-    if ((x + Math.cos(angle) * (time - told) * SPEED) * k + b < 0 || (x + Math.cos(angle) * (time - told) * SPEED) * k + b > HEIGHT) {x1 = -100; y1 = -100; x2 = -100; y2 = -100;}
   } else {
     told = time
     if (!mode) {
-      circle(WIDTH / 10 + GAPWIDTH * xcord / 11, HEIGHT / 10 + GAPHEIGHT * ycord / 11, 10, 2, "red")
-      circle(WIDTH / 10 + GAPWIDTH * xcord / 11, HEIGHT / 10 + GAPHEIGHT * ycord / 11, 3, 2, "red")
+      drawcircle(WIDTH / 10 + GAPWIDTH * xcord / 11, HEIGHT / 10 + GAPHEIGHT * ycord / 11, 10, 2, "red")
+      drawcircle(WIDTH / 10 + GAPWIDTH * xcord / 11, HEIGHT / 10 + GAPHEIGHT * ycord / 11, 3, 2, "red")
     } else {
-      circle(20, 20, 10, 2, "red")
-      circle(x1, y1, 5, 2, "blue")
-      circle(x2, y2, 5, 2, "blue")
-      circle(xcord, ycord, 10, 2, "blue")
-      circle(xcord, ycord, 3, 2, "blue")
+      drawcircle(20, 20, 10, 2, "red")
+      drawcircle(x1, y1, 5, 2, "blue")
+      drawcircle(x2, y2, 5, 2, "blue")
+      drawcircle(xcord, ycord, 10, 2, "blue")
+      drawcircle(xcord, ycord, 3, 2, "blue")
     }
   }
   requestAnimationFrame(render)
