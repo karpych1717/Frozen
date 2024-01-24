@@ -16,10 +16,13 @@ const img = new Image()
 img.src = './boat.png'
 img.onload = () => {ctx.drawImage(img, -14, -16)}
 
+let gotomouse = false
 let controlfrommouse = false
 
 let x = WIDTH / 2
 let y = HEIGHT / 2
+let xcord = 0
+let ycord = 0
 let angle = -Math.PI / 2
 let AVelocity = 0
 let Vx = 0
@@ -48,6 +51,10 @@ function drawboat(x, y, angle) {
 
 function simulateboat() {
   drawboat(x, y, angle)
+  if (gotomouse === true) {
+    angle = Math.atan((y - ycord) / (x - xcord))
+    if (xcord < x) angle = angle + Math.PI
+  }
   Vx += Math.cos(angle) * AVelocity
   Vy += Math.sin(angle) * AVelocity
   x += Vx
@@ -67,6 +74,8 @@ function simulateboat() {
 }
 
 function handleMove(event) {
+  xcord = event.offsetX
+  ycord = event.offsetY
   if (controlfrommouse === true) {
     angle = Math.atan((HEIGHT / 2 - event.offsetY) / (WIDTH / 2 - event.offsetX))
     if (event.offsetX < WIDTH / 2) angle = angle + Math.PI
