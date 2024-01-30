@@ -6,7 +6,7 @@ cvs.addEventListener('pointermove', handleMove)
 const WIDTH = 750
 const HEIGHT = 500
 const VelocityAcceleration = 0.01
-const VelocityFriction = 0.01
+const VelocityFriction = 0
 const MaxVelocityAcceleration = 0.1
 const RotationalFriction = 0.02
 const RotationalAcceleration = 0.01
