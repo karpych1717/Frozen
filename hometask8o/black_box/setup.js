@@ -7,12 +7,6 @@ function canvasSetUp (id = 'canvas', context = '2d', width = 750, height = 500) 
   return { cvs, ctx }
 }
 
-function getPicture (path) {
-  const pic = new Image()
-  pic.src = path
-  return pic
-}
-
 function log (...input) {
   console.log('------ start log: ------')
   console.log(...input)
