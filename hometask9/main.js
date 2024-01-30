@@ -4,12 +4,12 @@
 const d = 'hebisaddpvjsowenovpoajfaonvsm'
 const a = 'add'
 
-const i = 0
-const j = 0
+let i = 0
+let j = 0
 
 let result
-const current = q0 // rename and replace
-const isDoing = false
+var current = compare // rename and replace
+let isDoing = true
 
 while (isDoing) {
   current()
@@ -17,26 +17,33 @@ while (isDoing) {
 
 log(result || 'not found')
 
-function q0 () {
-
+function compare () {
+  if (a[j] === d[i + j]) current = addj
+  else current = addi
 }
 
-function q1 () {
-
+function addi () {
+  i++
+  current = overi
 }
 
-function q2 () {
-
+function addj () {
+  j++
+  current = overj
 }
 
-function q3 () {
-
+function overi () {
+  if (i >= d.length - a.length + 1) current = end
+  else current = compare
 }
 
-function q4 () {
-
+function overj () {
+  if (j >= a.length) {
+    result = i
+    current = end
+  } else current = compare
 }
 
-function q5 () {
-
+function end () {
+  isDoing = false
 }
