@@ -46,6 +46,7 @@ function handleMove (event) {
 
 function update(time) {
   dt = Math.floor(time - told)
+  if (dt > 100) dt = 100
   if (dt > 0) {
     angletarget = Math.atan((y - ymouse) / (x - xmouse))
     if (xmouse < x) angletarget += Math.PI
