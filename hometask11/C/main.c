@@ -14,7 +14,7 @@ int main (void)
     int *result = NULL;
 
     prepare(&length, &numbers);
-    result = malloc(length * sizeof (int));
+    result = (int *) malloc(length * sizeof (int));
 
 
     for (int i = 0; i < length; i++)
