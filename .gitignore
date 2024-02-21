@@ -1,3 +1,6 @@
+#C executibles
+*.exe
+
 # Logs
 logs
 *.log

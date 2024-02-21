@@ -110,7 +110,7 @@ function render (time) {
 
       if (HEIGHT - ypos <= 35 && Math.abs(target - xpos) <= 35) {
         console.log("reposition proposal")
-        if (1225 <= (HEIGHT - ypos) ** 2 + (target - xpos) ** 2) {
+        if ((HEIGHT - ypos) ** 2 + (target - xpos) ** 2 <= 1225) {
           console.log("reposition")
           target = Math.floor(Math.random() * (WIDTH - 100) + 100)
         }
