@@ -25,7 +25,7 @@ void prepare (int *length, int **numbers)
     fscanf(file, "%d", length);
     printf("got length = %d\n", *length);
 
-    *numbers = malloc(*length * sizeof (int));
+    *numbers = (int *) malloc(*length * sizeof (int));
 
     for(int i = 0; i < *length; i++)
     {
