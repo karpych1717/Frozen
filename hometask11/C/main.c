@@ -23,6 +23,7 @@ int main (void)
         dive(numbers, length, result, 0);
     }
 
+    free(numbers);
     free(result);
     return 0;
 }
