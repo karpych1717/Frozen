@@ -31,7 +31,7 @@ void clear (longn *longnum, int length)
 
 void print (longn *longnum)
 {
-    if (longnum->isPositiv == 0) printf("%s", "-");
+    if (longnum->isPositiv == 0) printf("-");
     for (int i = longnum->len - 1; i >= 0; i--) printf("%d", longnum->arr[i]);
 }
 
