@@ -5,7 +5,11 @@ class Long {
     if (ispositive === undefined) ispositive = 1
     this.ispositive = ispositive
 
-    if (number.length === undefined) {
+    if (Array.isArray(number)) {
+      this.len = number.length
+      this.arr = new Array(this.len).fill(0)
+      for (let i=0; i < number.length; i++) this.arr[i] = number[i]
+    } else {
       this.len = this.numberLength(number)
       this.arr = new Array(this.len).fill(0)
       let d = 0
@@ -14,10 +18,6 @@ class Long {
         number = Math.floor(number / 10)
         d++
       }
-    } else {
-      this.len = number.length
-      this.arr = new Array(this.len).fill(0)
-      for (let i=0; i < number.length; i++) this.arr[i] = number[i]
     }
   }
 
