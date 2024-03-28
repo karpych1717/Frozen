@@ -1,0 +1,72 @@
+html {
+  text-align: center;
+  
+  font-size: 120%;
+  font-family: 'Circular', sans-serif;
+  color: lime;
+
+  background-color: black;
+}
+
+.hidden {
+  display: none;
+}
+
+.wrapper {
+  margin: 1rem;
+}
+
+button {
+  font-size: 120%;
+  font-family: 'Circular', sans-serif;
+  color: lime;
+
+  padding: 0.5rem;
+
+  border: 1px solid lime;
+
+  background-color: black;
+}
+
+button:hover {
+  background-color: rgb(0, 30, 13);
+}
+
+button:active {
+  color: rgb(0, 30, 13);
+  border: 1px solid rgb(0, 30, 13);
+  background-color: lime;
+}
+
+input {
+  font-size: 120%;
+  font-family: 'Circular', sans-serif;
+  color: lime;
+
+  padding: 0.5rem;
+
+  border: 1px solid lime;
+
+  background-color: rgb(0, 0, 42);
+}
+
+canvas {
+  width: 750px;
+  height: 500px;
+  background-color: rgb(0, 0, 42);
+  border: 1px solid lime;
+}
+
+.terminal {
+  font-size: 120%;
+  font-family: monospace;
+  color: lime;
+
+  padding: 0.5rem;
+
+  resize: none;
+  outline: none;
+
+  background-color: rgb(0, 0, 42);
+  border: 1px solid lime;
+}
