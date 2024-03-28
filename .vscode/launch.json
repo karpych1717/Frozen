@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/user/Desktop/playGround/Frozen/hometask12/C",
-      "program": "c:/Users/user/Desktop/playGround/Frozen/hometask12/C/build/Debug/outDebug",
+      "cwd": "c:/Users/user/Desktop/playGround/Frozen/hometask13/C",
+      "program": "c:/Users/user/Desktop/playGround/Frozen/hometask13/C/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

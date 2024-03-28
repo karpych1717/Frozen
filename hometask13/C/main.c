@@ -1,25 +1,31 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-float f(float t)
+
+float f(float x)
 {
-    return 1000 - 4.9 * t * t;
+    return x * x * x - 1;
 }
+
+float step(float x1, float x2)
+{
+    float y1 = f(x1);
+    float k = (y1 - f(x2)) / (x1 - x2);
+    float b = y1 - k * x1;
+    return -b / k;
+}
+
 int main (void)
 {
-    FILE *file1 = fopen("derivative.csv", "w");
-    FILE *file2 = fopen("function.csv", "w");
-    float dx = 0.8;
-    float d = 0;    
-    fprintf(file1, "y, x\n");
-    fprintf(file2, "x, y\n");
-    for (float x = 0; x <= 20; x += dx)
+
+    float l = -5, r = 5, m;
+    printf("%f%s%f\n", l, " ", r);
+    for (int i = 0; i < 100; i++)
     {
-        d = d + cos(x) * dx;
-        fprintf(file1, "%f, %f\n", x, cos(x));
-        fprintf(file2, "%f, %f\n", x, d);
+        m = step(l, r);
+        if (m < 0) l = m;
+        else r = m;
+        printf("%f%s%f\n", l, " ", r);
     }
-    free(file1);
-    free(file2);
     return 0;
 }
