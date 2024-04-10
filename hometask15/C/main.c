@@ -52,11 +52,10 @@ void clear(equasion* eq)
         for (int i = 0; i < eq->n; i++)
         {
             if (i == t) continue;
-            k = eq->arr[t][t] / eq->arr[i][t];
+            k = eq->arr[i][t] / eq->arr[t][t];
             for (int j = 0; j < eq->n + 1; j++)
             {
-                eq->arr[i][j] = eq->arr[t][j] - eq->arr[i][j] * k;
-                if (eq->arr[i][j] < 0.000001 && eq->arr[i][j] > -0.000001 && i == j) eq->arr[i][j] = 0.000001;
+                eq->arr[i][j] = eq->arr[i][j] - eq->arr[t][j] * k;
             }
         }
     }
