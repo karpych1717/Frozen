@@ -88,6 +88,11 @@ float* solve(equasion* eq)
     return answer;
 }
 
+float point(float* arr, float x)
+{
+    return arr[0] * x * x + arr[1] * x + arr[2];
+}
+
 int main (void)
 {
     equasion* eq = setup();
