@@ -11,23 +11,41 @@ typedef struct equasion
 equasion* setup()
 {
     FILE *file;
-    file = fopen("eq.dat", "r");
+    file = fopen("input.dat", "r");
     if (file == NULL) printf("file??");
+
     int n;
+    float x1, y1, x2, y2, x3, y3;
     fscanf(file, "%d", &n);
-    float** matrix = malloc(n*sizeof(float*));
-    for (int i = 0; i < n; i++)
+    fscanf(file, "%f", &x1);
+    fscanf(file, "%f", &y1);
+    fscanf(file, "%f", &x2);
+    fscanf(file, "%f", &y2);
+    fscanf(file, "%f", &x3);
+    fscanf(file, "%f", &y3);
+
+    float matrix[6][7] = {{x1 * x1,      x1,       1,       0,       0,       0,      y1},\
+                          { 2 * x2,       1,       0, -2 * x2,      -1,       0,       0},\
+                          {x2 * x2,      x2,       1,       0,       0,       0,      y2},\
+                          {      1,       0,       0,      -1,       0,       0,       0},\
+                          {      0,       0,       0, x2 * x2,      x2,       1,      y2},\
+                          {      0,       0,       0, x3 * x3,      x3,       1,      y3}};
+    
+    float** array = malloc(6 * sizeof(float*));
+    for (int i = 0; i < 6; i++)
     {
-        float* arr = malloc((n + 1)*sizeof(float));
-        for (int j = 0; j < n + 1; j++)
+        float* arr = malloc(7 * sizeof(float));
+        for (int j = 0; j < 7; j++)
         {
-            fscanf(file, "%f", &arr[j]);
+            arr[j] = matrix[i][j];
         }
-        matrix[i] = arr;
+        array[i] = arr;
     }
+    
     equasion* eq = malloc(sizeof(equasion));
-    eq->n = n;
-    eq->arr = matrix;
+    eq->n = 6;
+    eq->arr = array;
+
     return eq;
 }
 
@@ -44,7 +62,7 @@ void print(equasion* eq)
     printf("\n");
 }
 
-void clear(equasion* eq)
+float* solve(equasion* eq)
 {
     float k;
     for (int t = 0; t < eq->n; t++)
@@ -59,11 +77,9 @@ void clear(equasion* eq)
             }
         }
     }
-    // O(n^3 - n)   :O
-}
 
-float* solve(equasion* eq)
-{
+    // O(n^3 - n)   :O
+
     float* answer = malloc((eq->n) * sizeof(float));
     for (int i = 0; i < eq->n; i++)
     {
@@ -75,8 +91,6 @@ float* solve(equasion* eq)
 int main (void)
 {
     equasion* eq = setup();
-    print(eq);
-    clear(eq);
     print(eq);
     float* arr = solve(eq);
     for (int i = 0; i < eq->n; i++) printf("%f ", arr[i]);
