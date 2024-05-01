@@ -9,7 +9,7 @@ typedef struct equasion
     float* y;
 } equasion;
 
-equasion* setup()
+equasion* getData()
 {
     FILE *file;
     file = fopen("input.dat", "r");
@@ -38,6 +38,7 @@ equasion* setup()
 
 int main (void)
 {
-    equasion* eq = setup();
+    equasion* eq = getData();
+    
     return 0;
 }
