@@ -19,7 +19,7 @@ typedef struct dots
 Dots* getData();
 Equasion* setUp (Dots* dots);
 void solve (Equasion *eq);
-float interpolated (Equasion *solved, float argument);
+float interpolated (Equasion* solved, float argument);
 
 
 int main (void)
@@ -38,7 +38,7 @@ int main (void)
     fprintf(result, "x, y\n");
     for (int i = -49; i <= 50; i++)
     {
-        fprintf(result, "%f, %f\n", i, interpolated(eq, i));
+        fprintf(result, "%d, %f\n", i, interpolated(eq, i));
     }
     
     return 0;
@@ -84,42 +84,44 @@ Equasion* setUp (Dots* dots)
                           {                      1,               0,       0,                      -1,               0,       0,               0},\
                           {                      0,               0,       0, dots->x[1] * dots->x[1],      dots->x[1],       1,      dots->y[1]},\
                           {                      0,               0,       0, dots->x[2] * dots->x[2],      dots->x[2],       1,      dots->y[2]}};
+    
+    for (int i = 0; i < eq->n; i++)
+    {
+        for (int j = 0; j < eq->n; j++)
+        {
+            eq->matrix[i][j] = matrix[i][j];
+        }
+    }
 
     return eq;
 }
 
 void solve (Equasion *eq)
 {
-    Equasion* eq2 = malloc(sizeof(Equasion));
-    eq2->n = eq->n;
-    eq2->matrix = eq->matrix;
-
     float k;
-    for (int t = 0; t < eq2->n; t++)
+    for (int t = 0; t < eq->n; t++)
     {
-        for (int i = 0; i < eq2->n; i++)
+        for (int i = 0; i < eq->n; i++)
         {
             if (i == t) continue;
-            k = eq2->matrix[i][t] / eq2->matrix[t][t];
-            for (int j = 0; j < eq2->n + 1; j++)
+            k = eq->matrix[i][t] / eq->matrix[t][t];
+            for (int j = 0; j < eq->n + 1; j++)
             {
-                eq2->matrix[i][j] = eq2->matrix[i][j] - eq2->matrix[t][j] * k;
+                eq->matrix[i][j] = eq->matrix[i][j] - eq->matrix[t][j] * k;
             }
         }
     }
 
     // O(n^3 - n)   :O
 
-    float* answer = malloc((eq2->n) * sizeof(float));
-    for (int i = 0; i < eq2->n; i++)
+    for (int i = 0; i < eq->n; i++)
     {
-        answer[i] = eq2->matrix[i][eq2->n] / eq2->matrix[i][i];
+        eq->matrix[i][0] =  eq->matrix[i][eq->n] / eq->matrix[i][i];
     }
-    return answer;
 
 }
 
-float interpolated (Equasion *solved, float argument) {
+float interpolated (Equasion* solved, float argument) {
     float result = 0, arg = 1;
 
     for (int i = solved->n - 1; i >= 0; i--)
