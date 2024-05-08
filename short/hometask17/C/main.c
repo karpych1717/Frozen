@@ -78,16 +78,18 @@ Equasion* setUp (Dots* dots)
         eq->matrix[i] = malloc(eq->n * sizeof(float*) + sizeof(float*));
     }
 
-    float matrix[6][7] = {{dots->x[0] * dots->x[0],      dots->x[0],       1,                       0,               0,       0,      dots->y[0]},\
-                          {         2 * dots->x[1],               1,       0,         -2 * dots->x[1],              -1,       0,               0},\
-                          {dots->x[1] * dots->x[1],      dots->x[1],       1,                       0,               0,       0,      dots->y[1]},\
-                          {                      1,               0,       0,                      -1,               0,       0,               0},\
-                          {                      0,               0,       0, dots->x[1] * dots->x[1],      dots->x[1],       1,      dots->y[1]},\
-                          {                      0,               0,       0, dots->x[2] * dots->x[2],      dots->x[2],       1,      dots->y[2]}};
+    float dx0 = (dots->x[0] - dots->x[1]);
+    float dx1 = (dots->x[1] - dots->x[2]);
+    float dy0 = (dots->y[0] - dots->y[1]);
+    float dy1 = (dots->y[1] - dots->y[2]);
+    float matrix[4][5] = {{        1,   0,        -1,   0,   0},\
+                          {dx0 * dx0, dx0,         0,   0, dy0},\
+                          {        0,   1,  -2 * dx1,  -1,   0},\
+                          {        0,   0, dx1 * dx1, dx1, dy1}};
     
     for (int i = 0; i < eq->n; i++)
     {
-        for (int j = 0; j < eq->n; j++)
+        for (int j = 0; j <= eq->n; j++)
         {
             eq->matrix[i][j] = matrix[i][j];
         }
