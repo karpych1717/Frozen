@@ -36,7 +36,7 @@ int main (void)
     result = fopen("result.csv", "w");
 
     fprintf(result, "x, y\n");
-    for (int i = -49; i <= 50; i++)
+    for (int i = 1; i <= 3; i++)
     {
         fprintf(result, "%d, %f\n", i, interpolated(eq, i));
     }
