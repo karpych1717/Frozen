@@ -1,0 +1,1 @@
+setInterval(render, 33)
