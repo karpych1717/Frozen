@@ -1,4 +1,4 @@
-setInterval(render, 33)
+window.requestAnimationFrame(render)
 
 document.onkeydown = keydownHandler
 document.onkeyup = keyupHandler

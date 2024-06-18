@@ -8,11 +8,20 @@ class Rectangle {
   }
 
   drawIt (ctx) {
-    // 
+    ctx.beginPath()
+    ctx.rect(this.x, this.y, this.width, this.height)
+    ctx.fillStyle = this.color
+    ctx.fill()
+    ctx.stroke()
   }
 
   updateIt (dt) {
+    // No speed to use! By function a SET will do.
+  }
 
+  setIt (new_x, new_y) {
+    this.x = new_x
+    this.y = new_y
   }
 }
 
@@ -25,7 +34,8 @@ class Bullet extends Rectangle {
   }
 
   updateIt (dt) {
-    //
+    this.x += this.Vx * dt
+    this.y += this.Vy * dt
   }
 }
 
@@ -37,6 +47,7 @@ class Palette extends Rectangle {
   }
 
   updateIt (dt) {
-    //
+    this.x += this.Vx * dt
+    this.x = Math.min(Math.max(this.x, 0), 400)
   }
 }
