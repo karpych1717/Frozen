@@ -32,7 +32,7 @@ const bullet = new Bullet()
 const palette = new Palette()
 
 bullet.x = 240
-bullet.y = 400
+bullet.y = 440
 bullet.width =  20
 bullet.height = 20
 bullet.color = "green"
@@ -47,3 +47,7 @@ palette.color = "black"
 palette.Vx = 0
 
 let told = 0
+
+let last_press_1
+let last_press_2
+let steering = 0

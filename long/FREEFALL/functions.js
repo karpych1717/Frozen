@@ -1,14 +1,20 @@
 function render (time) {
+  dt = Math.floor(time - told)
   ctx.clearRect(0, 0, 500, 500)
-  update(time)
+  update(dt)
   display()
   window.requestAnimationFrame(render)
+
+  told = time
 }
 
-function update (time) {
+function update (dt) {
+  if (steering > 0) palette.Vx = 0.5
+  if (steering < 0) palette.Vx = -0.5
+  if (steering === 0) palette.Vx = 0
+  //console.log(steering)
   // спочатку апдейт всіх сутностей
   // потім перевірка на всі collisions і що воно сі трапляє
-  dt = Math.floor(time - told)
   palette.updateIt(dt)
   bullet.updateIt(dt)
 
@@ -22,7 +28,7 @@ function update (time) {
   }
 
   if (bullet.y > 440) {
-    if (bullet.x - 100 <= palette.x && palette.x <= bullet.x + 20) {
+    if (bullet.x - 100 < palette.x && palette.x < bullet.x + 20) {
       bullet.Vy = Math.abs(bullet.Vy) * -1
       if (palette.Vx > 0) bullet.Vx = Math.abs(bullet.Vx)
       if (palette.Vx < 0) bullet.Vx = Math.abs(bullet.Vx) * -1
@@ -42,8 +48,6 @@ function update (time) {
       }
     }
   }
-
-  told = time
 }
 
 function display () {
@@ -57,13 +61,25 @@ function display () {
 
 function keydownHandler (event) {
   //console.log(event.code) // використати це для визначення кнопки
-  if (event.code === "ArrowLeft") {
-    palette.Vx = -0.5
-  } else {
-    palette.Vx = 0.5
+  if (last_press_1 != event.code) {
+    if (event.code === "ArrowLeft" || event.code === "KeyA") {
+      steering -= 1
+    }
+    if (event.code === "ArrowRight" || event.code === "KeyD") {
+      steering += 1
+    }
+    last_press_1 = event.code
   }
 }
 
 function keyupHandler (event) {
-  palette.Vx = 0
+  if (last_press_2 != event.code) {
+    if (event.code === "ArrowLeft" || event.code === "KeyA") {
+      steering += 1
+    }
+    if (event.code === "ArrowRight" || event.code === "KeyD") {
+      steering -= 1
+    }
+    last_press_2 = event.code
+  }
 }
