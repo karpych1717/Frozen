@@ -7,6 +7,7 @@ const targets = new Array()
 
 const WIDTH = 500
 const HEIGHT = 500
+const G = 0.0005
 
 const boxWidth = 20
 const boxHeight = 20

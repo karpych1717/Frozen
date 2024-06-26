@@ -36,6 +36,7 @@ class Bullet extends Rectangle {
   updateIt (dt) {
     this.x += this.Vx * dt
     this.y += this.Vy * dt
+    this.Vy += G * dt
   }
 }
 
