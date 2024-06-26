@@ -8,6 +8,15 @@ function render (time) {
   told = time
 }
 
+function isIn (A, B) {
+  if (A.x + A.width >= B.x && B.x + B.width >= A.x) {
+    if (A.y + A.height >= B.y && B.y + B.height >= A.y) {
+      return true
+    }
+  }
+  return false
+}
+
 function update (dt) {
   if (steering > 0) palette.Vx = 0.5
   if (steering < 0) palette.Vx = -0.5
@@ -18,34 +27,44 @@ function update (dt) {
   palette.updateIt(dt)
   bullet.updateIt(dt)
 
-  if (bullet.x <= 0) bullet.Vx = Math.abs(bullet.Vx)
-  if (bullet.x >= 480) bullet.Vx = Math.abs(bullet.Vx) * -1
-  if (bullet.y <= 0) bullet.Vy = Math.abs(bullet.Vy)
-  if (bullet.y > 480) {
+  if (bullet.x <= 0) {
+    bullet.Vx = Math.abs(bullet.Vx)
+  }
+  if (bullet.x >= WIDTH - bullet.width) {
+    bullet.Vx = Math.abs(bullet.Vx) * -1
+  }
+  if (bullet.y <= 0) {
+    bullet.Vy = Math.abs(bullet.Vy)
+  }
+  if (bullet.y > HEIGHT - bullet.height) {
     //bullet.Vy = Math.abs(bullet.Vy) * -1
     bullet.Vx = 0
     bullet.Vy = 0
   }
 
-  if (bullet.y > 440) {
-    if (bullet.x - 100 < palette.x && palette.x < bullet.x + 20) {
+  if (isIn(bullet, palette)) {
+    if (bullet.y + bullet.height - palette.y < Math.min(bullet.x + bullet.width - palette.x, palette.x + palette.width - bullet.x)) {
       bullet.Vy = Math.abs(bullet.Vy) * -1
       if (palette.Vx > 0) bullet.Vx = Math.abs(bullet.Vx)
       if (palette.Vx < 0) bullet.Vx = Math.abs(bullet.Vx) * -1
+    } else {
+      if (palette.x + palette.width / 2 > bullet.x + bullet.width / 2) {
+        bullet.Vx = Math.abs(bullet.Vx) * -1
+      } else {
+        bullet.Vx = Math.abs(bullet.Vx)
+      }
     }
   }
 
   for (let i = 0; i < targets.length; i++) {
-    if (bullet.x - 20 <= targets[i].x && targets[i].x <= bullet.x + 20) {
-      if (bullet.y - 20 <= targets[i].y && targets[i].y <= bullet.y + 20) {
-        if (Math.abs(targets[i].x - bullet.x) > Math.abs(targets[i].y - bullet.y)) {
-          bullet.Vx *= -1
-        } else {
-          bullet.Vy *= -1
-        }
-        targets[i].x = -20
-        targets[i].y = -20
+    if (isIn(bullet, targets[i])) {
+      if (Math.abs(targets[i].x - bullet.x) > Math.abs(targets[i].y - bullet.y)) {
+        bullet.Vx *= -1
+      } else {
+        bullet.Vy *= -1
       }
+      targets[i].x = -targets[i].width
+      targets[i].y = -targets[i].height
     }
   }
 }
@@ -61,25 +80,25 @@ function display () {
 
 function keydownHandler (event) {
   //console.log(event.code) // використати це для визначення кнопки
-  if (last_press_1 != event.code) {
+  if (last_press != event.code) {
     if (event.code === "ArrowLeft" || event.code === "KeyA") {
       steering -= 1
     }
     if (event.code === "ArrowRight" || event.code === "KeyD") {
       steering += 1
     }
-    last_press_1 = event.code
+    last_press = event.code
   }
 }
 
 function keyupHandler (event) {
-  if (last_press_2 != event.code) {
+  if (true) {
     if (event.code === "ArrowLeft" || event.code === "KeyA") {
       steering += 1
     }
     if (event.code === "ArrowRight" || event.code === "KeyD") {
       steering -= 1
     }
-    last_press_2 = event.code
+    if (last_press === event.code) last_press = ""
   }
 }

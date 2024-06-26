@@ -5,6 +5,13 @@ const ctx = _cvs.getContext('2d')
 
 const targets = new Array()
 
+const WIDTH = 500
+const HEIGHT = 500
+
+const boxWidth = 20
+const boxHeight = 20
+const boxGap = 20
+
 let r = 0
 let g = 0
 let randomNumber
@@ -13,10 +20,10 @@ for (let row = 0; row < 8; row++) {
     for (let col = 0; col < 12; col++) {
         rect = new Rectangle()
 
-        rect.x = col * 40 + 20
-        rect.y = row * 40 + 20
-        rect.width = 20
-        rect.height = 20
+        rect.x = col * (boxWidth + boxGap) + boxGap
+        rect.y = row * (boxHeight + boxGap) + boxGap
+        rect.width = boxWidth
+        rect.height = boxHeight
 
         randomNumber = Math.floor(Math.random() * 511);
         r = Math.max(0, 255 - randomNumber)
@@ -48,6 +55,5 @@ palette.Vx = 0
 
 let told = 0
 
-let last_press_1
-let last_press_2
+let last_press
 let steering = 0
