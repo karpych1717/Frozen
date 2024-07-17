@@ -53,7 +53,7 @@ class Rectangle {
 }
 
 class Bullet extends Rectangle {
-  constructor (x = 240, y = 440, Vx = 0.25, Vy = -0.25, width = 20,  height = 20, color = "green") {
+  constructor (x, y, Vx, Vy, width,  height, color) {
     super(x, y, width, height, color)
 
     this.Vx = Vx
@@ -70,7 +70,7 @@ class Bullet extends Rectangle {
 }
 
 class Palette extends Rectangle {
-  constructor (x = 200, y = 460, width = 100, height = 20, color = "black") {
+  constructor (x, y, width, height, color) {
     super(x, y, width, height, color)
 
     this.Vx = 0
