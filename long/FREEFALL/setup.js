@@ -37,9 +37,6 @@ for (let row = 0; row < 8; row++) {
     }
 }
 
-const bullet = new Bullet(240, 440, 0.25, -0.25, 20, 20, "green")
-const palette = new Palette(200, 460, 100, 20, "black")
-
 let told = 0
 
 let last_press
@@ -48,48 +45,51 @@ let steering = 0
 let colision
 
 const FREEFALL = {
+    bullet: new Bullet(240, 440, 0.25, -0.25, 20, 20, "green"),
+    palette: new Palette(200, 460, 100, 20, "black"),
+
     update (dt) {
-        if (steering > 0) palette.Vx = palette.V
-        if (steering < 0) palette.Vx = -palette.V
-        if (steering === 0) palette.Vx = 0
+        if (steering > 0) this.palette.Vx = this.palette.V
+        if (steering < 0) this.palette.Vx = -this.palette.V
+        if (steering === 0) this.palette.Vx = 0
         //console.log(steering)
         // спочатку апдейт всіх сутностей
         // потім перевірка на всі collisions і що воно сі трапляє
-        palette.updateIt(dt)
-        bullet.updateIt(dt)
+        this.palette.updateIt(dt)
+        this.bullet.updateIt(dt)
         
-        if (bullet.x <= 0) {
-            bullet.Vx = Math.abs(bullet.Vx)
+        if (this.bullet.x <= 0) {
+            this.bullet.Vx = Math.abs(this.bullet.Vx)
         }
-        if (bullet.x >= WIDTH - bullet.width) {
-            bullet.Vx = Math.abs(bullet.Vx) * -1
+        if (this.bullet.x >= WIDTH - this.bullet.width) {
+            this.bullet.Vx = Math.abs(this.bullet.Vx) * -1
         }
-        if (bullet.y <= 0) {
-            bullet.Vy = Math.abs(bullet.Vy)
+        if (this.bullet.y <= 0) {
+            this.bullet.Vy = Math.abs(this.bullet.Vy)
         }
-        if (bullet.y > HEIGHT - bullet.height) {
+        if (this.bullet.y > HEIGHT - this.bullet.height) {
             //bullet.Vy = Math.abs(bullet.Vy) * -1
-            bullet.Vx = 0
-            bullet.Vy = 0
+            this.bullet.Vx = 0
+            this.bullet.Vy = 0
         }
         
-        colision = bullet.isIn(palette)
+        colision = this.bullet.isIn(this.palette)
         if (colision == 1 || colision == 5) {
-            bullet.Vy = Math.abs(bullet.Vy) * -1
-            if (palette.Vx > 0) bullet.Vx = Math.abs(bullet.Vx)
-            if (palette.Vx < 0) bullet.Vx = Math.abs(bullet.Vx) * -1
+            this.bullet.Vy = Math.abs(this.bullet.Vy) * -1
+            if (this.palette.Vx > 0) this.bullet.Vx = Math.abs(this.bullet.Vx)
+            if (this.palette.Vx < 0) this.bullet.Vx = Math.abs(this.bullet.Vx) * -1
         }
-        if (colision == 2) bullet.Vx = Math.abs(bullet.Vx)
-        if (colision == 4) bullet.Vx = Math.abs(bullet.Vx) * -1
+        if (colision == 2) this.bullet.Vx = Math.abs(this.bullet.Vx)
+        if (colision == 4) this.bullet.Vx = Math.abs(this.bullet.Vx) * -1
   
         for (let i = 0; i < targets.length; i++) {
-            colision = bullet.isIn(targets[i])
+            colision = this.bullet.isIn(targets[i])
             if (colision != 0) {
-                if (colision == 2 || colision == 4) bullet.Vx *= -1
-                if (colision == 1 || colision == 3) bullet.Vy *= -1
+                if (colision == 2 || colision == 4) this.bullet.Vx *= -1
+                if (colision == 1 || colision == 3) this.bullet.Vy *= -1
                 if (colision == 5) {
-                    bullet.Vx *= -1
-                    bullet.Vy *= -1
+                    this.bullet.Vx *= -1
+                    this.bullet.Vy *= -1
                 }
                 targets.splice(i, 1);
             }
@@ -98,8 +98,8 @@ const FREEFALL = {
   
     display () {
       // намалювати всі сутності
-      palette.drawIt(ctx)
-      bullet.drawIt(ctx)
+      this.palette.drawIt(ctx)
+      this.bullet.drawIt(ctx)
       for (let i = 0; i < targets.length; i++) {
         targets[i].drawIt(ctx)
       }
