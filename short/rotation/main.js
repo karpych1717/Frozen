@@ -68,7 +68,12 @@ function draw () {
 }
 
 function update () {
-  // 
+  torque = 0
+  if (left && !right) torque = thrust * arm * 2
+  if (!left && right) torque = -thrust * arm * 2
+  epsilon = torque / inertia
+  omega += epsilon * dt
+  alpha += omega * dt
 }
 
 function clear () {
