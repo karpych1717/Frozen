@@ -40,21 +40,6 @@ for (let row = 0; row < 8; row++) {
 const bullet = new Bullet()
 const palette = new Palette()
 
-bullet.x = 240
-bullet.y = 440
-bullet.width =  20
-bullet.height = 20
-bullet.color = "green"
-bullet.Vx = 0.25 * ((Math.random() > 0.5) * 2 - 1)
-bullet.Vy = -0.25
-
-palette.x = 200
-palette.y = 460
-palette.width = 100
-palette.height = 20
-palette.color = "black"
-palette.Vx = 0
-
 let told = 0
 
 let last_press
