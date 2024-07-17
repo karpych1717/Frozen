@@ -37,8 +37,8 @@ for (let row = 0; row < 8; row++) {
     }
 }
 
-const bullet = new Bullet(x = 240, y = 440, Vx = 0.25, Vy = -0.25, width = 20,  height = 20, color = "green")
-const palette = new Palette(x = 200, y = 460, width = 100, height = 20, color = "black")
+const bullet = new Bullet(240, 440, 0.25, -0.25, 20, 20, "green")
+const palette = new Palette(200, 460, 100, 20, "black")
 
 let told = 0
 
