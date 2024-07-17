@@ -53,15 +53,8 @@ class Rectangle {
 }
 
 class Bullet extends Rectangle {
-  x = 240
-  y = 440
-  width =  20
-  height = 20
-  color = "green"
-  Vx = 0.25 * ((Math.random() > 0.5) * 2 - 1)
-  Vy = -0.25
-  constructor (x, y, Vx, Vy, size, color) {
-    super(x, y, size, size, color)
+  constructor (x = 240, y = 440, Vx = 0.25, Vy = -0.25, width = 20,  height = 20, color = "green") {
+    super(x, y, width, height, color)
 
     this.Vx = Vx
     this.Vy = Vy
@@ -77,13 +70,7 @@ class Bullet extends Rectangle {
 }
 
 class Palette extends Rectangle {
-  x = 200
-  y = 460
-  width = 100
-  height = 20
-  color = "black"
-  Vx = 0
-  constructor (x, y, width, height, color) {
+  constructor (x = 200, y = 460, width = 100, height = 20, color = "black") {
     super(x, y, width, height, color)
 
     this.Vx = 0
