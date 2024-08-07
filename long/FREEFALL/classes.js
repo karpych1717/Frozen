@@ -9,14 +9,14 @@ class Rectangle {
 
   drawIt (ctx) {
     ctx.beginPath()
-    ctx.rect(this.x, this.y, this.width, this.height)
+    ctx.rect(this.x - this.width / 2, this.y - this.height / 2, this.width, this.height)
     ctx.fillStyle = this.color
     ctx.fill()
     ctx.stroke()
   }
 
   updateIt (dt) {
-    // No speed to use! By function a SET will do.
+    // No speed to use!
   }
 
   setIt (new_x, new_y) {
@@ -24,37 +24,18 @@ class Rectangle {
     this.y = new_y
   }
   
-  isIn (rect) {
-    const corner = 5
-    if (this.x + this.width >= rect.x && rect.x + rect.width >= this.x) {
-      if (this.y + this.height >= rect.y && rect.y + rect.height >= this.y) {
-        const dx = (rect.x + rect.width / 2 - this.x - this.width / 2)
-        const dy = (rect.y + rect.height / 2 - this.y - this.height / 2) * rect.width / rect.height
-        if (Math.abs(Math.abs(dx) - Math.abs(dy)) < corner) {
-          const dx1 = dx > 0
-          const dy1 = dy > 0
-          const dx2 = this.Vx > 0
-          const dy2 = this.Vy > 0
-          if (dx1 == dx2 && dy1 == dy2) return 5
-        }
-        if (Math.abs(dx) > Math.abs(dy)) {
-          if (dx < 0) return 2
-          return 4;
-        }
-        if (dy < 0) return 3
-        return 1;
-        //   1
-        // 4   2
-        //   3
-      }
-    }
-    return 0;
+}
+
+class Target extends Rectangle {
+  constructor (x, y, width,  height, color, last_collision) {
+    super(x, y, width, height, color)
+    this.last_collision = 'none'
   }
 }
 
-class Bullet extends Rectangle {
-  constructor (x, y, Vx, Vy, width,  height, color) {
-    super(x, y, width, height, color)
+class Bullet extends Target {
+  constructor (x, y, Vx, Vy, width,  height, color, last_collision) {
+    super(x, y, width, height, color, last_collision)
 
     this.Vx = Vx
     this.Vy = Vy
@@ -69,9 +50,9 @@ class Bullet extends Rectangle {
   }
 }
 
-class Palette extends Rectangle {
-  constructor (x, y, width, height, color) {
-    super(x, y, width, height, color)
+class Palette extends Target {
+  constructor (x, y, width, height, color, last_collision) {
+    super(x, y, width, height, color, last_collision)
 
     this.Vx = 0
     this.V = 0.5
@@ -79,6 +60,6 @@ class Palette extends Rectangle {
 
   updateIt (dt) {
     this.x += this.Vx * dt
-    this.x = Math.min(Math.max(this.x, 0), 400)
+    this.x = Math.min(Math.max(this.x, this.width / 2), WIDTH - this.width / 2)
   }
 }

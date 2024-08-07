@@ -20,12 +20,13 @@ let randomNumber
 
 for (let row = 0; row < 8; row++) {
     for (let col = 0; col < 12; col++) {
-        rect = new Rectangle()
+        rect = new Target()
 
-        rect.x = col * (boxWidth + boxGap) + boxGap
-        rect.y = row * (boxHeight + boxGap) + boxGap
+        rect.x = col * (boxWidth + boxGap) + boxGap + boxWidth / 2
+        rect.y = row * (boxHeight + boxGap) + boxGap + boxHeight / 2
         rect.width = boxWidth
         rect.height = boxHeight
+        rect.last_collision = 'none'
 
         randomNumber = Math.floor(Math.random() * 511);
         r = Math.max(0, 255 - randomNumber)
@@ -39,60 +40,66 @@ for (let row = 0; row < 8; row++) {
 
 let told = 0
 
-let last_press
-let steering = 0
-
-let colision
-
 const FREEFALL = {
+    colision: 'none',
+    left_button: false,
+    right_button: false,
+
     bullet: new Bullet(240, 440, 0.25, -0.25, 20, 20, "green"),
     palette: new Palette(200, 460, 100, 20, "black"),
 
     update (dt) {
-        if (steering > 0) this.palette.Vx = this.palette.V
-        if (steering < 0) this.palette.Vx = -this.palette.V
-        if (steering === 0) this.palette.Vx = 0
+        this.palette.Vx = 0
+        if (this.right_button && !this.left_button) this.palette.Vx = this.palette.V
+        if (!this.right_button && this.left_button) this.palette.Vx = -this.palette.V
         //console.log(steering)
         // спочатку апдейт всіх сутностей
         // потім перевірка на всі collisions і що воно сі трапляє
         this.palette.updateIt(dt)
         this.bullet.updateIt(dt)
         
-        if (this.bullet.x <= 0) {
+        if (this.bullet.x <= this.bullet.width / 2) {
             this.bullet.Vx = Math.abs(this.bullet.Vx)
         }
-        if (this.bullet.x >= WIDTH - this.bullet.width) {
+        if (this.bullet.x >= WIDTH - this.bullet.width / 2) {
             this.bullet.Vx = Math.abs(this.bullet.Vx) * -1
         }
-        if (this.bullet.y <= 0) {
+        if (this.bullet.y <= this.bullet.height / 2) {
             this.bullet.Vy = Math.abs(this.bullet.Vy)
         }
-        if (this.bullet.y > HEIGHT - this.bullet.height) {
+        if (this.bullet.y > HEIGHT - this.bullet.height / 2) {
             //bullet.Vy = Math.abs(bullet.Vy) * -1
             this.bullet.Vx = 0
             this.bullet.Vy = 0
         }
-        
-        colision = this.bullet.isIn(this.palette)
-        if (colision == 1 || colision == 5) {
-            this.bullet.Vy = Math.abs(this.bullet.Vy) * -1
-            if (this.palette.Vx > 0) this.bullet.Vx = Math.abs(this.bullet.Vx)
-            if (this.palette.Vx < 0) this.bullet.Vx = Math.abs(this.bullet.Vx) * -1
-        }
-        if (colision == 2) this.bullet.Vx = Math.abs(this.bullet.Vx)
-        if (colision == 4) this.bullet.Vx = Math.abs(this.bullet.Vx) * -1
-  
+
         for (let i = 0; i < targets.length; i++) {
-            colision = this.bullet.isIn(targets[i])
-            if (colision != 0) {
-                if (colision == 2 || colision == 4) this.bullet.Vx *= -1
-                if (colision == 1 || colision == 3) this.bullet.Vy *= -1
-                if (colision == 5) {
+            this.colision = getCollisionType(targets[i], FREEFALL.bullet)
+            if (this.colision == 'full') {
+                if (targets[i].last_collision == 'horisontal') this.bullet.Vx *= -1
+                if (targets[i].last_collision == 'vertical') this.bullet.Vy *= -1
+                if (targets[i].last_collision == 'none') {
                     this.bullet.Vx *= -1
                     this.bullet.Vy *= -1
                 }
+
                 targets.splice(i, 1);
+            } else {
+                targets[i].last_collision = this.colision
             }
+
+        }
+
+        this.colision = getCollisionType(FREEFALL.palette, FREEFALL.bullet)
+        if (this.colision == 'full') {
+            if (FREEFALL.palette.last_collision == 'horisontal') this.bullet.Vx *= -1
+            if (FREEFALL.palette.last_collision == 'vertical') this.bullet.Vy *= -1
+            if (FREEFALL.palette.last_collision == 'none') {
+                this.bullet.Vx *= -1
+                this.bullet.Vy *= -1
+            }
+        } else {
+            FREEFALL.palette.last_collision = this.colision
         }
     },
   
