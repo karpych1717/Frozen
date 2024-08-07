@@ -74,7 +74,7 @@ const FREEFALL = {
         }
 
         for (let i = 0; i < targets.length; i++) {
-            this.colision = getCollisionType(targets[i], FREEFALL.bullet)
+            this.colision = getCollisionType(targets[i], this.bullet)
             if (this.colision == 'full') {
                 if (targets[i].last_collision == 'horisontal') this.bullet.Vx *= -1
                 if (targets[i].last_collision == 'vertical') this.bullet.Vy *= -1
@@ -90,19 +90,24 @@ const FREEFALL = {
 
         }
 
-        this.colision = getCollisionType(FREEFALL.palette, FREEFALL.bullet)
+        this.colision = getCollisionType(this.palette, this.bullet)
         if (this.colision == 'full') {
-            if (FREEFALL.palette.last_collision == 'horisontal') {
-                if (FREEFALL.bullet.x < FREEFALL.palette.x) this.bullet.Vx = -Math.abs(this.bullet.Vx)
-                if (FREEFALL.bullet.x >= FREEFALL.palette.x) this.bullet.Vx = Math.abs(this.bullet.Vx)
+            if (this.palette.last_collision == 'horisontal') {
+                this.bullet.Vx = -this.bullet.Vx
+                this.bullet.Vx += this.palette.Vx
             }
-            if (FREEFALL.palette.last_collision == 'vertical') this.bullet.Vy *= -1
-            if (FREEFALL.palette.last_collision == 'none') {
+            if (this.palette.last_collision == 'vertical') {
+                this.bullet.Vy = -this.bullet.Vy
+
+                this.bullet.Vx = Math.abs(this.bullet.Vx)
+                if (this.palette.Vx < 0) this.bullet.Vx = -this.bullet.Vx
+            }
+            if (this.palette.last_collision == 'none') {
                 this.bullet.Vx *= -1
                 this.bullet.Vy *= -1
             }
         }
-        FREEFALL.palette.last_collision = this.colision
+        this.palette.last_collision = this.colision
     },
   
     display () {
