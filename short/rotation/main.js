@@ -17,24 +17,24 @@ const arm = 1
 const x = 375
 const y = 250
 
-let alpha = 0
-let omega = 0
-let epsilon = 0
+let angle = 0
+let angle_speed = 0
+let angle_acceleration = 0
 let torque = 0
 
-let left = false
-let right = false
+let left_button = false
+let right_button = false
 
 setInterval(render, dt)
 
 document.onkeydown = (event) => {
-  if (event.code === 'KeyA') left = true
-  if (event.code === 'KeyD') right = true
+  if (event.code === 'KeyA') left_button = true
+  if (event.code === 'KeyD') right_button = true
 }
 
 document.onkeyup = (event) => {
-  if (event.code === 'KeyA') left = false
-  if (event.code === 'KeyD') right = false
+  if (event.code === 'KeyA') left_button = false
+  if (event.code === 'KeyD') right_button = false
 }
 
 function render () {
@@ -45,35 +45,38 @@ function render () {
 
 function draw () {
   ctx.translate(x, y)
-  ctx.rotate(-alpha)
+  ctx.rotate(-angle)
 
   ctx.drawImage(rectPic, -rectPic.width / 2, -rectPic.height / 2)
 
-  if (left)
+  if (left_button)
     ctx.drawImage(firePic, -rectPic.width / 2, -firePic.height - rectPic.height / 2)
-  if (right)
+  if (right_button)
     ctx.drawImage(firePic, rectPic.width / 2 - firePic.width / 2, -firePic.height - rectPic.height / 2)
 
   ctx.rotate(Math.PI)
 
-  if (left)
+  if (left_button)
     ctx.drawImage(firePic, -rectPic.width / 2, -firePic.height - rectPic.height / 2)
-  if (right)
+  if (right_button)
     ctx.drawImage(firePic, rectPic.width / 2 - firePic.width / 2, -firePic.height - rectPic.height / 2)
 
   ctx.rotate(-Math.PI)
 
-  ctx.rotate(alpha)
+  ctx.rotate(angle)
   ctx.translate(-x, -y)
 }
 
 function update () {
   torque = 0
-  if (left && !right) torque = thrust * arm * 2
-  if (!left && right) torque = -thrust * arm * 2
-  epsilon = torque / inertia
-  omega += epsilon * dt
-  alpha += omega * dt
+  if (left_button && !right_button) torque = thrust * arm * 2
+  if (!left_button && right_button) torque = -thrust * arm * 2
+
+  angle_acceleration = torque / inertia
+
+  angle_speed += angle_acceleration * dt
+
+  angle += angle_speed * dt
 }
 
 function clear () {
