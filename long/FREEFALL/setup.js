@@ -46,7 +46,7 @@ const FREEFALL = {
     right_button: false,
 
     bullet: new Bullet(240, 440, 0.25, -0.25, 20, 20, "green"),
-    palette: new Palette(200, 460, 100, 20, "black"),
+    palette: new Palette(200, 470, 100, 20, "black"),
 
     update (dt) {
         this.palette.Vx = 0
@@ -98,9 +98,8 @@ const FREEFALL = {
                 this.bullet.Vx *= -1
                 this.bullet.Vy *= -1
             }
-        } else {
-            FREEFALL.palette.last_collision = this.colision
         }
+        FREEFALL.palette.last_collision = this.colision
     },
   
     display () {
