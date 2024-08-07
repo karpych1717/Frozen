@@ -92,7 +92,10 @@ const FREEFALL = {
 
         this.colision = getCollisionType(FREEFALL.palette, FREEFALL.bullet)
         if (this.colision == 'full') {
-            if (FREEFALL.palette.last_collision == 'horisontal') this.bullet.Vx *= -1
+            if (FREEFALL.palette.last_collision == 'horisontal') {
+                if (FREEFALL.bullet.x < FREEFALL.palette.x) this.bullet.Vx = -Math.abs(this.bullet.Vx)
+                if (FREEFALL.bullet.x >= FREEFALL.palette.x) this.bullet.Vx = Math.abs(this.bullet.Vx)
+            }
             if (FREEFALL.palette.last_collision == 'vertical') this.bullet.Vy *= -1
             if (FREEFALL.palette.last_collision == 'none') {
                 this.bullet.Vx *= -1
