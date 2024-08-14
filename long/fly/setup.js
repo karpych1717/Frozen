@@ -32,26 +32,29 @@ const ctx = _cvs.getContext('2d')
 ctx.strokeStyle = 'white'
 ctx.lineWidth = 1
 
-body = new Rectangle
-body.x = BOX_WIDTH / 2
-body.y = BOX_HEIGHT / 2
-body.width = BODY_LENGTH
-body.height = BODY_HEIGHT
-body.angle = 0
-body.color = 'white'
+body = new Rectangle (
+    x = BOX_WIDTH / 2,
+    y = BOX_HEIGHT / 2,
+    width = BODY_LENGTH,
+    height = BODY_HEIGHT,
+    angle = 0,
+    color = 'white'
+)
 
-wing = new Rectangle
-wing.x = WING_DISTANCE * Math.sin(WING_DIFF_ANGLE - body.angle) + body.x
-wing.y = WING_DISTANCE * Math.cos(WING_DIFF_ANGLE - body.angle) + body.y
-wing.width = WING_LENGTH
-wing.height = WING_HEIGHT
-wing.angle = body.angle + WING_ANGLE
-wing.color = 'white'
+wing = new Rectangle (
+    x = WING_DISTANCE * Math.sin(WING_DIFF_ANGLE - body.angle) + body.x,
+    y = WING_DISTANCE * Math.cos(WING_DIFF_ANGLE - body.angle) + body.y,
+    width = WING_LENGTH,
+    height = WING_HEIGHT,
+    angle = body.angle + WING_ANGLE,
+    color = 'white'
+)
 
-tail = new Rectangle
-tail.x = TAIL_DISTANCE * Math.sin(TAIL_DIFF_ANGLE - body.angle) + body.x
-tail.y = TAIL_DISTANCE * Math.cos(TAIL_DIFF_ANGLE - body.angle) + body.y
-tail.width = TAIL_LENGTH
-tail.height = TAIL_HEIGHT
-tail.angle = body.angle + TAIL_ANGLE
-tail.color = 'white'
+tail = new Rectangle (
+    x = TAIL_DISTANCE * Math.sin(TAIL_DIFF_ANGLE - body.angle) + body.x,
+    y = TAIL_DISTANCE * Math.cos(TAIL_DIFF_ANGLE - body.angle) + body.y,
+    width = TAIL_LENGTH,
+    height = TAIL_HEIGHT,
+    angle = body.angle + TAIL_ANGLE,
+    color = 'white'
+)
