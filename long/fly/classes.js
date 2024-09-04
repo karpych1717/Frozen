@@ -51,8 +51,12 @@ class Vector {
     this.y = 0
   }
 
-  static add (vect1, vect2) {
-    const vect3 = new Vector (vect1.x + vect2.x, vect1.y + vect2.y)
+  static add (...vect) {
+    const vect3 = new Vector (0, 0)
+    for (const vector of vect) {
+      vect3.x += vector.x
+      vect3.y += vector.y
+    }
     return vect3
   }
   
@@ -60,8 +64,12 @@ class Vector {
     return Math.abs(vect1.angle - vect2.angle)
   }
 
-  static scalar (vect1, vect2) {
+  static scalar_multiplication (vect1, vect2) {
     return vect1.module * vect2.module * Math.cos(Vector.angle(vect1, vect2))
+  }
+  
+  static vector_multiplication (vect1, vect2) {
+    return vect1.module * vect2.module * Math.sin(Vector.angle(vect1, vect2))
   }
   
   convert () {
