@@ -55,3 +55,11 @@ function getAngle(Vx, Vy) {
   if (Vx < 0 && Vy < 0) Angle += Math.PI
   return Angle
 }
+
+function getAirFriction(Vx, Vy) {
+  const angle = getAngle(Vx, Vy)
+  const v = Math.sin(angle) * Math.sqrt(Vx ** 2 + Vy ** 2)
+  const x = Math.cos(angle) * body.x
+  const y = Math.cos(angle) * body.y
+  return Kf * (x + y) * body.z * v
+}

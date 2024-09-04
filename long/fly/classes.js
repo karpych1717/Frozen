@@ -29,7 +29,6 @@ class Brick extends Rectangle {
     this.z = z
     this.mass = mass
   }
-
 }
 
 class Vector {
