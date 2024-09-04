@@ -22,6 +22,8 @@ function update (dt) {
   tail.x = TAIL_DISTANCE * Math.sin(TAIL_DIFF_ANGLE - body.angle) + body.x
   tail.y = TAIL_DISTANCE * Math.cos(TAIL_DIFF_ANGLE - body.angle) + body.y
   tail.angle = body.angle + TAIL_ANGLE
+
+  V = Math.sin()
 }
 
 function keydownHandler (event) {
@@ -46,4 +48,10 @@ function keyupHandler (event) {
     }
     if (last_press === event.code) last_press = ""
   }
+}
+
+function getAngle(Vx, Vy) {
+  let Angle = Math.atan(Vy / Vx)
+  if (Vx < 0 && Vy < 0) Angle += Math.PI
+  return Angle
 }
