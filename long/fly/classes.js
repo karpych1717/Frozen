@@ -28,6 +28,8 @@ class Brick extends Rectangle {
     super(x, y, width, height, angle, color)
     this.z = z
     this.mass = mass
+    this.Vx = 0
+    this.Vy = 3
   }
 }
 

@@ -35,10 +35,10 @@ ctx.lineWidth = 1
 body = new Brick (
     x = BOX_WIDTH / 2,
     y = BOX_HEIGHT / 2,
-    z = 1,
+    z = BOX_HEIGHT / 2,
     width = BODY_LENGTH,
     height = BODY_HEIGHT,
-    angle = 0,
+    angle = Math.PI * 3 / 2,
     color = 'white',
     mass = 1000
 )
@@ -65,6 +65,7 @@ tail = new Brick (
     mass = 1000
 )
 
-const G = 9.8
+const G = 0.0000098
+const K_dt = 1000
 const Fg = (body.mass + wing.mass + tail.mass) * G
-let Kf, Vx = 0, Vy = 0
+let Kf = -0.000005, Vx = 0, Vy = 0

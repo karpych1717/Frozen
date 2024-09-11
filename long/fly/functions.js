@@ -14,6 +14,16 @@ function draw () {
 }
 
 function update (dt) {
+  body.Vy += Fg * dt / K_dt
+  body.Vy -= getAirFriction(body.Vx, body.Vy)
+
+  body.x += body.Vx * dt / K_dt
+  body.y += body.Vy * dt / K_dt
+  while (body.x > BOX_WIDTH) body.x -= BOX_WIDTH
+  while (body.y > BOX_HEIGHT) body.y -= BOX_HEIGHT
+
+
+
   body.angle += ROTATION_SPEED * Math.max(Math.min(rotation, 1), -1)
 
   wing.x = WING_DISTANCE * Math.sin(WING_DIFF_ANGLE - body.angle) + body.x
@@ -22,8 +32,6 @@ function update (dt) {
   tail.x = TAIL_DISTANCE * Math.sin(TAIL_DIFF_ANGLE - body.angle) + body.x
   tail.y = TAIL_DISTANCE * Math.cos(TAIL_DIFF_ANGLE - body.angle) + body.y
   tail.angle = body.angle + TAIL_ANGLE
-
-  V = Math.sin()
 }
 
 function keydownHandler (event) {
@@ -51,7 +59,16 @@ function keyupHandler (event) {
 }
 
 function getAngle(Vx, Vy) {
-  let Angle = Math.atan(Vy / Vx)
+  let Angle = 0
+  if (Vx != 0) {
+    Angle = Math.atan(Vy / Vx)
+  } else {
+    if (Vy > 0) {
+      Angle = Math.PI * 3 / 2
+    } else if (Vy < 0) {
+      Angle = Math.PI * 1 / 2
+    }
+  }
   if (Vx < 0 && Vy < 0) Angle += Math.PI
   return Angle
 }
@@ -59,7 +76,7 @@ function getAngle(Vx, Vy) {
 function getAirFriction(Vx, Vy) {
   const angle = getAngle(Vx, Vy)
   const v = Math.sin(angle) * Math.sqrt(Vx ** 2 + Vy ** 2)
-  const x = Math.cos(angle) * body.x
-  const y = Math.cos(angle) * body.y
+  const x = Math.abs(Math.cos(body.angle)) * body.x
+  const y = Math.abs(Math.cos(Math.PI / 2 - body.angle)) * body.y
   return Kf * (x + y) * body.z * v
 }
