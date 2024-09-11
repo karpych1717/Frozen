@@ -14,7 +14,8 @@ function draw () {
 }
 
 function update (dt) {
-  A = Vector.multiply(1 / M, Vector.add(Fg, Ff))
+  F = Vector.add(Fg, Ff)
+  A = Vector.multiply(1 / M, F)
   V = Vector.multiply(dt / K_dt, A)
 
   body.x += V.x * dt / K_dt

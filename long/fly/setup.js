@@ -67,11 +67,12 @@ tail = new Brick (
 
 const G = 9.8
 const M = body.mass + wing.mass + tail.mass
-const K_dt = 100000
+const K_dt = 1000
 let Kf = 0
 
+let F = new Vector(0, 0)
 let A = new Vector(0, 0)
 let V = new Vector(0, 0)
 
 const Fg = new Vector(0, M * G)
-const Ff = new Vector(0, 0)
+let Ff = new Vector(0, 0)
