@@ -25,6 +25,7 @@ function update (dt) {
 
 
   body.angle += ROTATION_SPEED * Math.max(Math.min(rotation, 1), -1)
+  body.angle %= Math.PI * 2
 
   wing.x = WING_DISTANCE * Math.sin(WING_DIFF_ANGLE - body.angle) + body.x
   wing.y = WING_DISTANCE * Math.cos(WING_DIFF_ANGLE - body.angle) + body.y
