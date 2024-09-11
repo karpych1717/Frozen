@@ -14,18 +14,21 @@ function draw () {
 }
 
 function update (dt) {
-  body.Vy += Fg / M * dt / K_dt
-  body.Vy -= getAirFriction(body.Vx, body.Vy) / M * dt / K_dt
+  A = Vector.add(Fg, Ff)
+  V = Vector.multiply(dt / K_dt / M, A)
 
-  body.x += body.Vx * dt / K_dt
-  body.y += body.Vy * dt / K_dt
-  while (body.x > BOX_WIDTH) body.x -= BOX_WIDTH
-  while (body.y > BOX_HEIGHT) body.y -= BOX_HEIGHT
+  body.x += V.x * dt / K_dt
+  body.y += V.y * dt / K_dt
+  if (body.x < 0) body.x = BOX_WIDTH
+  if (body.x > BOX_WIDTH) body.x = 0
+  if (body.y < 0) body.y = BOX_HEIGHT
+  if (body.y > BOX_HEIGHT) body.y = 0
 
 
 
   body.angle += ROTATION_SPEED * Math.max(Math.min(rotation, 1), -1)
-  body.angle %= Math.PI * 2
+  if (body.angle < 0) body.angle = Math.PI * 2
+  if (body.angle > Math.PI * 2) body.angle = 0
 
   wing.x = WING_DISTANCE * Math.sin(WING_DIFF_ANGLE - body.angle) + body.x
   wing.y = WING_DISTANCE * Math.cos(WING_DIFF_ANGLE - body.angle) + body.y

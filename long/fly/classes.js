@@ -52,6 +52,12 @@ class Vector {
     this.y = 0
   }
 
+  static multiply (n, vect) {
+    vect.x *= n
+    vect.y *= n
+    return vect
+  }
+
   static add (...vect) {
     const vect3 = new Vector (0, 0)
     for (const vector of vect) {
