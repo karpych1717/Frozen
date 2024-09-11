@@ -65,7 +65,8 @@ tail = new Brick (
     mass = 1000
 )
 
-const G = 0.0000098
+const G = 0.0098
+const M = body.mass + wing.mass + tail.mass
 const K_dt = 1000
-const Fg = (body.mass + wing.mass + tail.mass) * G
-let Kf = -0.000005, Vx = 0, Vy = 0
+const Fg = M * G
+let Kf = -0.001, Vx = 0, Vy = 0

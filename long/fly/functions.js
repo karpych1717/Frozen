@@ -14,8 +14,8 @@ function draw () {
 }
 
 function update (dt) {
-  body.Vy += Fg * dt / K_dt
-  body.Vy -= getAirFriction(body.Vx, body.Vy)
+  body.Vy += Fg / M * dt / K_dt
+  body.Vy -= getAirFriction(body.Vx, body.Vy) / M * dt / K_dt
 
   body.x += body.Vx * dt / K_dt
   body.y += body.Vy * dt / K_dt
