@@ -1,6 +1,8 @@
 let dt, time_old = 0
 function render (time) {
   dt = time - time_old
+  dt = Math.min(dt, 10)
+  if (dt > 9) console.log(dt)
   time_old = time
   ctx.clearRect(0, 0, BOX_WIDTH, BOX_HEIGHT)
   draw()
@@ -19,7 +21,7 @@ function update (dt) {
   F = Vector.add(Fg, Ff)
   A = Vector.multiply(1 / M, F)
   V = Vector.add(Vector.multiply(dt / K_dt, A), V)
-  console.log(V)
+  //console.log(V)
 
   body.x += V.x * dt / K_dt
   body.y += V.y * dt / K_dt
