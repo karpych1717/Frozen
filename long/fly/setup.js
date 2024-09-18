@@ -22,8 +22,15 @@ const WING_DIFF_ANGLE = Math.tanh(0 / WING_SHIFT) - Math.PI / 2
 const TAIL_DIFF_ANGLE = Math.tanh(TAIL_RISE / TAIL_SHIFT) - Math.PI / 2
 
 const ROTATION_SPEED = 0.05
-let rotation = 0
-let last_press = ""
+
+const keyboard = {
+    keyW: false,
+    keyA: false,
+    keyS: false,
+    keyD: false,
+    keyP: false,
+    keyL: false
+}
 
 _cvs.width = BOX_WIDTH
 _cvs.height = BOX_HEIGHT

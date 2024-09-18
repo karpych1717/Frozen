@@ -1,8 +1,7 @@
 let dt, time_old = 0
 function render (time) {
   dt = time - time_old
-  dt = Math.min(dt, 10)
-  if (dt > 9) console.log(dt)
+  dt = Math.min(dt, 30)
   time_old = time
   ctx.clearRect(0, 0, BOX_WIDTH, BOX_HEIGHT)
   draw()
@@ -30,9 +29,10 @@ function update (dt) {
   if (body.y < 0) body.y = BOX_HEIGHT
   if (body.y > BOX_HEIGHT) body.y = 0
 
-  body.angle += ROTATION_SPEED * Math.max(Math.min(rotation, 1), -1)
-  if (body.angle < 0) body.angle = Math.PI * 2
-  if (body.angle > Math.PI * 2) body.angle = 0
+  if (keyboard['keyA'] && !keyboard['keyD']) body.angle += ROTATION_SPEED
+  if (!keyboard['keyA'] && keyboard['keyD']) body.angle -= ROTATION_SPEED
+  console.log(keyboard['keyA'], keyboard['keyD'])
+  body.angle %= Math.PI * 2
 
   wing.x = WING_DISTANCE * Math.sin(WING_DIFF_ANGLE - body.angle) + body.x
   wing.y = WING_DISTANCE * Math.cos(WING_DIFF_ANGLE - body.angle) + body.y
@@ -43,27 +43,14 @@ function update (dt) {
 }
 
 function keydownHandler (event) {
-  if (last_press != event.code) {
-    if (event.code === "ArrowLeft" || event.code === "KeyA") {
-      rotation -= 1
-    }
-    if (event.code === "ArrowRight" || event.code === "KeyD") {
-      rotation += 1
-    }
-    last_press = event.code
-  }
+  console.log(event.code)
+  if (!keyboard.hasOwnProperty(event.code)) return;
+  keyboard[event.code] = true
 }
 
 function keyupHandler (event) {
-  if (true) {
-    if (event.code === "ArrowLeft" || event.code === "KeyA") {
-      rotation += 1
-    }
-    if (event.code === "ArrowRight" || event.code === "KeyD") {
-      rotation -= 1
-    }
-    if (last_press === event.code) last_press = ""
-  }
+  if (!keyboard.hasOwnProperty(event.code)) return;
+  keyboard[event.code] = false
 }
 
 function getAirFriction(Vx, Vy) {
