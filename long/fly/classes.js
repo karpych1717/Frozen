@@ -39,8 +39,19 @@ class Vector {
     this.y = y
   }
 
-  get angle () {
-    return getAngle(this.x, this.y)
+   static angle (x, y) {
+    let Angle = 0
+    if (x != 0) {
+      Angle = Math.atan(y / x)
+    } else {
+      if (y > 0) {
+        Angle = Math.PI * 3 / 2
+      } else if (y < 0) {
+        Angle = Math.PI * 1 / 2
+      }
+    }
+    if (x < 0 && y < 0) Angle += Math.PI
+    return Angle
   }
 
   get module () {
@@ -80,7 +91,7 @@ class Vector {
   }
   
   convert () {
-    const angle = getAngle(this.x, this.y)
+    const angle = Vector.angle(this.x, this.y)
     const module = Math.sqrt(this.x ** 2 + this.y ** 2)
     return [angle, module]
   }

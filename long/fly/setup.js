@@ -38,7 +38,7 @@ body = new Brick (
     z = BOX_HEIGHT / 2,
     width = BODY_LENGTH,
     height = BODY_HEIGHT,
-    angle = Math.PI * 3 / 2 * 1,
+    angle = Math.PI * 3 / 2 * 0,
     color = 'white',
     mass = 1000
 )
@@ -67,7 +67,7 @@ tail = new Brick (
 
 const G = 9.8
 const M = body.mass + wing.mass + tail.mass
-const K_dt = 200
+const K_dt = 250
 let Kf = -0.01
 
 let F = new Vector(0, 0)

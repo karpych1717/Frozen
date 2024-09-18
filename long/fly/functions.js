@@ -64,21 +64,6 @@ function keyupHandler (event) {
   }
 }
 
-function getAngle(Vx, Vy) {
-  let Angle = 0
-  if (Vx != 0) {
-    Angle = Math.atan(Vy / Vx)
-  } else {
-    if (Vy > 0) {
-      Angle = Math.PI * 3 / 2
-    } else if (Vy < 0) {
-      Angle = Math.PI * 1 / 2
-    }
-  }
-  if (Vx < 0 && Vy < 0) Angle += Math.PI
-  return Angle
-}
-
 function getAirFriction(Vx, Vy) {
   const x1 = Math.abs(Math.cos(body.angle)) * body.width
   const x2 = Math.abs(Math.sin(body.angle)) * body.height
