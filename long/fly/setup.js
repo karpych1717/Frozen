@@ -22,14 +22,15 @@ const WING_DIFF_ANGLE = Math.tanh(0 / WING_SHIFT) - Math.PI / 2
 const TAIL_DIFF_ANGLE = Math.tanh(TAIL_RISE / TAIL_SHIFT) - Math.PI / 2
 
 const ROTATION_SPEED = 0.05
+const MOTOR_POWER = 100
 
 const keyboard = {
-    keyW: false,
-    keyA: false,
-    keyS: false,
-    keyD: false,
-    keyP: false,
-    keyL: false
+    KeyW: false,
+    KeyA: false,
+    KeyS: false,
+    KeyD: false,
+    KeyP: false,
+    KeyL: false
 }
 
 _cvs.width = BOX_WIDTH
@@ -83,3 +84,4 @@ let V = new Vector(0, 3)
 
 const Fg = new Vector(0, M * G)
 let Ff = new Vector(0, 0)
+let Fm = new Vector(0, 0)

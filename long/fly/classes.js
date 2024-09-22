@@ -95,8 +95,13 @@ class Vector {
   }
   
   convert () {
-    const angle = this.angle()
+    const angle = Vector.getAngle(this.x, this.y)
     const module = Math.sqrt(this.x ** 2 + this.y ** 2)
     return [angle, module]
+  }
+
+  setup_converted (angle, module) {
+    this.x = module * Math.cos(angle)
+    this.y = module * Math.sin(angle)
   }
 }

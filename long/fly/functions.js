@@ -3,9 +3,17 @@ function render (time) {
   dt = time - time_old
   dt = Math.min(dt, 30)
   time_old = time
-  ctx.clearRect(0, 0, BOX_WIDTH, BOX_HEIGHT)
-  draw()
-  update(dt)
+  if (!keyboard["KeyP"]) {
+    ctx.clearRect(0, 0, BOX_WIDTH, BOX_HEIGHT)
+    draw()
+    update(dt)
+    if (keyboard["KeyL"]) {
+      console.log(F)
+      console.log(V)
+      console.log(A)
+      console.log(body.x, body.y)
+    }
+  }
   requestAnimationFrame(render)
 }
 
@@ -16,11 +24,17 @@ function draw () {
 }
 
 function update (dt) {
+  if (keyboard["KeyW"]) {
+    Fm.setup_converted(body.angle, Fm.module + MOTOR_POWER)
+  }
+  if (keyboard["KeyS"]) {
+    Fm.setup_converted(body.angle, Fm.module - MOTOR_POWER)
+  }
+  
   Ff = getAirFriction(V.x, V.y)
-  F = Vector.add(Fg, Ff)
+  F = Vector.add(Fg, Ff, Fm)
   A = Vector.multiply(1 / M, F)
   V = Vector.add(Vector.multiply(dt / K_dt, A), V)
-  //console.log(V)
 
   body.x += V.x * dt / K_dt
   body.y += V.y * dt / K_dt
@@ -29,9 +43,15 @@ function update (dt) {
   if (body.y < 0) body.y = BOX_HEIGHT
   if (body.y > BOX_HEIGHT) body.y = 0
 
-  if (keyboard['keyA'] && !keyboard['keyD']) body.angle += ROTATION_SPEED
-  if (!keyboard['keyA'] && keyboard['keyD']) body.angle -= ROTATION_SPEED
-  console.log(keyboard['keyA'], keyboard['keyD'])
+  if (keyboard['KeyA'] && !keyboard['KeyD']) {
+    body.angle -= ROTATION_SPEED
+    Fm.setup_converted(body.angle, Fm.module)
+  }
+  if (!keyboard['KeyA'] && keyboard['KeyD']) {
+    body.angle += ROTATION_SPEED
+    Fm.setup_converted(body.angle, Fm.module)
+  }
+  
   body.angle %= Math.PI * 2
 
   wing.x = WING_DISTANCE * Math.sin(WING_DIFF_ANGLE - body.angle) + body.x
@@ -43,13 +63,16 @@ function update (dt) {
 }
 
 function keydownHandler (event) {
-  console.log(event.code)
-  if (!keyboard.hasOwnProperty(event.code)) return;
-  keyboard[event.code] = true
+  if (!keyboard.hasOwnProperty(event.code)) return
+  if (event.code == "KeyP" || event.code == "KeyL") {
+    keyboard[event.code] = !keyboard[event.code]
+  } else {
+    keyboard[event.code] = true
+  }
 }
 
 function keyupHandler (event) {
-  if (!keyboard.hasOwnProperty(event.code)) return;
+  if (!keyboard.hasOwnProperty(event.code) || event.code == "KeyP" || event.code == "KeyL") return
   keyboard[event.code] = false
 }
 
