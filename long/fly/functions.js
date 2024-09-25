@@ -35,8 +35,13 @@ function update (dt) {
     body.z = BODY_HEIGHT
   }
   
+  Fl = Vector.add(
+    getLift(V.x, V.y, body.width, body.height, body.z),
+    getLift(V.x, V.y, wing.width, wing.height, wing.z),
+    getLift(V.x, V.y, tail.width, tail.height, tail.z),
+  )
   Ff = getAirFriction(V.x, V.y)
-  F = Vector.add(Fg, Ff, Fm)
+  F = Vector.add(Fg, Ff, Fm, Fl)
   A = Vector.multiply(1 / M, F)
   V = Vector.add(Vector.multiply(dt / K_dt, A), V)
 
@@ -88,4 +93,18 @@ function getAirFriction(Vx, Vy) {
   const y2 = Math.abs(Math.cos(body.angle)) * body.height
 
   return new Vector(Kf * (y1 + y2) * body.z * Vx, Kf * (x1 + x2) * body.z * Vy)
+}
+
+function getLift(Vx, Vy, width, height, length) {
+  const x1 = Math.abs(Math.cos(body.angle)) * width
+  const x2 = Math.abs(Math.sin(body.angle)) * height
+
+  const y1 = Math.abs(Math.sin(body.angle)) * width
+  const y2 = Math.abs(Math.cos(body.angle)) * height
+
+  let vect = new Vector(Kl * (y1 + y2) * length * Vx, Kl * (x1 + x2) * length * Vy)
+  let angle = vect.angle - Math.PI / 2
+  if (angle < 0) angle += Math.PI * 2
+  vect.setup_converted(angle, vect.module)
+  return vect
 }
