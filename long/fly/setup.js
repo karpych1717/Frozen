@@ -22,7 +22,7 @@ const WING_DIFF_ANGLE = Math.tanh(0 / WING_SHIFT) - Math.PI / 2
 const TAIL_DIFF_ANGLE = Math.tanh(TAIL_RISE / TAIL_SHIFT) - Math.PI / 2
 
 const ROTATION_SPEED = 0.05
-const MOTOR_POWER = 100
+const MOTOR_POWER = 5000
 
 const keyboard = {
     KeyW: false,
@@ -43,7 +43,7 @@ ctx.lineWidth = 1
 body = new Brick (
     x = BOX_WIDTH / 2,
     y = BOX_HEIGHT / 2,
-    z = BOX_HEIGHT / 2,
+    z = BODY_HEIGHT,
     width = BODY_LENGTH,
     height = BODY_HEIGHT,
     angle = Math.PI * 3 / 2 * 0,
@@ -76,7 +76,7 @@ tail = new Brick (
 const G = 9.8
 const M = body.mass + wing.mass + tail.mass
 const K_dt = 250
-let Kf = -0.01
+let Kf = -0.1
 
 let F = new Vector(0, 0)
 let A = new Vector(0, 0)

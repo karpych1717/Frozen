@@ -25,10 +25,14 @@ function draw () {
 
 function update (dt) {
   if (keyboard["KeyW"]) {
-    Fm.setup_converted(body.angle, Fm.module + MOTOR_POWER)
+    Fm.setup_converted(body.angle, MOTOR_POWER)
+  } else {
+    Fm.setup_converted(body.angle, 0)
   }
   if (keyboard["KeyS"]) {
-    Fm.setup_converted(body.angle, Fm.module - MOTOR_POWER)
+    body.z = BODY_HEIGHT * 5
+  } else {
+    body.z = BODY_HEIGHT
   }
   
   Ff = getAirFriction(V.x, V.y)
