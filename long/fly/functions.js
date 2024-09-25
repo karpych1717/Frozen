@@ -36,7 +36,7 @@ function update (dt) {
   }
   
   Fl = Vector.add(
-    getLift(V.x, V.y, body.width, body.height, body.z),
+    //getLift(V.x, V.y, body.width, body.height, body.z),
     getLift(V.x, V.y, wing.width, wing.height, wing.z),
     getLift(V.x, V.y, tail.width, tail.height, tail.z),
   )
@@ -103,8 +103,8 @@ function getLift(Vx, Vy, width, height, length) {
   const y2 = Math.abs(Math.cos(body.angle)) * height
 
   let vect = new Vector(Kl * (y1 + y2) * length * Vx, Kl * (x1 + x2) * length * Vy)
-  let angle = vect.angle - Math.PI / 2
-  if (angle < 0) angle += Math.PI * 2
+  let angle = vect.angle + Math.PI / 2
+  angle %= Math.PI * 2
   vect.setup_converted(angle, vect.module)
   return vect
 }
