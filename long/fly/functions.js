@@ -92,7 +92,7 @@ function getAirFriction(Vx, Vy) {
   const y1 = Math.abs(Math.sin(body.angle)) * body.width
   const y2 = Math.abs(Math.cos(body.angle)) * body.height
 
-  return new Vector(Kf * (y1 + y2) * body.z * Vx, Kf * (x1 + x2) * body.z * Vy)
+  return new Vector(-Kf * (y1 + y2) * body.z * Vx, -Kf * (x1 + x2) * body.z * Vy)
 }
 
 function getLift(Vx, Vy, width, height, length) {
@@ -102,7 +102,7 @@ function getLift(Vx, Vy, width, height, length) {
   const y1 = Math.abs(Math.sin(body.angle)) * width
   const y2 = Math.abs(Math.cos(body.angle)) * height
 
-  let vect = new Vector(Kl * (y1 + y2) * length * Vx, Kl * (x1 + x2) * length * Vy)
+  let vect = new Vector(-Kl * (y1 + y2) * length * Vx, -Kl * (x1 + x2) * length * Vy)
   let angle = vect.angle + Math.PI / 2
   angle %= Math.PI * 2
   vect.setup_converted(angle, vect.module)
