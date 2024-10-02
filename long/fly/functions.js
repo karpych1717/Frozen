@@ -35,11 +35,7 @@ function update (dt) {
     body.z = BODY_HEIGHT
   }
   
-  Fl = Vector.add(
-    //getLift(V.x, V.y, body.width, body.height, body.z),
-    getLift(V.x, V.y, wing.width, wing.height, wing.z),
-    getLift(V.x, V.y, tail.width, tail.height, tail.z),
-  )
+  Fl = getLift()
   Ff = getAirFriction(V.x, V.y)
   F = Vector.add(Fg, Ff, Fm, Fl)
   A = Vector.multiply(1 / M, F)
@@ -95,16 +91,11 @@ function getAirFriction(Vx, Vy) {
   return new Vector(-Kf * (y1 + y2) * body.z * Vx, -Kf * (x1 + x2) * body.z * Vy)
 }
 
-function getLift(Vx, Vy, width, height, length) {
-  const x1 = Math.abs(Math.cos(body.angle)) * width
-  const x2 = Math.abs(Math.sin(body.angle)) * height
-
-  const y1 = Math.abs(Math.sin(body.angle)) * width
-  const y2 = Math.abs(Math.cos(body.angle)) * height
-
-  let vect = new Vector(-Kl * (y1 + y2) * length * Vx, -Kl * (x1 + x2) * length * Vy)
-  let angle = vect.angle + Math.PI / 2
-  angle %= Math.PI * 2
-  vect.setup_converted(angle, vect.module)
+function getLift() {
+  const attack_angle = Vector.getAngle(V.x, V.y) - body.angle
+  const lift_value = V.module * (wing.width * wing.z) * Kl * Math.cos(attack_angle)
+  const angle = (attack_angle + Math.PI * 3 / 2) % (Math.PI * 2)
+  let vect = new Vector()
+  vect.setup_converted(angle, lift_value)
   return vect
 }
