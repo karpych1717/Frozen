@@ -50,6 +50,6 @@ class Vector {
     }
 
     get string() {
-        return `(${this.x}, ${this.y})`;
+        return `(${this.x}, ${this.y})`
     }
 }
