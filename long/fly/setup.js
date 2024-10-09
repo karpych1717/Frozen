@@ -21,7 +21,7 @@ const TAIL_DISTANCE = Math.sqrt(TAIL_SHIFT ** 2 + TAIL_RISE ** 2)
 const WING_DIFF_ANGLE = Math.tanh(0 / WING_SHIFT) - Math.PI / 2
 const TAIL_DIFF_ANGLE = Math.tanh(TAIL_RISE / TAIL_SHIFT) - Math.PI / 2
 
-const ROTATION_SPEED = 0.05
+const ROTATION_SPEED = 0.1
 const MOTOR_POWER = 100000
 
 const keyboard = {
@@ -77,7 +77,7 @@ const G = 9.8
 const M = body.mass + wing.mass + tail.mass
 const K_dt = 250
 const Kf = 0.1
-const Kl = 0.1
+const Kl = -0.1
 
 let F = new Vector(0, 0)
 let A = new Vector(0, 0)

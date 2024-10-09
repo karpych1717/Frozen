@@ -40,18 +40,11 @@ class Vector {
   }
 
   static getAngle (x, y) {
-    let Angle = 0
-    if (x != 0) {
-      Angle = Math.atan(y / x)
-    } else {
-      if (y > 0) {
-        Angle = Math.PI * 3 / 2
-      } else if (y < 0) {
-        Angle = Math.PI * 1 / 2
-      }
-    }
-    if (x < 0 && y < 0) Angle += Math.PI
-    return Angle
+    const angle = Math.atan(y / x)
+    if (x >= 0 && y >= 0) return angle
+    if (x >= 0 && y < 0) return angle
+    if (x < 0 && y >= 0) return angle + Math.PI
+    if (x < 0 && y < 0) return angle - Math.PI
   }
 
   get angle () {
