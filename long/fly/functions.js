@@ -92,7 +92,7 @@ function getAirFriction(Vx, Vy) {
 }
 
 function getLift() {
-  const attack_angle = -Vector.getAngle(V.x, V.y) + body.angle
+  const attack_angle = -Vector.getAngle(V.x, V.y) + wing.angle
   const lift_value = V.module * Kl * (wing.width * wing.z) * Math.sin(attack_angle)
   const angle = (body.angle + Math.PI * 3 / 2) % (Math.PI * 2)
   let vect = new Vector()

@@ -12,7 +12,7 @@ const WING_SHIFT = -10
 const TAIL_SHIFT = -50
 const TAIL_RISE = 5
 
-const WING_ANGLE = 0
+const WING_ANGLE = 350 * Math.PI / 180
 const TAIL_ANGLE = 0
 
 const WING_DISTANCE = Math.abs(WING_SHIFT)
@@ -21,7 +21,7 @@ const TAIL_DISTANCE = Math.sqrt(TAIL_SHIFT ** 2 + TAIL_RISE ** 2)
 const WING_DIFF_ANGLE = Math.tanh(0 / WING_SHIFT) - Math.PI / 2
 const TAIL_DIFF_ANGLE = Math.tanh(TAIL_RISE / TAIL_SHIFT) - Math.PI / 2
 
-const ROTATION_SPEED = 0.1
+const ROTATION_SPEED = 0.05
 const MOTOR_POWER = 100000
 
 const keyboard = {
