@@ -34,12 +34,15 @@ function update (dt) {
   } else {
     body.z = BODY_HEIGHT
   }
+  F.clear()
+  A.clear()
+  V.clear()
   
   Fl = getLift()
   Ff = getAirFriction(V.x, V.y)
-  F.clear().add(Ff, Fm)
-  A.clear().multiply(1 / M, F)
-  V.clear().add(A.multyplyNumber(dt / K_dt), V)
+  F.add(Ff, Fm)
+  A.multyplyNumber(1 / M, F)
+  V.add(A.multyplyNumber(dt / K_dt), V)
 
   body.x += V.x * dt / K_dt
   body.y += V.y * dt / K_dt
