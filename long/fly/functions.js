@@ -25,9 +25,9 @@ function draw () {
 
 function update (dt) {
   if (keyboard["KeyW"]) {
-    Fm.setup_converted(body.angle, MOTOR_POWER)
+    Fm = new Vector(body.angle, MOTOR_POWER, 'Polar')
   } else {
-    Fm.setup_converted(body.angle, 0)
+    Fm = new Vector(body.angle,           0, 'Polar')
   }
   if (keyboard["KeyS"]) {
     body.z = BODY_HEIGHT * 5
@@ -37,9 +37,9 @@ function update (dt) {
   
   Fl = getLift()
   Ff = getAirFriction(V.x, V.y)
-  F = Vector.add(Ff, Fm)
-  A = Vector.multiply(1 / M, F)
-  V = Vector.add(Vector.multiply(dt / K_dt, A), V)
+  F.clear().add(Ff, Fm)
+  A.clear().multiply(1 / M, F)
+  V.clear().add(A.multyplyNumber(dt / K_dt), V)
 
   body.x += V.x * dt / K_dt
   body.y += V.y * dt / K_dt
@@ -76,6 +76,14 @@ function keydownHandler (event) {
   }
 }
 
+function getAngle(x, y) {
+  const angle = Math.atan(y / x)
+  if (x >= 0 && y >= 0) return angle
+  if (x >= 0 && y < 0) return angle
+  if (x < 0 && y >= 0) return angle + Math.PI
+  if (x < 0 && y < 0) return angle - Math.PI
+}
+
 function keyupHandler (event) {
   if (!keyboard.hasOwnProperty(event.code) || event.code == "KeyP" || event.code == "KeyL") return
   keyboard[event.code] = false
@@ -88,14 +96,13 @@ function getAirFriction(Vx, Vy) {
   const y1 = Math.abs(Math.sin(body.angle)) * body.width
   const y2 = Math.abs(Math.cos(body.angle)) * body.height
 
-  return new Vector(-Kf * (y1 + y2) * body.z * Vx, -Kf * (x1 + x2) * body.z * Vy)
+  return new Vector(-Kf * (y1 + y2) * body.z * Vx, -Kf * (x1 + x2) * body.z * Vy, 'Cartesian')
 }
 
 function getLift() {
-  const attack_angle = -Vector.getAngle(V.x, V.y) + wing.angle
+  const attack_angle = -getAngle(V.x, V.y) + wing.angle
   const lift_value = V.module * Kl * (wing.width * wing.z) * Math.cos(attack_angle)
   const angle = (body.angle + Math.PI * 3 / 2) % (Math.PI * 2)
-  let vect = new Vector()
-  vect.setup_converted(angle, lift_value)
+  let vect = new Vector(angle, lift_value, 'Polar')
   return vect
 }

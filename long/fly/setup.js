@@ -79,11 +79,11 @@ const K_dt = 250
 const Kf = 0.1
 const Kl = 0.1
 
-let F = new Vector(0, 0)
-let A = new Vector(0, 0)
-let V = new Vector(0, 3)
+let F = new Vector(0, 0, 'Cartesian')
+let A = new Vector(0, 0, 'Cartesian')
+let V = new Vector(0, 3, 'Cartesian')
 
-const Fg = new Vector(0, M * G)
-let Ff = new Vector(0, 0)
-let Fm = new Vector(0, 0)
-let Fl = new Vector(0, 0)
+const Fg = new Vector(0, M * G, 'Cartesian')
+let Ff = new Vector(0, 0, 'Cartesian')
+let Fm = new Vector(0, 0, 'Cartesian')
+let Fl = new Vector(0, 0, 'Cartesian')

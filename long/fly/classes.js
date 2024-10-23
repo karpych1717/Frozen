@@ -34,67 +34,62 @@ class Brick extends Rectangle {
 }
 
 class Vector {
-  constructor (x, y) {
-    this.x = x
-    this.y = y
+  constructor(x, y, system = 'Cartesian') {
+      if (system === 'Cartesian') {
+          this.x = x
+          this.y = y
+      } else {
+          this.x = x * Math.cos(y)
+          this.y = x * Math.sin(y)
+          this.x = Math.round(this.x * 100) / 100
+          this.y = Math.round(this.y * 100) / 100
+      }
   }
 
-  static getAngle (x, y) {
-    const angle = Math.atan(y / x)
-    if (x >= 0 && y >= 0) return angle
-    if (x >= 0 && y < 0) return angle
-    if (x < 0 && y >= 0) return angle + Math.PI
-    if (x < 0 && y < 0) return angle - Math.PI
+  get abs() {
+      return Math.sqrt(this.x ** 2 + this.y ** 2)
   }
 
-  get angle () {
-    return Vector.getAngle(this.x, this.y)
+  get angle() {
+      const angle = Math.atan(this.y / this.x)
+      if (this.x >= 0 && this.y >= 0) return angle
+      if (this.x >= 0 && this.y < 0) return angle
+      if (this.x < 0 && this.y >= 0) return angle + Math.PI
+      if (this.x < 0 && this.y < 0) return angle - Math.PI
   }
 
-  get module () {
-    return Math.sqrt(this.x ** 2 + this.y ** 2)
+  clear() {
+      this.x = 0
+      this.y = 0
   }
 
-  clear () {
-    this.x = 0
-    this.y = 0
+  add(...vectors) {
+      let vect = new Vector(this.x, this.y)
+      for (const vector of vectors) {
+          if (vector instanceof Vector) {
+              vect.x += vector.x
+              vect.y += vector.y
+          }
+      }
+      return vect
   }
 
-  static multiply (n, vect) {
-    vect.x *= n
-    vect.y *= n
-    return vect
+  multyplyScalar(vector) {
+      return this.x * vector.x + this.y * vector.y
   }
 
-  static add (...vect) {
-    const vect3 = new Vector (0, 0)
-    for (const vector of vect) {
-      vect3.x += vector.x
-      vect3.y += vector.y
-    }
-    return vect3
-  }
-  
-  static angle (vect1, vect2) {
-    return Math.abs(vect1.angle - vect2.angle)
+  multyplyNumber(num) {
+      let vect = new Vector(this.x, this.y)
+      vect.x = this.x * num
+      vect.y = this.y * num
+      return vect
   }
 
-  static scalar_multiplication (vect1, vect2) {
-    return vect1.module * vect2.module * Math.cos(Vector.angle(vect1, vect2))
-  }
-  
-  static vector_multiplication (vect1, vect2) {
-    return vect1.module * vect2.module * Math.sin(Vector.angle(vect1, vect2))
-  }
-  
-  convert () {
-    const angle = Vector.getAngle(this.x, this.y)
-    const module = Math.sqrt(this.x ** 2 + this.y ** 2)
-    return [angle, module]
+  multyplyVector(vector) {
+      return this.abs * vector.abs * Math.sin(this.angle - vector.angle) // should be cos?
   }
 
-  setup_converted (angle, module) {
-    this.x = module * Math.cos(angle)
-    this.y = module * Math.sin(angle)
+  get string() {
+      return `(${this.x}, ${this.y})`
   }
 }
