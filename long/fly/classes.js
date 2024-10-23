@@ -39,10 +39,11 @@ class Vector {
           this.x = x
           this.y = y
       } else {
-          this.x = x * Math.cos(y)
-          this.y = x * Math.sin(y)
-          this.x = Math.round(this.x * 100) / 100
+          x = -x + Math.PI / 2
+          this.y = y * Math.cos(x)
+          this.x = y * Math.sin(x)
           this.y = Math.round(this.y * 100) / 100
+          this.x = Math.round(this.x * 100) / 100
       }
   }
 

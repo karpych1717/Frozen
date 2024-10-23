@@ -27,22 +27,20 @@ function update (dt) {
   if (keyboard["KeyW"]) {
     Fm = new Vector(body.angle, MOTOR_POWER, 'Polar')
   } else {
-    Fm = new Vector(body.angle,           0, 'Polar')
+    Fm = new Vector(body.angle, 0, 'Polar')
   }
   if (keyboard["KeyS"]) {
     body.z = BODY_HEIGHT * 5
   } else {
     body.z = BODY_HEIGHT
   }
-  F.clear()
-  A.clear()
-  V.clear()
   
   Fl = getLift()
   Ff = getAirFriction(V.x, V.y)
-  F.add(Ff, Fm)
-  A.multyplyNumber(1 / M, F)
-  V.add(A.multyplyNumber(dt / K_dt), V)
+
+  F = Zero.add(Fm)
+  A = F.multyplyNumber(1 / M)
+  V = A.add(A.multyplyNumber(dt / K_dt), V)
 
   body.x += V.x * dt / K_dt
   body.y += V.y * dt / K_dt

@@ -21,8 +21,8 @@ const TAIL_DISTANCE = Math.sqrt(TAIL_SHIFT ** 2 + TAIL_RISE ** 2)
 const WING_DIFF_ANGLE = Math.tanh(0 / WING_SHIFT) - Math.PI / 2
 const TAIL_DIFF_ANGLE = Math.tanh(TAIL_RISE / TAIL_SHIFT) - Math.PI / 2
 
-const ROTATION_SPEED = 0.01
-const MOTOR_POWER = 100000
+const ROTATION_SPEED = 0.05
+const MOTOR_POWER = 1000
 
 const keyboard = {
     KeyW: false,
@@ -81,9 +81,11 @@ const Kl = 0.1
 
 let F = new Vector(0, 0, 'Cartesian')
 let A = new Vector(0, 0, 'Cartesian')
-let V = new Vector(0, 3, 'Cartesian')
+let V = new Vector(0, 0, 'Cartesian')
 
 const Fg = new Vector(0, M * G, 'Cartesian')
 let Ff = new Vector(0, 0, 'Cartesian')
 let Fm = new Vector(0, 0, 'Cartesian')
 let Fl = new Vector(0, 0, 'Cartesian')
+
+const Zero = new Vector(0, 0, 'Cartesian')
