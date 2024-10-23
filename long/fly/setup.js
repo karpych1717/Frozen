@@ -77,7 +77,7 @@ const G = 9.8
 const M = body.mass + wing.mass + tail.mass
 const K_dt = 250
 const Kf = 0.1
-const Kl = -0.1
+const Kl = 0.1
 
 let F = new Vector(0, 0)
 let A = new Vector(0, 0)

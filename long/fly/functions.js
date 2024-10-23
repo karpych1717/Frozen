@@ -37,7 +37,7 @@ function update (dt) {
   
   Fl = getLift()
   Ff = getAirFriction(V.x, V.y)
-  F = Vector.add(Fg, Ff, Fm, Fl)
+  F = Vector.add(Ff, Fm)
   A = Vector.multiply(1 / M, F)
   V = Vector.add(Vector.multiply(dt / K_dt, A), V)
 
