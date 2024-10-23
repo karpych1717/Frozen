@@ -53,11 +53,11 @@ function update (dt) {
 
   if (keyboard['KeyA'] && !keyboard['KeyD']) {
     body.angle -= ROTATION_SPEED
-    Fm.setup_converted(body.angle, Fm.module)
+    Fm = new Vector(body.angle, Fm.module, 'Polar')
   }
   if (!keyboard['KeyA'] && keyboard['KeyD']) {
     body.angle += ROTATION_SPEED
-    Fm.setup_converted(body.angle, Fm.module)
+    Fm = new Vector(body.angle, Fm.module, 'Polar')
   }
   
   body.angle %= Math.PI * 2
