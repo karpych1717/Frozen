@@ -52,11 +52,13 @@ class Vector {
   }
 
   get angle() {
-      const angle = Math.atan(this.y / this.x)
-      if (this.x >= 0 && this.y >= 0) return angle
-      if (this.x >= 0 && this.y < 0) return angle
-      if (this.x < 0 && this.y >= 0) return angle + Math.PI
-      if (this.x < 0 && this.y < 0) return angle - Math.PI
+      let angle = Math.atan(this.y / this.x)
+      if (isNaN(angle)) angle = 0
+      if (angle === undefined) angle = 0
+      if (this.x >= 0 && this.y >= 0) return -(angle)
+      if (this.x >= 0 && this.y < 0) return -(angle)
+      if (this.x < 0 && this.y >= 0) return -(angle + Math.PI)
+      if (this.x < 0 && this.y < 0) return -(angle - Math.PI)
   }
 
   clear() {

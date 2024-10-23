@@ -21,8 +21,8 @@ const TAIL_DISTANCE = Math.sqrt(TAIL_SHIFT ** 2 + TAIL_RISE ** 2)
 const WING_DIFF_ANGLE = Math.tanh(0 / WING_SHIFT) - Math.PI / 2
 const TAIL_DIFF_ANGLE = Math.tanh(TAIL_RISE / TAIL_SHIFT) - Math.PI / 2
 
-const ROTATION_SPEED = 0.05
-const MOTOR_POWER = 1000
+const ROTATION_SPEED = 0.025
+const MOTOR_POWER = 50000
 
 const keyboard = {
     KeyW: false,
@@ -75,9 +75,9 @@ tail = new Brick (
 
 const G = 9.8
 const M = body.mass + wing.mass + tail.mass
-const K_dt = 250
-const Kf = 0.1
-const Kl = 0.1
+const K_dt = 1000
+const Kf = 0.05
+const Kl = 0.005
 
 let F = new Vector(0, 0, 'Cartesian')
 let A = new Vector(0, 0, 'Cartesian')

@@ -38,7 +38,7 @@ function update (dt) {
   Fl = getLift()
   Ff = getAirFriction(V.x, V.y)
 
-  F = Zero.add(Fm)
+  F = Zero.add(Fm, Ff, Fg, Fl)
   A = F.multyplyNumber(1 / M)
   V = A.add(A.multyplyNumber(dt / K_dt), V)
 
@@ -79,6 +79,7 @@ function keydownHandler (event) {
 
 function getAngle(x, y) {
   const angle = Math.atan(y / x)
+  if (angle === NaN) return 0
   if (x >= 0 && y >= 0) return angle
   if (x >= 0 && y < 0) return angle
   if (x < 0 && y >= 0) return angle + Math.PI
@@ -101,9 +102,9 @@ function getAirFriction(Vx, Vy) {
 }
 
 function getLift() {
-  const attack_angle = -getAngle(V.x, V.y) + wing.angle
-  const lift_value = V.module * Kl * (wing.width * wing.z) * Math.cos(attack_angle)
-  const angle = (body.angle + Math.PI * 3 / 2) % (Math.PI * 2)
-  let vect = new Vector(angle, lift_value, 'Polar')
-  return vect
+  let attack_angle = V.angle + wing.angle
+  let lift_value = V.abs * Kl * (wing.width * wing.z) * Math.cos(attack_angle)
+  let angle = (body.angle + Math.PI * 3 / 2) % (Math.PI * 2)
+  console.log(lift_value)
+  return new Vector(angle, lift_value, 'Polar')
 }
