@@ -44,16 +44,16 @@ class Path {
   }
 
   clone () {
-    clone = new Path(this.first.x, this.first.y, this.last.x, this.last.y, this.color, this.amount)
+    let clone = new Path(this.first.x, this.first.y, this.last.x, this.last.y, this.color, this.amount)
 
     for (let i = 1; i < this.amount - 1; i++) {
-      clone.points[i].x = new Point(this.points[i].x, this.points[i].y)
+      clone.points[i] = new Point(this.points[i].x, this.points[i].y)
     }
 
     return clone
   }
 
-  Mutate () {
+  mutate () {
     for (let i = 1; i < this.amount - 1; i++) {
       this.points[i].x += Math.floor((Math.random() * 2 - 1) * mutation_rate)
       this.points[i].y += Math.floor((Math.random() * 2 - 1) * mutation_rate)
