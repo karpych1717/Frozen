@@ -26,5 +26,5 @@ function almostRandomColor () {
   const g = 150 + Math.round(105 * Math.random())
   const b = 150 + Math.round(105 * Math.random())
 
-  return `rgb{${r}, ${g}, ${b}}`
+  return `rgb(${r}, ${g}, ${b})`
 }
