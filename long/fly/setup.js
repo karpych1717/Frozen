@@ -22,7 +22,7 @@ const WING_DIFF_ANGLE = Math.tanh(0 / WING_SHIFT) - Math.PI / 2
 const TAIL_DIFF_ANGLE = Math.tanh(TAIL_RISE / TAIL_SHIFT) - Math.PI / 2
 
 const ROTATION_SPEED = 0.025
-const MOTOR_POWER = 50000
+const MOTOR_POWER = 20000
 
 const keyboard = {
     KeyW: false,
@@ -54,7 +54,7 @@ body = new Brick (
 wing = new Brick (
     x = WING_DISTANCE * Math.sin(WING_DIFF_ANGLE - body.angle) + body.x,
     y = WING_DISTANCE * Math.cos(WING_DIFF_ANGLE - body.angle) + body.y,
-    z = BOX_WIDTH / 2,
+    z = BOX_WIDTH / 4,
     width = WING_LENGTH,
     height = WING_HEIGHT,
     angle = body.angle + WING_ANGLE,
@@ -65,7 +65,7 @@ wing = new Brick (
 tail = new Brick (
     x = TAIL_DISTANCE * Math.sin(TAIL_DIFF_ANGLE - body.angle) + body.x,
     y = TAIL_DISTANCE * Math.cos(TAIL_DIFF_ANGLE - body.angle) + body.y,
-    z = BODY_HEIGHT / 4,
+    z = TAIL_LENGTH,
     width = TAIL_LENGTH,
     height = TAIL_HEIGHT,
     angle = body.angle + TAIL_ANGLE,
@@ -75,8 +75,8 @@ tail = new Brick (
 
 const G = 9.8
 const M = body.mass + wing.mass + tail.mass
-const K_dt = 1000
-const Kf = 0.05
+const K_dt = 1200
+const Kf = 0.01
 const Kl = 0.005
 
 let F = new Vector(0, 0, 'Cartesian')
