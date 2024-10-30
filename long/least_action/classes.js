@@ -91,4 +91,12 @@ class Path {
 
     ctx.restore()
   }
+
+  length () {
+    let answer = 0
+    for (let i = 0; i < this.amount - 1; i++) {
+      answer += Math.sqrt((this.points[i].x - this.points[i + 1].x) ** 2 + (this.points[i].y - this.points[i + 1].y) ** 2)
+    }
+    return answer
+  }
 }
