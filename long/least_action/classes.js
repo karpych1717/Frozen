@@ -55,8 +55,8 @@ class Path {
 
   Mutate () {
     for (let i = 1; i < this.amount - 1; i++) {
-      this.points[i].x += Math.random() * 2 - 1
-      this.points[i].y += Math.random() * 2 - 1
+      this.points[i].x += Math.floor((Math.random() * 2 - 1) * mutation_rate)
+      this.points[i].y += Math.floor((Math.random() * 2 - 1) * mutation_rate)
     }
   }
 

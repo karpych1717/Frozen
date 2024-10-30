@@ -2,3 +2,5 @@
 'use strict'
 
 const { cvs, ctx } = canvasSetUp()
+
+const mutation_rate = 10
