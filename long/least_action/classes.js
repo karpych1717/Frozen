@@ -44,7 +44,9 @@ class Path {
   }
 
   clone () {
-
+    clone = new Path(this.first.x, this.first.y, this.last.x, this.last.y, this.color, this.amount)
+    clone.points = this.points
+    return clone
   }
 
   drawIt () {
