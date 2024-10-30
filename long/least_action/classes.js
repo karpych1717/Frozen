@@ -45,8 +45,20 @@ class Path {
 
   clone () {
     clone = new Path(this.first.x, this.first.y, this.last.x, this.last.y, this.color, this.amount)
-    clone.points = this.points
+
+    for (let i = 1; i < this.amount; i++) {
+      clone.points[i].x = this.points[i].x
+      clone.points[i].y = this.points[i].y
+    }
+
     return clone
+  }
+
+  Mutate () {
+    for (let i = 1; i < this.amount; i++) {
+      this.points[i].x += Math.random() * 2 - 1
+      this.points[i].y += Math.random() * 2 - 1
+    }
   }
 
   drawIt () {
