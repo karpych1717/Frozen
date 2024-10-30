@@ -20,3 +20,11 @@ function toDeg (angleInRad) {
 function toRad (angleInDeg) {
   return angleInDeg / 180 * Math.PI
 }
+
+function almostRandomColor () {
+  const r = 150 + Math.round(105 * Math.random())
+  const g = 150 + Math.round(105 * Math.random())
+  const b = 150 + Math.round(105 * Math.random())
+
+  return `rgb{${r}, ${g}, ${b}}`
+}
