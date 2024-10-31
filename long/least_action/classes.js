@@ -84,7 +84,6 @@ class Path {
 
     for (let i = 1; i < this.amount; i++) {
       ctx.lineTo(this.points[i].x, this.points[i].y)
-      console.log('line to:', this.points[i].x, this.points[i].y)
     }
     ctx.stroke()
 
