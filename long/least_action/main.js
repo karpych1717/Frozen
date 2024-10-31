@@ -19,7 +19,7 @@ _iterateButton.onclick = () => {
   }
 
   for (let i = 0; i < population_size; i++) {
-    if (path.length() > candidates[i].length()) {
+    if (path.length > candidates[i].length) {
       path = candidates[i]
     }
   }

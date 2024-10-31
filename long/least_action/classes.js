@@ -15,7 +15,7 @@ class Point {
 
   mutate () {
     if (Math.random() > mutation_chance) return
-    
+
     if (Math.random() < 0.5) {
       this.x += Math.round(mutation_rate * Math.random())
     } else {
@@ -49,14 +49,22 @@ class Path {
     this.points[this.amount - 1] = this.last
   }
 
+  get amount () {
+    return this.points.length
+  }
+
+  get length () {
+    let answer = 0
+    for (let i = 0; i < this.amount - 1; i++) {
+      answer += Math.sqrt((this.points[i].x - this.points[i + 1].x) ** 2 + (this.points[i].y - this.points[i + 1].y) ** 2)
+    }
+    return answer
+  }
+
   fillRandom () {
     for (let i = 1; i < this.amount - 1; i++) {
       this.points[i] = new Point()
     }
-  }
-
-  get amount () {
-    return this.points.length
   }
 
   clone () {
@@ -104,13 +112,5 @@ class Path {
     ctx.fill()
 
     ctx.restore()
-  }
-
-  length () {
-    let answer = 0
-    for (let i = 0; i < this.amount - 1; i++) {
-      answer += Math.sqrt((this.points[i].x - this.points[i + 1].x) ** 2 + (this.points[i].y - this.points[i + 1].y) ** 2)
-    }
-    return answer
   }
 }
