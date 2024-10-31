@@ -13,9 +13,7 @@ _resetButton.onclick = () => {
 }
 
 _iterateButton.onclick = () => {
-  for (let i = 0; i < 100; i++) {
-    optimiseStep()
-  }
+  optimiseStep()
 
   path.color = 'white'
   path.drawIt()
