@@ -36,7 +36,7 @@ class Path {
   first
   last
 
-  constructor (x1, y1, x2, y2, color = 'white', amount = 100) {
+  constructor (x1, y1, x2, y2, color = 'white', amount = 30) {
     if (amount < 3) throw new Error('O_o')
 
     this.color = color
