@@ -25,5 +25,14 @@ _iterateButton.onclick = () => {
   }
 
   ctx.clearRect(0, 0, 500, 500)
+
+  for (let i = 0; i < population_size; i++) {
+    if (candidates[i] === path) continue
+
+    candidates[i].color = almostRandomColor(50, 150)
+    candidates[i].drawIt()
+  }
+
+  path.color = 'white'
   path.drawIt()
 }

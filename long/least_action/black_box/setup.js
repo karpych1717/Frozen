@@ -21,10 +21,10 @@ function toRad (angleInDeg) {
   return angleInDeg / 180 * Math.PI
 }
 
-function almostRandomColor () {
-  const r = 150 + Math.round(105 * Math.random())
-  const g = 150 + Math.round(105 * Math.random())
-  const b = 150 + Math.round(105 * Math.random())
+function almostRandomColor (min = 100, max = 255) {
+  const r = min + Math.round((max - min) * Math.random())
+  const g = min + Math.round((max - min) * Math.random())
+  const b = min + Math.round((max - min) * Math.random())
 
   return `rgb(${r}, ${g}, ${b})`
 }
