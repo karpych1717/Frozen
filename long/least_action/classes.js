@@ -14,6 +14,8 @@ class Point {
   }
 
   mutate () {
+    if (Math.random() > mutation_chance) return
+    
     if (Math.random() < 0.5) {
       this.x += Math.round(mutation_rate * Math.random())
     } else {
