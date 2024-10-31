@@ -11,11 +11,16 @@ _resetButton.onclick = () => {
 }
 
 _iterateButton.onclick = () => {
-  for (let i = 0; i < 10; i++) {
-    let candidate = path.clone()
-    candidate.mutate()
-    if (path.length() > candidate.length()) {
-        path = candidate.clone()
+  const candidates = new Array (population_size)
+
+  for (let i = 0; i < population_size; i++) {
+    candidates[i] = path.clone()
+    candidates[i].mutate()
+  }
+
+  for (let i = 0; i < population_size; i++) {
+    if (path.length() > candidates[i].length()) {
+      path = candidates[i]
     }
   }
 
