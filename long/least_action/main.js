@@ -4,6 +4,8 @@ let path = new Path(0, 0, 500, 500)
 path.fillRandom()
 path.drawIt()
 
+const candidates = new Array (population_size)
+
 _resetButton.onclick = () => {
     ctx.clearRect(0, 0, 500, 500)
     path.fillRandom()
@@ -11,8 +13,13 @@ _resetButton.onclick = () => {
 }
 
 _iterateButton.onclick = () => {
-  const candidates = new Array (population_size)
+  optimiseStep()
 
+  path.color = 'white'
+  path.drawIt()
+}
+
+function optimiseStep () {
   for (let i = 0; i < population_size; i++) {
     candidates[i] = path.clone()
     candidates[i].mutate()
@@ -32,7 +39,4 @@ _iterateButton.onclick = () => {
     candidates[i].color = almostRandomColor(50, 150)
     candidates[i].drawIt()
   }
-
-  path.color = 'white'
-  path.drawIt()
 }
