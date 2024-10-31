@@ -12,6 +12,20 @@ class Point {
       this.y = y
     }
   }
+
+  mutate () {
+    if (Math.random() < 0.5) {
+      this.x += Math.round(mutation_rate * Math.random())
+    } else {
+      this.x -= Math.round(mutation_rate * Math.random())
+    }
+
+    if (Math.random() < 0.5) {
+      this.y += Math.round(mutation_rate * Math.random())
+    } else {
+      this.y -= Math.round(mutation_rate * Math.random())
+    }
+  }
 }
 
 class Path {
@@ -55,8 +69,7 @@ class Path {
 
   mutate () {
     for (let i = 1; i < this.amount - 1; i++) {
-      this.points[i].x += Math.floor((Math.random() * 2 - 1) * mutation_rate)
-      this.points[i].y += Math.floor((Math.random() * 2 - 1) * mutation_rate)
+      this.points[i].mutate()
     }
   }
 
