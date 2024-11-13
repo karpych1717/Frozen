@@ -19,7 +19,11 @@ _iterateButton.onclick = () => {
   path.drawIt()
 }
 
+
 function optimiseStep () {
+  length_old = path.length
+  point_count_old = point_count
+
   for (let i = 0; i < population_size; i++) {
     candidates[i] = path.clone()
     candidates[i].mutate()
@@ -39,4 +43,5 @@ function optimiseStep () {
     candidates[i].color = almostRandomColor(50, 150)
     candidates[i].drawIt()
   }
+  console.log(point_count - point_count_old, path.length - length_old)
 }

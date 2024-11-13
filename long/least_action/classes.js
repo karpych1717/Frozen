@@ -82,6 +82,7 @@ class Path {
   mutate () {
     for (let i = 1; i < this.amount - 1; i++) {
       this.points[i].mutate()
+      point_count++
     }
   }
 
