@@ -36,11 +36,11 @@ class Rect {
   }
 }
 
-const DT = 33
-const AMOUNT = 33
+const DT = 1
+const AMOUNT = 330
 const K = 0.0001
 
-const side = 10
+const side = 1
 const half_side = side / 2
 
 const rectangles = []
