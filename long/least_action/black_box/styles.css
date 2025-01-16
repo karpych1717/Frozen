@@ -1,0 +1,27 @@
+html {
+  text-align: center;
+  
+  font-size: 120%;
+  font-family: 'Circular', sans-serif;
+  color: lime;
+
+  background-color: black;
+}
+
+.hidden {
+  display: none;
+}
+
+.wrapper {
+  margin: 1rem;
+}
+
+canvas {
+  background-color: rgb(0, 0, 42);
+  border: 1px solid lime;
+}
+
+button {
+  background-color: rgb(0, 0, 42);
+  color: bisque;
+}
