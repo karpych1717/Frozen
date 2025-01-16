@@ -24,7 +24,7 @@ class Dot {
 
 const picture = new ImageData(WIDTH, HEIGHT)
 
-// ** Drawing sample **
+// ** RGBA drawing sample **
 {
   const BASE = 501000
 
@@ -45,19 +45,31 @@ const picture = new ImageData(WIDTH, HEIGHT)
 
   context.putImageData(picture, 0, 0)
 }
-// ********************
+// *************************
 
-//setInterval(loop, DT)
+setInterval(loop, DT)
 document.onpointerdown = handleClick
-
-function loop() {
-  draw()
-  update()
-}
 
 function handleClick(event) {
   const x = Math.round(event.offsetX)
   const y = Math.round(event.offsetY)
 
   pushSquare(x, y, 20)
+}
+
+function pushSquare (x, y, size) {
+
+}
+
+function loop() {
+  draw()
+  update()
+}
+
+function draw () {
+
+}
+
+function update () {
+  
 }
