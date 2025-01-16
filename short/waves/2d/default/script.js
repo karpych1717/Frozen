@@ -70,6 +70,13 @@ function draw () {
 
 }
 
+// [0; +inf) -> [0; 255)
+function saturation(input) {
+  return Math.round(
+    255 * (1 - Math.exp(-input / 64))
+  )
+}
+
 function update () {
-  
+
 }
