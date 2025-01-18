@@ -1,8 +1,11 @@
-const DT = 33
+const DT = 0.1
 const WIDTH = 500
 const HEIGHT = 500
 
 const K = 0.1
+
+const Kside = 1 / 8
+const Kcorner = Kside / 1.141
 
 document.body.style.margin = 0
 document.body.style.textAlign = 'center'
@@ -19,6 +22,21 @@ class Dot {
     this.speed = speed
     this.acceleration = acceleration
     this.mass = mass
+  }
+
+  updateIt(f) {
+    this.acceleration = f / this.mass
+    this.speed -= this.acceleration * DT
+    this.value -= this.speed * DT
+  }
+}
+
+plane = new Array(WIDTH)
+for (let i = 0; i < WIDTH; i++) {
+  plane[i] = new Array(HEIGHT)
+
+  for (let j = 0; j < HEIGHT; j++) {
+    plane[i][j] = new Dot()
   }
 }
 
@@ -58,16 +76,21 @@ function handleClick(event) {
 }
 
 function pushSquare (x, y, size) {
+  const xl = Math.max(x - size / 2, 0)
+  const xr = Math.min(x + size / 2, WIDTH - 1)
+  const yl = Math.max(y - size / 2, 0)
+  const yr = Math.min(y + size / 2, HEIGHT - 1)
 
+  for (let xi = xl; xi < xr; xi++) {
+    for (let yi = yl; yi < yr; yi++) {
+      plane[xi][yi].value += 127
+    }
+  }
 }
 
 function loop() {
   draw()
   update()
-}
-
-function draw () {
-
 }
 
 // [0; +inf) -> [0; 255)
@@ -77,6 +100,65 @@ function saturation(input) {
   )
 }
 
-function update () {
+function draw () {
+  for (let x = 0; x < WIDTH; x++) {
+    for (let y = 0; y < HEIGHT; y++) {
+      if (plane[x][y].value >= 0) {
+        updateImage(
+          getImagePointer(x, y),
+          saturation(plane[x][y].value),
+          0,
+          0,
+          255
+        )
+      } else {
+        updateImage(
+          getImagePointer(x, y),
+          0,
+          0,
+          saturation(-plane[x][y].value),
+          255
+        )
+      }
+    }
+  }
 
+  context.putImageData(picture, 0, 0)
+}
+
+function update () {
+  let avg
+  for (let x = 0; x < WIDTH; x++) {
+    for (let y = 0; y < HEIGHT; y++) {
+      avg = 0
+
+      if (x > 0) {
+        if (y > 0) avg += plane[x - 1][y - 1].value * Kcorner
+        avg += plane[x - 1][y].value * Kside
+        if (y < HEIGHT - 1) avg += plane[x - 1][y + 1].value * Kcorner
+      }
+      if (x < WIDTH - 1) {
+        if (y > 0) avg += plane[x + 1][y - 1].value * Kcorner
+        avg += plane[x + 1][y].value * Kside
+        if (y < HEIGHT - 1) avg += plane[x + 1][y + 1].value * Kcorner
+      }
+
+      if (y > 0) avg += plane[x][y - 1].value * Kside
+      if (y < HEIGHT - 1) avg += plane[x][y + 1].value * Kside
+
+      avg = avg / 8
+      plane[x][y].updateIt(-K * (plane[x][y].value - avg))
+    }
+  }
+}
+
+function getImagePointer(x, y) {
+  return (y * WIDTH + x) * 4
+}
+
+function updateImage(p, r, g, b, a) {
+  picture.data[p] = r
+  picture.data[p + 1] = g
+  picture.data[p + 2] = b
+  picture.data[p + 3] = a
 }
