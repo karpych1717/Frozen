@@ -27,6 +27,9 @@ class Dot {
   updateIt(f) {
     this.acceleration = f / this.mass
     this.speed -= this.acceleration * DT
+  }
+
+  updateIt2() {
     this.value -= this.speed * DT
   }
 }
@@ -148,6 +151,11 @@ function update () {
 
       avg = avg / 8
       plane[x][y].updateIt(-K * (plane[x][y].value - avg))
+    }
+  }
+  for (let x = 0; x < WIDTH; x++) {
+    for (let y = 0; y < HEIGHT; y++) {
+      plane[x][y].updateIt2()
     }
   }
 }
