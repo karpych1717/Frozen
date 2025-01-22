@@ -1,4 +1,5 @@
-const DT = 0.1
+const DT = 33
+const DT_K = 0.5 / 33
 const WIDTH = 500
 const HEIGHT = 500
 
@@ -26,11 +27,11 @@ class Dot {
 
   updateIt(f) {
     this.acceleration = f / this.mass
-    this.speed -= this.acceleration * DT
+    this.speed -= this.acceleration * DT * DT_K
   }
 
   updateIt2() {
-    this.value -= this.speed * DT
+    this.value -= this.speed * DT * DT_K
   }
 }
 
