@@ -1,4 +1,5 @@
 'use strict'
+import simpleFunction from './sample.js'
 
 _canvas.width = 750
 _canvas.height = 500
@@ -10,3 +11,4 @@ document.body.style.justifyContent = 'center'
 
 const context = _canvas.getContext('2d')
 
+simpleFunction()
