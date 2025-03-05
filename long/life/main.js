@@ -1,6 +1,7 @@
 /* global _canvas */
 'use strict'
 import simpleFunction from './sample.js'
+import Button from './Button.js'
 
 _canvas.width = 750
 _canvas.height = 500
