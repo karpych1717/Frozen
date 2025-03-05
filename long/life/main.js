@@ -1,3 +1,4 @@
+/* global _canvas */
 'use strict'
 import simpleFunction from './sample.js'
 
