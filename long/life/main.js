@@ -13,5 +13,8 @@ document.body.style.justifyContent = 'center'
 
 const context = _canvas.getContext('2d')
 
+const pause = new Button(0, 50, 0, 50)
+pause.drawIt(context)
+
 // const field = new Field (...)
 // const togglePauseButton = new Button(200, 300, 30, 30, () => field.togglePause() )
