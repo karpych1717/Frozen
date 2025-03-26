@@ -2,7 +2,7 @@
 'use strict'
 import simpleFunction from './sample.js'
 import Button from './Button.js'
-document.onclick = Click_handler
+document.onclick = clickHandler
 
 _canvas.width = 750
 _canvas.height = 500
