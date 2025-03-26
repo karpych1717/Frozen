@@ -2,6 +2,7 @@
 'use strict'
 import simpleFunction from './sample.js'
 import Button from './Button.js'
+document.onclick = Click_handler
 
 _canvas.width = 750
 _canvas.height = 500
@@ -13,7 +14,7 @@ document.body.style.justifyContent = 'center'
 
 const context = _canvas.getContext('2d')
 
-const pause = new Button(0, 50, 0, 50)
+const pause = new Button(700, 50, 50, 50, () => alert("Hello world"))
 pause.drawIt(context)
 
 // const field = new Field (...)
