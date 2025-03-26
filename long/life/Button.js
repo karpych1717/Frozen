@@ -8,7 +8,7 @@ class Button extends Rectangle {
   }
 
   drawIt (context) {
-
+    context.fillrect(this.x, this.y, this.w, this.h);
   }
 }
 
