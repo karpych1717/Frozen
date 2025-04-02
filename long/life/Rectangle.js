@@ -7,7 +7,7 @@ class Rectangle {
   }
 
   isOverIt (x, y) {
-    if (this.x <= x && x <= this.x + this.w && this.y <= y && y <= this.y + this.h) {
+    if (this.x <= x && x < this.x + this.w && this.y <= y && y < this.y + this.h) {
       return true
     }
     return false

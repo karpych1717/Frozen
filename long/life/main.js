@@ -3,6 +3,7 @@
 import simpleFunction from './sample.js'
 import Button from './Button.js'
 import clickHandler from './clickHandler.js'
+import Field from './field.js'
 
 _canvas.width = 750
 _canvas.height = 500
@@ -14,8 +15,23 @@ document.body.style.justifyContent = 'center'
 
 const context = _canvas.getContext('2d')
 
-export const pause = new Button(700, 50, 50, 50, () => alert("Hello world"))
-pause.drawIt(context)
+export const togglePauseButton = new Button(700, 0, 50, 50, () => field.togglePause())
+togglePauseButton.drawIt(context)
+
+export const randomButton = new Button(700, 100, 50, 50, () => field.fillRandom())
+randomButton.drawIt(context)
+
+export const clearButton = new Button(700, 200, 50, 50, () => field.clear())
+clearButton.drawIt(context)
+
+export const field = new Field (25, 25, 0, 0, 500, 500, true)
+field.drawIt(context)
+
+function loop () {
+    field.cycle(context)
+}
+
+setInterval(loop, 330)
 
 // const field = new Field (...)
 // const togglePauseButton = new Button(200, 300, 30, 30, () => field.togglePause() )
