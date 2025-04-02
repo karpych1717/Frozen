@@ -3,7 +3,9 @@
 import simpleFunction from './sample.js'
 import Button from './Button.js'
 import clickHandler from './clickHandler.js'
+import mouseUpHandler from './mouseUpHandler.js'
 import Field from './field.js'
+import Mouse from './Mouse.js'
 
 _canvas.width = 750
 _canvas.height = 500
@@ -27,8 +29,11 @@ clearButton.drawIt(context)
 export const field = new Field (25, 25, 0, 0, 500, 500, true)
 field.drawIt(context)
 
+export const mouse = new Mouse()
+
 function loop () {
     field.cycle(context)
+    console.log(mouse.state)
 }
 
 setInterval(loop, 330)
@@ -36,4 +41,5 @@ setInterval(loop, 330)
 // const field = new Field (...)
 // const togglePauseButton = new Button(200, 300, 30, 30, () => field.togglePause() )
 
-document.onclick = clickHandler
+document.onpointerdown = clickHandler
+document.onpointerup = mouseUpHandler

@@ -17,10 +17,10 @@ class field {
 
     this.field = new Array(this.rows)
     for (let i = 0; i < this.rows; i++) {
-      field[i] = new Array(this.cols)
+      this.field[i] = new Array(this.cols)
 
       for (let j = 0; j < this.cols; j++) {
-        field[i][j] = new Box(
+        this.field[i][j] = new Box(
           this.x + i * this.boxWidth,
           this.y + j * this.boxHeight,
           this.boxWidth,
@@ -39,7 +39,7 @@ class field {
   drawIt (context) {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
-        field[i][j].drawIt(context)
+        this.field[i][j].drawIt(context)
       }
     }
   }
@@ -47,8 +47,8 @@ class field {
   processClick(x, y) {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
-        if (field[i][j].isOverIt(x, y)) {
-          field[i][j].toggle()
+        if (this.field[i][j].isOverIt(x, y)) {
+          this.field[i][j].toggle()
         }
       }
     }
@@ -58,19 +58,19 @@ class field {
     let amount = 0
 
     if (x > 0) {
-      if (field[x-1][y].isAlive()) amount += 1
-      if (y > 0) if (field[x-1][y-1].isAlive()) amount += 1
-      if (y < this.rows - 1) if (field[x-1][y+1].isAlive()) amount += 1
+      if (this.field[x-1][y].isAlive()) amount += 1
+      if (y > 0) if (this.field[x-1][y-1].isAlive()) amount += 1
+      if (y < this.rows - 1) if (this.field[x-1][y+1].isAlive()) amount += 1
     }
 
     if (x < this.cols - 1) {
-      if (field[x+1][y].isAlive()) amount += 1
-      if (y > 0) if (field[x+1][y-1].isAlive()) amount += 1
-      if (y < this.rows - 1) if (field[x+1][y+1].isAlive()) amount += 1
+      if (this.field[x+1][y].isAlive()) amount += 1
+      if (y > 0) if (this.field[x+1][y-1].isAlive()) amount += 1
+      if (y < this.rows - 1) if (this.field[x+1][y+1].isAlive()) amount += 1
     }
 
-    if (y > 0) if (field[x][y-1].isAlive()) amount += 1
-    if (y < this.rows - 1) if (field[x][y+1].isAlive()) amount += 1
+    if (y > 0) if (this.field[x][y-1].isAlive()) amount += 1
+    if (y < this.rows - 1) if (this.field[x][y+1].isAlive()) amount += 1
 
     return amount
   }
@@ -82,7 +82,7 @@ class field {
         this.toggleQueue[i][j] = false
         neighbours = this.countNeighbours(i, j)
 
-        if (field[i][j].isAlive()) {
+        if (this.field[i][j].isAlive()) {
           if (neighbours < 2 || neighbours > 3) {
             this.toggleQueue[i][j] = true
           }
@@ -97,7 +97,7 @@ class field {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
         if (this.toggleQueue[i][j]) {
-          field[i][j].toggle()
+          this.field[i][j].toggle()
         }
       }
     }
@@ -109,9 +109,9 @@ class field {
         this.toggleQueue[i][j] = false
         
         if (Math.random() < 0.5) {
-          field[i][j].turnOff()
+          this.field[i][j].turnOff()
         } else {
-          field[i][j].turnOn()
+          this.field[i][j].turnOn()
         }
       }
     }
@@ -121,7 +121,7 @@ class field {
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
         this.toggleQueue[i][j] = false
-        field[i][j].turnOff()
+        this.field[i][j].turnOff()
       }
     }
   }

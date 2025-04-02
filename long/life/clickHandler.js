@@ -3,12 +3,15 @@ import { togglePauseButton } from "./main.js"
 import { randomButton } from "./main.js"
 import { clearButton } from "./main.js"
 import { field } from "./main.js"
+import { mouse } from "./main.js"
 
 function clickHandler(event) {
   const x = event.offsetX
   const y = event.offsetY
   
   //alert(x + " " + y)
+
+  mouse.setDown()
 
   field.processClick(x, y)
 
