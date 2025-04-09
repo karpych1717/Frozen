@@ -20,7 +20,7 @@ function clickHandler(event) {
   if (randomButton.isOverIt(x, y)) randomButton.onclick()
   if (clearButton.isOverIt(x, y)) clearButton.onclick()
 
-  slider.update(x - slider.w / 2, y - slider.h / 2)
+  slider.updateByClick(x, y)
 }
 
 export default clickHandler
