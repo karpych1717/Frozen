@@ -2,8 +2,10 @@
 'use strict'
 import simpleFunction from './sample.js'
 import Button from './Button.js'
+import Slider from './Slider.js'
 import clickHandler from './clickHandler.js'
 import mouseUpHandler from './mouseUpHandler.js'
+import mouseMoveHandler from './mouseMoveHandler.js'
 import Field from './field.js'
 import Mouse from './Mouse.js'
 
@@ -17,29 +19,46 @@ document.body.style.justifyContent = 'center'
 
 const context = _canvas.getContext('2d')
 
-export const togglePauseButton = new Button(700, 0, 50, 50, () => field.togglePause())
+export const togglePauseButton = new Button(630, 20, 100, 140, () => field.togglePause())
 togglePauseButton.drawIt(context)
 
-export const randomButton = new Button(700, 100, 50, 50, () => field.fillRandom())
+export const randomButton = new Button(630, 180, 100, 140, () => field.fillRandom())
 randomButton.drawIt(context)
 
-export const clearButton = new Button(700, 200, 50, 50, () => field.clear())
+export const clearButton = new Button(630, 340, 100, 140, () => field.clear())
 clearButton.drawIt(context)
+
+export const slider = new Slider(550, 225, 50, 50, 0, 205)
+slider.drawIt(context)
 
 export const field = new Field (25, 25, 0, 0, 500, 500, true)
 field.drawIt(context)
 
 export const mouse = new Mouse()
 
+let loopIntervalId
+let sliderValueUsed = 0.5
+
 function loop () {
     field.cycle(context)
-    console.log(mouse.state)
 }
+loopIntervalId = setInterval(loop, 33 + 297 * sliderValueUsed)
 
-setInterval(loop, 330)
+function UIloop () {
+    slider.updateDraw(context)
+
+    if (sliderValueUsed != slider.valueY()) {
+        sliderValueUsed = slider.valueY()
+
+        clearInterval(loopIntervalId)
+        loopIntervalId = setInterval(loop, 33 + 297 * sliderValueUsed)
+    }
+}
+setInterval(UIloop, 33)
 
 // const field = new Field (...)
 // const togglePauseButton = new Button(200, 300, 30, 30, () => field.togglePause() )
 
 document.onpointerdown = clickHandler
 document.onpointerup = mouseUpHandler
+document.onpointermove = mouseMoveHandler

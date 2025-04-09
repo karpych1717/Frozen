@@ -10,6 +10,11 @@ class Mouse {
   setDown () {
     this.state = "down"
   }
+
+  isDown () {
+    if (this.state == "down") return true
+    return false
+  }
 }
 
 export default Mouse
