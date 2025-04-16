@@ -28,7 +28,7 @@ randomButton.drawIt(context)
 export const clearButton = new Button(630, 340, 100, 140, () => field.clear())
 clearButton.drawIt(context)
 
-export const slider = new Slider(550, 225, 50, 50, 0, 205)
+export const slider = new Slider(550, 20, 50, 460, 0, 205)
 slider.drawIt(context)
 
 export const field = new Field (25, 25, 0, 0, 500, 500, true)
@@ -45,10 +45,10 @@ function loop () {
 loopIntervalId = setInterval(loop, 33 + 297 * sliderValueUsed)
 
 function UIloop () {
-    slider.updateDraw(context)
+    slider.drawIt(context)
 
-    if (sliderValueUsed != slider.valueY()) {
-        sliderValueUsed = slider.valueY()
+    if (sliderValueUsed != slider.value()) {
+        sliderValueUsed = slider.value()
 
         clearInterval(loopIntervalId)
         loopIntervalId = setInterval(loop, 33 + 297 * sliderValueUsed)

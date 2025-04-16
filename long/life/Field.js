@@ -1,4 +1,4 @@
-import Box from './box.js' // doesn't accept Box
+import Box from './Box.js'
 
 class field {
   constructor (rows, cols, x, y, w, h, pause = false) {
@@ -25,7 +25,7 @@ class field {
           this.y + j * this.boxHeight,
           this.boxWidth,
           this.boxHeight,
-          "off"
+          false
         )
       }
     }

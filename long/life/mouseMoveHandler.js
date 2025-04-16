@@ -7,7 +7,7 @@ function mouseMoveHandler(event) {
   const y = event.offsetY
   
   if (mouse.isDown()) {
-    if (slider.isOverBox(x, y)) {
+    if (slider.isOverIt(x, y)) {
       slider.update(x, y)
     }
   }

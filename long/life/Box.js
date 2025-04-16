@@ -7,25 +7,23 @@ class Box extends Rectangle {
   }
 
   toggle () {
-    if (this.state == "on") this.state = "off"
-    else this.state = "on"
+    this.state = !this.state
   }
 
   turnOn () {
-    this.state = "on"
+    this.state = true
   }
 
   turnOff () {
-    this.state = "off"
+    this.state = false
   }
 
   isAlive() {
-    if (this.state == "on") return true
-    return false
+    return this.state
   }
 
   drawIt (context) {
-    if (this.state == "on") context.fillStyle = "white"
+    if (this.state) context.fillStyle = "white"
     else context.fillStyle = "black"
 
     context.fillRect(this.x, this.y, this.w, this.h)
