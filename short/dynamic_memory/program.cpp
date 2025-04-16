@@ -6,13 +6,13 @@ private:
     int* data;
     int length;
 public:
-    dynamic_memory (int size) {
-        length = size;
+    dynamic_memory (int l) {
+        length = l;
         data = (int*)malloc(length * sizeof(int));
     }
 
     ~dynamic_memory () {
-        delete(data);
+        free(data);
     }
 
     void append(int value) {
@@ -23,6 +23,7 @@ public:
             data2[i] = data[i];
         }
         data = data2;
+        length++;
     }
 
     void set(int index, int value) {
@@ -47,5 +48,17 @@ public:
 };
 
 int main() {
+    int n, x;
+    cin >> n;
+    dynamic_memory num(n);
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        num.set(i, x);
+    }
+    num.append(123);
+    for (int i = 0; i < num.size(); i++) {
+        cout << num.get(i) << " ";
+    }
+    cout << "\n";
     return 0;
 }
