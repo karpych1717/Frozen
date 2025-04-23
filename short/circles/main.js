@@ -17,8 +17,8 @@ for (let i = 0; i < 10; i++) {
     arr[i] = new Circle(
         frame + Math.random() * (_canvas.width - 2 * frame),
         frame + Math.random() * (_canvas.height - 2 * frame),
-        20,
-        'rgb(Math.random()*255, Math.random()*255, Math.random()*255)'
+        40,
+        'rgb(' + Math.random()*255 + ', ' + Math.random()*255 + ', ' + Math.random()*255 + ')'
     )
 }
 for (let i = 0; i < 10; i++) {
