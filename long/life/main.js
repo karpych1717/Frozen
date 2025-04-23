@@ -36,6 +36,8 @@ field.drawIt(context)
 
 export const mouse = new Mouse()
 
+export const sliderMouse = new Mouse()
+
 let loopIntervalId
 let sliderValueUsed = 0.5
 

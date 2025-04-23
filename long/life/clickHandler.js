@@ -5,6 +5,7 @@ import { clearButton } from "./main.js"
 import { field } from "./main.js"
 import { mouse } from "./main.js"
 import { slider } from "./main.js"
+import { sliderMouse } from "./main.js"
 
 function clickHandler(event) {
   const x = event.offsetX
@@ -13,6 +14,10 @@ function clickHandler(event) {
   //alert(x + " " + y)
 
   mouse.setDown()
+
+  if (slider.isOverIt(x, y)) {
+    sliderMouse.setDown()
+  }
 
   field.processClick(x, y)
 

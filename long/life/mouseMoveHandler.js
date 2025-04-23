@@ -1,15 +1,14 @@
 import Button from "./Button.js"
 import { mouse } from "./main.js"
+import { sliderMouse } from "./main.js"
 import { slider } from "./main.js"
 
 function mouseMoveHandler(event) {
   const x = event.offsetX
   const y = event.offsetY
   
-  if (mouse.isDown()) {
-    if (slider.isOverIt(x, y)) {
-      slider.update(x, y)
-    }
+  if (sliderMouse.isDown()) {
+    slider.update(x, y)
   }
 
 }
