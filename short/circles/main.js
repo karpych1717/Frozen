@@ -3,7 +3,7 @@
 import Circle from './Circle.js'
 
 _canvas.width = 500
-_canvas.height = 300
+_canvas.height = 500
 _canvas.style.background = 'gray'
 _canvas.style.border = '3px solid black'
 
@@ -18,7 +18,7 @@ for (let i = 0; i < 10; i++) {
         frame + Math.random() * (_canvas.width - 2 * frame),
         frame + Math.random() * (_canvas.height - 2 * frame),
         20,
-        Math.random()
+        'rgb(Math.random()*255, Math.random()*255, Math.random()*255)'
     )
 }
 for (let i = 0; i < 10; i++) {
