@@ -47,4 +47,13 @@ function f(arr) {
     return answer
 }
 
+function fDerivativeX(idx, D, arr) {
+    const fCall1 = f(arr)
+    arr[idx].x += D
+    const fCall2 = f(arr)
+    arr[idx].x -= D
+    return (fCall2 - fCall1) / D
+}
+
 console.log(f(arr))
+console.log(fDerivativeX(0, 10, arr))
