@@ -68,5 +68,15 @@ function fDerivative(dx, dy, arr) {
     return D
 }
 
-console.log(f(arr))
-console.log(fDerivative(10, 10, arr))
+function cycle(dx, dy, arr) {
+    const D = fDerivative(dx, dy, arr)
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].x -= D[i].x
+        arr[i].y -= D[i].y
+    }
+}
+
+//console.log(f(arr))
+//console.log(fDerivative(10, 10, arr))
+
+document.onpointerdown = cycle(5, 5, arr)
