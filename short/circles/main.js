@@ -25,7 +25,7 @@ for (let i = 0; i < 10; i++) {
     arr[i].drawIt(context)
 }
 
-function f(idx, arr) {
+function fIndividual(idx, arr) {
     let ret = 0
     for (let i = 0; i < arr.length; i++) {
         if (i == idx) continue
@@ -39,4 +39,12 @@ function f(idx, arr) {
     return ret
 }
 
-console.log(f(0, arr))
+function f(arr) {
+    let ret = 0
+    for (let i = 0; i < arr.length; i++) {
+        ret += fIndividual(i, arr)
+    }
+    return ret
+}
+
+console.log(f(arr))
