@@ -1,6 +1,7 @@
 /* global _canvas */
 'use strict'
 import Circle from './Circle.js'
+import Vector from './Vector.js'
 
 _canvas.width = 500
 _canvas.height = 500
@@ -47,13 +48,25 @@ function f(arr) {
     return answer
 }
 
-function fDerivativeX(idx, D, arr) {
-    const fCall1 = f(arr)
-    arr[idx].x += D
-    const fCall2 = f(arr)
-    arr[idx].x -= D
-    return (fCall2 - fCall1) / D
+function fDerivativeIndividual(idx, dx, dy, arr) {
+    const fCallX1 = f(arr)
+    arr[idx].x += dx
+    const fCallX2 = f(arr)
+    arr[idx].x -= dx
+    const fCallY1 = f(arr)
+    arr[idx].y += dy
+    const fCallY2 = f(arr)
+    arr[idx].y -= dy
+    return new Vector((fCallX2 - fCallX1) / dx, (fCallY2 - fCallY1) / dy)
+}
+
+function fDerivative(dx, dy, arr) {
+    const D = new Array(arr.length)
+    for (let i = 0; i < arr.length; i++) {
+        D[i] = fDerivativeIndividual(i, dx, dy, arr)
+    }
+    return D
 }
 
 console.log(f(arr))
-console.log(fDerivativeX(0, 10, arr))
+console.log(fDerivative(10, 10, arr))
