@@ -26,25 +26,25 @@ for (let i = 0; i < 10; i++) {
 }
 
 function fIndividual(idx, arr) {
-    let ret = 0
+    let answer = 0
     for (let i = 0; i < arr.length; i++) {
         if (i == idx) continue
-        ret += Math.max(0,
+        answer += Math.max(0,
             arr[idx].r + arr[i].r - Math.sqrt(
                 (arr[idx].x - arr[i].x) ** 2 +
                 (arr[idx].y - arr[i].y) ** 2
             )
         )
     }
-    return ret
+    return answer
 }
 
 function f(arr) {
-    let ret = 0
+    let answer = 0
     for (let i = 0; i < arr.length; i++) {
-        ret += fIndividual(i, arr)
+        answer += fIndividual(i, arr)
     }
-    return ret
+    return answer
 }
 
 console.log(f(arr))
