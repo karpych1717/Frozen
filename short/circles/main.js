@@ -24,3 +24,19 @@ for (let i = 0; i < 10; i++) {
 for (let i = 0; i < 10; i++) {
     arr[i].drawIt(context)
 }
+
+function f(idx, arr) {
+    let ret = 0
+    for (let i = 0; i < arr.length; i++) {
+        if (i == idx) continue
+        ret += Math.max(0,
+            arr[idx].r + arr[i].r - Math.sqrt(
+                (arr[idx].x - arr[i].x) ** 2 +
+                (arr[idx].y - arr[i].y) ** 2
+            )
+        )
+    }
+    return ret
+}
+
+console.log(f(0, arr))
