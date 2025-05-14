@@ -79,4 +79,12 @@ function cycle(dx, dy, arr) {
 //console.log(f(arr))
 //console.log(fDerivative(10, 10, arr))
 
-document.onpointerdown = cycle(5, 5, arr)
+document.onpointerdown = () => {
+    for (let i = 0; i < 1; i++) {
+        cycle(10, 10, arr)
+    }
+    context.clearRect(0, 0, 500, 500)
+    for (let i = 0; i < 10; i++) {
+        arr[i].drawIt(context)
+    }
+}
