@@ -90,18 +90,26 @@ class Vector {
 }
 
 const kSurface = 1
-const kColision = 10
-const kEscape = 0
+const kColision = 5
+const kEscape = 25
 function fIndividual(idx, arr) {
   let answer = surface(arr[idx].x, arr[idx].y) * kSurface
+  if (
+    arr[idx].x < arr[idx].r / 2 ||
+    arr[idx].x > _canvas.width - arr[idx].r / 2 ||
+    arr[idx].y < arr[idx].r / 2 ||
+    arr[idx].y > _canvas.height - arr[idx].r / 2
+  ) {
+    answer += 1 * kEscape
+  }
   for (let i = 0; i < arr.length; i++) {
       if (i == idx) continue
       answer += Math.max(0,
           arr[idx].r + arr[i].r - Math.sqrt(
               (arr[idx].x - arr[i].x) ** 2 +
               (arr[idx].y - arr[i].y) ** 2
-          ) * kColision
-      )
+          )
+      ) * kColision
   }
   return answer
 }
@@ -143,7 +151,7 @@ function cycle(dx, dy, arr) {
 }
 
 document.onpointerdown = () => {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 1; i++) {
       cycle(5, 5, arr)
   }
   context.clearRect(0, 0, 500, 500)
