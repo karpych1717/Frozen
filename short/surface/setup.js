@@ -91,7 +91,7 @@ class Vector {
 
 function fIndividual(idx, arr) {
   let answer = surface(arr[idx].x, arr[idx].y)
-  /*for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i++) {
       if (i == idx) continue
       answer += Math.max(0,
           arr[idx].r + arr[i].r - Math.sqrt(
@@ -99,7 +99,7 @@ function fIndividual(idx, arr) {
               (arr[idx].y - arr[i].y) ** 2
           )
       )
-  }*/
+  }
   return answer
 }
 
