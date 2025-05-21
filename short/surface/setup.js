@@ -123,12 +123,14 @@ function f(arr) {
 }
 
 function fDerivativeIndividual(idx, dx, dy, arr) {
+  arr[idx].x -= dx
   const fCallX1 = f(arr)
-  arr[idx].x += dx
+  arr[idx].x += dx * 2
   const fCallX2 = f(arr)
   arr[idx].x -= dx
+  arr[idx].y -= dy
   const fCallY1 = f(arr)
-  arr[idx].y += dy
+  arr[idx].y += dy * 2
   const fCallY2 = f(arr)
   arr[idx].y -= dy
   return new Vector((fCallX2 - fCallX1) / dx, (fCallY2 - fCallY1) / dy)
