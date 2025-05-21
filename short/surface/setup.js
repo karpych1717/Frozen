@@ -45,7 +45,7 @@ class Ball {
 
   drawIt () {
     context.save()
-    context.fillStyle = this.color()
+    context.fillStyle = this.color
 
     context.beginPath()
     context.arc(this.x, this.y, this.r, 0, 2 * Math.PI)
@@ -55,3 +55,29 @@ class Ball {
   }
 }
 
+const amountOfBalls = 20
+const arr = new Array(amountOfBalls)
+
+function fillBallArray () {
+  for (let i = 0; i < amountOfBalls; i++) {
+    arr[i] = new Ball(
+      10,
+      0,
+      0
+    )
+  }
+}
+
+const frame = 125
+function assignRandomPositions () {
+  for (let i = 0; i < amountOfBalls; i++) {
+    arr[i].x = frame + Math.random() * (_canvas.width - 2 * frame)
+    arr[i].y = frame + Math.random() * (_canvas.height - 2 * frame)
+  }
+}
+
+function drawBalls () {
+  for (let i = 0; i < amountOfBalls; i++) {
+    arr[i].drawIt()
+  }
+}
