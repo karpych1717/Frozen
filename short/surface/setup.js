@@ -4,6 +4,13 @@ _canvas.width = 500
 _canvas.height = 500
 _canvas.style.border = '1px solid green'
 
+const kSurface = 1
+const kColision = 5
+const kEscape = 25
+
+const amountOfBalls = 20
+const arr = new Array(amountOfBalls)
+
 const context = _canvas.getContext('2d')
 const imageData =
   context.createImageData(_canvas.width, _canvas.height)
@@ -55,8 +62,12 @@ class Ball {
   }
 }
 
-const amountOfBalls = 20
-const arr = new Array(amountOfBalls)
+class Vector {
+  constructor (x, y) {
+    this.x = x
+    this.y = y
+  }
+}
 
 function fillBallArray () {
   for (let i = 0; i < amountOfBalls; i++) {
@@ -68,11 +79,11 @@ function fillBallArray () {
   }
 }
 
-const frame = 125
-function assignRandomPositions () {
+const frameWidth = 125
+function assignRandomPositionsToBalls () {
   for (let i = 0; i < amountOfBalls; i++) {
-    arr[i].x = frame + Math.random() * (_canvas.width - 2 * frame)
-    arr[i].y = frame + Math.random() * (_canvas.height - 2 * frame)
+    arr[i].x = frameWidth + Math.random() * (_canvas.width - 2 * frameWidth)
+    arr[i].y = frameWidth + Math.random() * (_canvas.height - 2 * frameWidth)
   }
 }
 
@@ -82,17 +93,7 @@ function drawBalls () {
   }
 }
 
-class Vector {
-  constructor (x, y) {
-    this.x = x
-    this.y = y
-  }
-}
-
-const kSurface = 1
-const kColision = 5
-const kEscape = 25
-function fIndividual(idx, arr) {
+function IndividualValueFunction(idx, arr) {
   let answer = surface(arr[idx].x, arr[idx].y) * kSurface
   if (
     arr[idx].x < arr[idx].r / 2 ||
@@ -114,38 +115,38 @@ function fIndividual(idx, arr) {
   return answer
 }
 
-function f(arr) {
+function ValueFunction(arr) {
   let answer = 0
   for (let i = 0; i < arr.length; i++) {
-      answer += fIndividual(i, arr)
+      answer += IndividualValueFunction(i, arr)
   }
   return answer
 }
 
-function fDerivativeIndividual(idx, dx, dy, arr) {
+function IndividualDerivativeFunction(idx, dx, dy, arr) {
   arr[idx].x -= dx
-  const fCallX1 = f(arr)
+  const fCallX1 = ValueFunction(arr)
   arr[idx].x += dx * 2
-  const fCallX2 = f(arr)
+  const fCallX2 = ValueFunction(arr)
   arr[idx].x -= dx
   arr[idx].y -= dy
-  const fCallY1 = f(arr)
+  const fCallY1 = ValueFunction(arr)
   arr[idx].y += dy * 2
-  const fCallY2 = f(arr)
+  const fCallY2 = ValueFunction(arr)
   arr[idx].y -= dy
   return new Vector((fCallX2 - fCallX1) / dx, (fCallY2 - fCallY1) / dy)
 }
 
-function fDerivative(dx, dy, arr) {
+function DerivativeFunction(dx, dy, arr) {
   const D = new Array(arr.length)
   for (let i = 0; i < arr.length; i++) {
-      D[i] = fDerivativeIndividual(i, dx, dy, arr)
+      D[i] = IndividualDerivativeFunction(i, dx, dy, arr)
   }
   return D
 }
 
 function cycle(dx, dy, arr) {
-  const D = fDerivative(dx, dy, arr)
+  const D = DerivativeFunction(dx, dy, arr)
   for (let i = 0; i < arr.length; i++) {
       arr[i].x -= D[i].x
       arr[i].y -= D[i].y

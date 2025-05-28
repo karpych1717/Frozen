@@ -3,5 +3,5 @@
 drawSurface()
 
 fillBallArray()
-assignRandomPositions()
+assignRandomPositionsToBalls()
 drawBalls()
