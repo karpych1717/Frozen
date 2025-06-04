@@ -15,8 +15,27 @@ const length = 10
 const arr = new Array(length)
 function inputArray(x, len) {
     if (x >= len) return
-    prompt(arr[x])
+    arr[x] = +prompt()
     inputArray(x + 1, len)
 }
 
+function outputArray(x, len) {
+    if (x >= len) return
+    console.log(arr[x])
+    outputArray(x + 1, len)
+}
+
+function countAverageArray (x, len) {
+    if (x >= len) return 0
+    if (x == 0) {
+        return ((arr[0] + countAverageArray(x + 1, len)) / len)
+    } else {
+        return (arr[x] + countAverageArray(x + 1, len))
+    }
+}
+
 inputArray(0, 10)
+
+//outputArray(0, 10)
+
+console.log(countAverageArray(0, 10))
