@@ -38,6 +38,16 @@ function getRandom(amount) {
     return Math.floor(Math.random() * amount);
 }
 
+function uniqueRandomFillArrayUpdateCycleFunction(x, len, used) {
+    arr[x] = getRandom(len)
+    if (used[arr[x]]) {
+        return uniqueRandomFillArrayUpdateCycleFunction(x, len, used)
+    } else {
+        used[arr[x]] = true
+        return used
+    }
+}
+
 function uniqueRandomFillArray (x, len, used) {
     if (x >= len) return 0
     if (x == 0) {
@@ -46,11 +56,7 @@ function uniqueRandomFillArray (x, len, used) {
         used0[arr[0]] = true
         uniqueRandomFillArray(x + 1, len, used0)
     } else {
-        arr[x] = getRandom(len)
-        while (used[arr[x]]) {
-            arr[x] = getRandom(len)
-        }
-        used[arr[x]] = true
+        used[arr[x]] = uniqueRandomFillArrayUpdateCycleFunction(x, len, used)
         uniqueRandomFillArray(x + 1, len, used)
     }
 }
