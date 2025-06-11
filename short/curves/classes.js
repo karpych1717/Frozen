@@ -1,3 +1,6 @@
+import { cypher } from './functions.js'
+import { decypher } from './functions.js'
+
 class Vector {
     constructor (x, y) {
         this.x = x
@@ -12,18 +15,24 @@ class Curve {
         this.h = h
         this.arr = new Array(n)
         for (let i = 0; i < n; i++) {
-            this.arr[i] = new Vector(w * i / (n - 1), 0)
+            this.arr[i] = new Vector(cypher(i, n), 0)
         }
     }
 
     drawIt(context) {
-        context.strokeStyle = "White"
-        context.lineWidth = 10
+        context.strokeStyle = "purple"
+        context.lineWidth = 2
         context.beginPath()
-        context.moveTo(this.arr[0].x, this.arr[0].y)
+        context.moveTo(
+            decypher(this.arr[0].x, this.w),
+            decypher(this.arr[0].y, this.h)
+        )
         
         for (let i = 1; i < this.n; i++) {
-            context.lineTo(this.arr[i].x, this.arr[i].y)
+            context.lineTo(
+                decypher(this.arr[i].x, this.w),
+                decypher(this.arr[i].y, this.h)
+            )
         }
         context.stroke()
     }
