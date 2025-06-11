@@ -53,8 +53,7 @@ class Curve {
     }
 
     update(x, y) {
-        this.arr[Math.floor(decypher(x, this.n))] = y
-        console.log(Math.floor(decypher(x, this.n)), y)
+        this.arr[Math.floor(decypher(x, this.n))].y = y
     }
 }
 
