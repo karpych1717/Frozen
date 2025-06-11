@@ -25,13 +25,13 @@ class Curve {
         context.beginPath()
         context.moveTo(
             decypher(this.arr[0].x, this.w),
-            decypher(this.arr[0].y, this.h)
+            decypher(-this.arr[0].y, this.h)
         )
         
         for (let i = 1; i < this.n; i++) {
             context.lineTo(
                 decypher(this.arr[i].x, this.w),
-                decypher(this.arr[i].y, this.h)
+                decypher(-this.arr[i].y, this.h)
             )
         }
         context.stroke()
