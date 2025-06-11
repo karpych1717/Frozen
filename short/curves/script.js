@@ -10,6 +10,6 @@ _canvas.style.background = 'black'
 
 export const curve = new Curve(50, WIDTH, HEIGHT)
 
-const context = _canvas.getContext('2d')
+export const context = _canvas.getContext('2d')
 
 render(context)

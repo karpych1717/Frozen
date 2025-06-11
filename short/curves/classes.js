@@ -12,11 +12,13 @@ class Curve {
         this.h = h
         this.arr = new Array(n)
         for (let i = 0; i < n; i++) {
-            this.arr[i] = new Vector(w / (n - 1) * i, 0)
+            this.arr[i] = new Vector(w * i / (n - 1), 0)
         }
     }
 
     drawIt(context) {
+        context.strokeStyle = "White"
+        context.lineWidth = 10
         context.beginPath()
         context.moveTo(this.arr[0].x, this.arr[0].y)
         
