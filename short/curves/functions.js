@@ -1,7 +1,8 @@
-function render () {
+import { curve } from './script.js'
 
-
-  requestAnimationFrame(render)
+function render (context) {
+  curve.drawIt(context)
+  requestAnimationFrame(render(context))
 }
 
 export { render }
