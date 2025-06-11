@@ -37,7 +37,7 @@ function countAverageArray (x, len) {
 function getRandom(amount) {
     return Math.floor(Math.random() * amount);
 }
-
+/*
 function uniqueRandomFillArrayUpdateCycleFunction(x, len, used) {
     arr[x] = getRandom(len)
     if (used[arr[x]]) {
@@ -59,13 +59,33 @@ function uniqueRandomFillArray (x, len, used) {
         used[arr[x]] = uniqueRandomFillArrayUpdateCycleFunction(x, len, used)
         uniqueRandomFillArray(x + 1, len, used)
     }
+}*/
+
+
+
+function uniqueRandomFillArrayChecker(x, n) {
+    if (x >= n) return true
+    if (arr[x] == arr[n]) return false
+    return uniqueRandomFillArrayChecker(x + 1, n)
+}
+
+function uniqueRandomFillArray(x, n, m) {
+    if (x >= n) return 0
+
+    arr[x] = getRandom(m)
+    if (!uniqueRandomFillArrayChecker(0, x)) {
+        uniqueRandomFillArray(x, n, m)
+    }
+
+    uniqueRandomFillArray(x + 1, n, m)
+    return 0
 }
 
 //inputArray(0, 10)
 
 //outputArray(0, 10)
 
-uniqueRandomFillArray(0, 10)
+uniqueRandomFillArray(0, 10, 15)
 outputArray(0, 10)
 
 console.log(countAverageArray(0, 10))
