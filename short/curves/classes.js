@@ -8,6 +8,21 @@ class Vector {
     }
 }
 
+class Mouse {
+    constructor (w, h, up = true, x, y) {
+        this.w = w
+        this.h = h
+        this.x = x
+        this.y = y
+        this.up = up
+    }
+
+    update(x, y) {
+        this.x = cypher(x, this.w)
+        this.y = cypher(this.h - y, this.h)
+    }
+}
+
 class Curve {
     constructor (n, w, h) {
         this.n = n
@@ -36,6 +51,12 @@ class Curve {
         }
         context.stroke()
     }
+
+    update(x, y) {
+        this.arr[Math.floor(decypher(x, this.n))] = y
+        console.log(Math.floor(decypher(x, this.n)), y)
+    }
 }
 
+export { Mouse }
 export { Curve }
