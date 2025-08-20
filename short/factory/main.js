@@ -7,18 +7,15 @@ document.body.style.justifyContent = 'center'
 
 function factory() {
     let x = 0
-    function count1() {
+    function count() {
         console.log(x)
         x += 1
     }
-    function count2() {
-        console.log(x)
-        x += 1
-    }
-    return [count1, count2]
+    return count
 }
 
-let [a, b] = factory()
+let a = factory()
+let b = factory()
 
 _Button1.onclick = () => {
     a()
