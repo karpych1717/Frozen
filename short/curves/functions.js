@@ -2,11 +2,16 @@ import { context } from './script.js'
 import { WIDTH } from './script.js'
 import { HEIGHT } from './script.js'
 import { curve } from './script.js'
+import { transform } from './script.js'
 import { mouse } from './script.js'
 
+let cycle_count = 0
 function render () {
   context.clearRect(0, 0, WIDTH, HEIGHT)
   curve.drawIt(context)
+  transform.iterate(curve)
+  transform.drawIt(curve, context)
+  cycle_count++;
   requestAnimationFrame(render)
 }
 
