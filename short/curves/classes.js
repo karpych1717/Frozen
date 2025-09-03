@@ -93,19 +93,20 @@ class Transform {
 
     iterate(curve) {
         let g = new Array(this.N).fill(0)
-        let plus = new Array(this.N).fill(0)
-        let minus = new Array(this.N).fill(0)
-        for (let i = 0; i < this.N; i += 1) {
-            plus[i] = this.arr[i]
-            minus[i] = this.arr[i]
-        }
 
+        let original_value, decreaced_result, increased_result
         for (let i = 0; i < this.N; i += 1) {
-            plus[i] = this.arr[i] + this.h
-            minus[i] = this.arr[i] - this.h
-            g[i] = (this.evaluate(curve, plus) - this.evaluate(curve, minus)) / (2 * this.h)
-            plus[i] = this.arr[i]
-            minus[i] = this.arr[i]
+            original_value = this.arr[i]
+
+            this.arr[i] = original_value - this.h
+            decreaced_result = this.evaluate(curve, this.arr)
+
+            this.arr[i] = original_value + this.h
+            increased_result = this.evaluate(curve, this.arr)
+
+            g[i] = (increased_result - decreaced_result) / (2 * this.h)
+            
+            this.arr[i] = original_value
         }
 
         for (let i = 0; i < this.N; i += 1) {
