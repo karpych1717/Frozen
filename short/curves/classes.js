@@ -65,26 +65,27 @@ class Curve {
 
 class Transform {
     constructor (n) {
-        this.n = n
-        this.N = 2 * this.n + 1
-        this.arr = new Array(this.N).fill(0)
-        this.h = 0.1
-        this.lr = 0.03
+        this.n = n // transform array length
+        this.N = 2 * this.n + 1 // data length
+        // data[0] = a_0, data[1, n] = A, data[n+1, 2*n] = B
+        this.data = new Array(this.N).fill(0)
+        this.h = 0.1   // parameter shift
+        this.lr = 0.03 // learning rate
     }
 
-    f(x, array) {
-        let ans = array[0]
+    make_transform(x) {
+        let ans = this.data[0]
         for (let i = 0; i < this.n; i += 1) {
-            ans += array[i+1] * Math.cos(Math.PI * i * x) + array[i + this.n + 1] * Math.sin(Math.PI * i * x)
+            ans += this.data[i+1] * Math.cos(Math.PI * i * x) + this.data[i + this.n + 1] * Math.sin(Math.PI * i * x)
         }
         return ans
     }
 
-    evaluate(curve, array) {
+    evaluate_fitness(curve) {
         let ans = 0;
         let vi
         for (let i = 0; i < curve.n; i += 1) {
-            vi = (this.f(curve.arr[i].x, array) + curve.arr[i].y)
+            vi = (this.make_transform(curve.arr[i].x) + curve.arr[i].y)
             ans += vi * vi
         }
         ans /= this.n
@@ -92,25 +93,25 @@ class Transform {
     }
 
     iterate(curve) {
-        let g = new Array(this.N).fill(0)
+        let gradient = new Array(this.N).fill(0)
 
         let original_value, decreaced_result, increased_result
         for (let i = 0; i < this.N; i += 1) {
-            original_value = this.arr[i]
+            original_value = this.data[i]
 
-            this.arr[i] = original_value - this.h
-            decreaced_result = this.evaluate(curve, this.arr)
+            this.data[i] = original_value - this.h
+            decreaced_result = this.evaluate_fitness(curve)
 
-            this.arr[i] = original_value + this.h
-            increased_result = this.evaluate(curve, this.arr)
+            this.data[i] = original_value + this.h
+            increased_result = this.evaluate_fitness(curve)
 
-            g[i] = (increased_result - decreaced_result) / (2 * this.h)
+            gradient[i] = (increased_result - decreaced_result) / (2 * this.h)
             
-            this.arr[i] = original_value
+            this.data[i] = original_value
         }
 
         for (let i = 0; i < this.N; i += 1) {
-            this.arr[i] -= this.lr * g[i]
+            this.data[i] -= this.lr * gradient[i]
         }
     }
 
@@ -120,13 +121,13 @@ class Transform {
         context.beginPath()
         context.moveTo(
             decypher(curve.arr[0].x, curve.w),
-            decypher(this.f(curve.arr[0].x, this.arr), curve.h)
+            decypher(this.make_transform(curve.arr[0].x, this.data), curve.h)
         )
         
         for (let i = 1; i < curve.n; i++) {
             context.lineTo(
                 decypher(curve.arr[i].x, curve.w),
-                decypher(this.f(curve.arr[i].x, this.arr), curve.h)
+                decypher(this.make_transform(curve.arr[i].x, this.data), curve.h)
             )
         }
         context.stroke()
