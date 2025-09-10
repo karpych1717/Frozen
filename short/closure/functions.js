@@ -4,8 +4,8 @@ import { context } from './main.js'
 function makeBall(x_, y_) {
   let x = x_
   let y = y_
-  let vx = 0 * Math.sin(2 * Math.PI * Math.random())
-  let vy = 0 * Math.cos(2 * Math.PI * Math.random())
+  let vx = 5 * Math.sin(2 * Math.PI * Math.random())
+  let vy = 5 * Math.cos(2 * Math.PI * Math.random())
   let r = 10
   let c = "blue"
 
@@ -22,23 +22,10 @@ function makeBall(x_, y_) {
     vx += ax
     vy += ay
 
-    if (r >= x) {
-      x = r
-      vx = Math.abs(vx)
-    }
-    if (x >= xBoundary - r) {
-      x = xBoundary - r
-      vx = -Math.abs(vx)
-    }
-
-    if (r >= y) {
-      y = r
-      vy = Math.abs(vy)
-    }
-    if (y >= yBoundary - r) {
-      y = yBoundary - r
-      vy = -Math.abs(vy)
-    }
+    if (r >= x) vx = Math.abs(vx)
+    if (x >= xBoundary - r) vx = -Math.abs(vx)
+    if (r >= y) vy = Math.abs(vy)
+    if (y >= yBoundary - r) vy = -Math.abs(vy)
 
     context.beginPath()
     context.arc(x, y, r, 0, 2 * Math.PI)
