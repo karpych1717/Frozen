@@ -4,8 +4,8 @@ import { context } from './main.js'
 function makeBall(x_, y_) {
   let x = x_
   let y = y_
-  let vx = 5 * Math.sin(2 * Math.PI * Math.random())
-  let vy = 5 * Math.cos(2 * Math.PI * Math.random())
+  let vx = 0 * Math.sin(2 * Math.PI * Math.random())
+  let vy = 0 * Math.cos(2 * Math.PI * Math.random())
   let r = 10
   let c = "blue"
 
@@ -16,11 +16,11 @@ function makeBall(x_, y_) {
   let yBoundary = 500
 
   function displayAndMove(context) {
+    x += vx + ax / 2
+    y += vy + ay / 2
+
     vx += ax
     vy += ay
-    
-    x += vx
-    y += vy
 
     if (r >= x) {
       x = r
