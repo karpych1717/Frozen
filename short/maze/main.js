@@ -46,13 +46,45 @@ function dfs(x, y) {
         permutation.sort()
         //if (x == 1 && y == 12) console.log(rand, permutation[rand])
         if (permutation[rand] == 0) {
-            if (used[x-2][y] + used[x-2][y-1] + used[x-2][y+1] + used[x-1][y-1] + used[x-1][y+1] == 0) dfs(x-1, y)
+            if (
+                used[x-2][y] +
+                used[x-2][y-1] +
+                used[x-2][y+1] +
+                used[x-1][y-1] +
+                used[x-1][y+1] == 0
+            ) {
+                dfs(x-1, y)
+            }
         } else if (permutation[rand] == 1) {
-            if (used[x+2][y] + used[x+2][y-1] + used[x+2][y+1] + used[x+1][y-1] + used[x+1][y+1] == 0) dfs(x+1, y)
+            if (
+                used[x+2][y] +
+                used[x+2][y-1] +
+                used[x+2][y+1] +
+                used[x+1][y-1] +
+                used[x+1][y+1] == 0
+            ) {
+                dfs(x+1, y)
+            }
         } else if (permutation[rand] == 2) {
-            if (used[x][y-2] + used[x-1][y-2] + used[x+1][y-2] + used[x-1][y-1] + used[x+1][y-1] == 0) dfs(x, y-1)
+            if (
+                used[x][y-2] +
+                used[x-1][y-2] +
+                used[x+1][y-2] +
+                used[x-1][y-1] +
+                used[x+1][y-1] == 0
+            ) {
+                dfs(x, y-1)
+            }
         } else {
-            if (used[x][y+2] + used[x-1][y+2] + used[x+1][y+2] + used[x-1][y+1] + used[x+1][y+1] == 0) dfs(x, y+1)
+            if (
+                used[x][y+2] +
+                used[x-1][y+2] +
+                used[x+1][y+2] +
+                used[x-1][y+1] +
+                used[x+1][y+1] == 0
+            ) {
+                dfs(x, y+1)
+            }
         }
         permutation[rand] = 1000
     }
