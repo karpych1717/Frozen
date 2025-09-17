@@ -41,7 +41,7 @@ function dfs(x, y) {
     if (x == 1 || y == 1 || x == 23 || y == 23) return
 
     let permutation = new Array(0, 1, 2, 3)
-    for (let i = 4; i > 1; i--) {
+    for (let i = 4; i > 0; i--) {
         let rand = Math.floor(Math.random() * i)
         permutation.sort()
         //if (x == 1 && y == 12) console.log(rand, permutation[rand])
