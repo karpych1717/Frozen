@@ -15,7 +15,19 @@ const context = _canvas.getContext('2d')
 const data = new Iterable([5, 6, 7])
 let iterator = data.getIterator()
 
-console.log(iterator.next())
-console.log(iterator.next())
-console.log(iterator.next())
-console.log(iterator.next())
+
+function generator() {
+    let a = 0, b = 1;
+    while (true) {
+        yield a + b;
+        b = a + b
+        a = b - a
+    }
+}
+
+let fibonachi = generator();
+console.log(fibonachi.next())
+console.log(fibonachi.next())
+console.log(fibonachi.next())
+console.log(fibonachi.next())
+console.log(fibonachi.next())
