@@ -18,25 +18,31 @@ class Circle {
 class Iterator {
   constructor (array) {
     this.array = array
-    this.iterator = array[0]
-    this.idx = 0
-  }
-
-  get () {
-    return this.iterator
-  }
-
-  last () {
-    if (this.idx >= this.array.length - 1) return true
-    return false
+    this.idx = -1
+    this.value = undefined
+    this.done = false
   }
 
   next () {
-    if (this.last()) return null
     this.idx++
-    this.iterator = this.array[this.idx]
-    return 0
+    if (this.idx >= this.array.length) {
+      this.value = undefined
+      this.done = true
+      return [undefined, true]
+    }
+    this.value = this.array[this.idx]
+    return [this.array[this.idx], false]
   }
 }
 
-export default Iterator
+class Iterable {
+  constructor (array) {
+    this.array = array
+  }
+
+  getIterator () {
+    return new Iterator(this.array)
+  }
+}
+
+export default Iterable
