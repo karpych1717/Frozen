@@ -16,7 +16,7 @@ const data = new Iterable([5, 6, 7])
 let iterator = data.getIterator()
 
 
-function generator() {
+function* generator() {
     let a = 0, b = 1;
     while (true) {
         yield a + b;
