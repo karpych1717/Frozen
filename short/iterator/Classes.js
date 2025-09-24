@@ -19,19 +19,14 @@ class Iterator {
   constructor (array) {
     this.array = array
     this.idx = -1
-    this.value = undefined
-    this.done = false
   }
 
   next () {
     this.idx++
     if (this.idx >= this.array.length) {
-      this.value = undefined
-      this.done = true
-      return [undefined, true]
+      return {value: undefined, done: true}
     }
-    this.value = this.array[this.idx]
-    return [this.array[this.idx], false]
+    return {value: this.array[this.idx], done: false}
   }
 }
 
