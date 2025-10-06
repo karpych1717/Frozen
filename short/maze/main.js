@@ -15,29 +15,33 @@ const context = _canvas.getContext('2d')
 const field = new Field(-1, -1, _canvas.width, _canvas.height, 25, 25)
 
 let used = new Array(25)
-for (let i = 0; i < 25; i += 1) {
-    used[i] = new Array(25).fill(0)
+for (let i = 0; i < 25; i += 1) used[i] = new Array(25).fill(0)
+
+setUpArrays()
+let maze = generator(2, 12)
+field.drawIt(context)
+
+_iterateButton.onclick = () => {
+    if (maze.next().done) console.log("done")
+    field.drawIt(context)
 }
 
-for (let i = 0; i < 25; i += 1) {
-    used[0][i] = 1
-    used[i][0] = 1
-    used[24][i] = 1
-    used[i][24] = 1
+function setUpArrays() {
+    for (let i = 0; i < 25; i += 1) {
+        used[0][i] = 1
+        used[i][0] = 1
+        used[24][i] = 1
+        used[i][24] = 1
 
-    field.field[0][i].val = 100
-    field.field[i][0].val = 100
-    field.field[24][i].val = 100
-    field.field[i][24].val = 100
+        field.field[0][i].val = 100
+        field.field[i][0].val = 100
+        field.field[24][i].val = 100
+        field.field[i][24].val = 100
+    }
+
+    field.field[0][12].val = 0
+    field.field[1][12].val = 0
 }
-
-let last = new Array(25)
-for (let i = 0; i < 25; i += 1) {
-    last[i] = new Array(25).fill(0)
-}
-
-field.field[0][12].val = 0
-field.field[1][12].val = 0
 
 function isDiggable(x, y) {
     if (x == 1 || y == 1 || x == 23 || y == 23) return false
@@ -49,27 +53,33 @@ function isDiggable(x, y) {
     if (used[x][y-1]) if (used[x+1][y+1] || used[x-1][y+1]) return false
     if (used[x+1][y]) if (used[x-1][y+1] || used[x-1][y-1]) return false
     if (used[x][y+1]) if (used[x+1][y-1] || used[x-1][y-1]) return false
-
     return true
 }
 
-function dfs(x, y) {
-    if (used[x][y] == 1 || !isDiggable(x, y)) return 
-    used[x][y] = 1
+function* generator(x, y) {
+    used[x][y] = true
     field.field[x][y].val = 0
-
+    yield
+    
     let permutation = new Array(0, 1, 2, 3)
     for (let i = 4; i > 0; i--) {
         let rand = Math.floor(Math.random() * i)
-        //if (x == 1 && y == 12) console.log(rand, permutation[rand])
-        if (permutation[rand] == 0 && isDiggable(x-1, y)) dfs(x-1, y)
-        if (permutation[rand] == 1 && isDiggable(x+1, y)) dfs(x+1, y)
-        if (permutation[rand] == 2 && isDiggable(x, y-1)) dfs(x, y-1)
-        if (permutation[rand] == 3 && isDiggable(x, y+1)) dfs(x, y+1)
+        if (permutation[rand] == 0 && isDiggable(x-1, y)) {
+            let maze = generator(x-1, y)
+            while (!maze.next().done) yield
+        }
+        if (permutation[rand] == 1 && isDiggable(x+1, y)) {
+            let maze = generator(x+1, y)
+            while (!maze.next().done) yield
+        }
+        if (permutation[rand] == 2 && isDiggable(x, y-1)) {
+            let maze = generator(x, y-1)
+            while (!maze.next().done) yield
+        }
+        if (permutation[rand] == 3 && isDiggable(x, y+1)) {
+            let maze = generator(x, y+1)
+            while (!maze.next().done) yield
+        }
         permutation.splice(rand, 1)
     }
 }
-
-dfs(2, 12)
-
-field.drawIt(context)
