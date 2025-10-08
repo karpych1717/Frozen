@@ -1,6 +1,6 @@
 /* global _canvas */
 'use strict'
-import Circle from './Classes.js'
+import Circle from './Circle.js'
 
 _canvas.width = 500
 _canvas.height = 300

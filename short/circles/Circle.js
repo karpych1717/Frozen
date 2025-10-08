@@ -13,6 +13,13 @@ class Circle {
     context.fill()
     context.stroke()
   }
+<<<<<<< HEAD
+=======
+
+  getRadius () {
+    return this.r
+  }
+>>>>>>> c5d8e7526032d3364816a8981ff16fa3a7f2248f
 }
 
 export default Circle

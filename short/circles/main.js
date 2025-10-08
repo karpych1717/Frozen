@@ -1,9 +1,16 @@
 /* global _canvas */
 'use strict'
 import Circle from './Circle.js'
+<<<<<<< HEAD
 
 _canvas.width = 500
 _canvas.height = 300
+=======
+import Vector from './Vector.js'
+
+_canvas.width = 500
+_canvas.height = 500
+>>>>>>> c5d8e7526032d3364816a8981ff16fa3a7f2248f
 _canvas.style.background = 'gray'
 _canvas.style.border = '3px solid black'
 
@@ -17,10 +24,81 @@ for (let i = 0; i < 10; i++) {
     arr[i] = new Circle(
         frame + Math.random() * (_canvas.width - 2 * frame),
         frame + Math.random() * (_canvas.height - 2 * frame),
+<<<<<<< HEAD
         20,
         Math.random()
+=======
+        40,
+        'rgb(' + Math.random()*255 + ', ' + Math.random()*255 + ', ' + Math.random()*255 + ')'
+>>>>>>> c5d8e7526032d3364816a8981ff16fa3a7f2248f
     )
 }
 for (let i = 0; i < 10; i++) {
     arr[i].drawIt(context)
+<<<<<<< HEAD
+=======
+}
+
+function fIndividual(idx, arr) {
+    let answer = 0
+    for (let i = 0; i < arr.length; i++) {
+        if (i == idx) continue
+        answer += Math.max(0,
+            arr[idx].r + arr[i].r - Math.sqrt(
+                (arr[idx].x - arr[i].x) ** 2 +
+                (arr[idx].y - arr[i].y) ** 2
+            )
+        )
+    }
+    return answer
+}
+
+function f(arr) {
+    let answer = 0
+    for (let i = 0; i < arr.length; i++) {
+        answer += fIndividual(i, arr)
+    }
+    return answer
+}
+
+function fDerivativeIndividual(idx, dx, dy, arr) {
+    const fCallX1 = f(arr)
+    arr[idx].x += dx
+    const fCallX2 = f(arr)
+    arr[idx].x -= dx
+    const fCallY1 = f(arr)
+    arr[idx].y += dy
+    const fCallY2 = f(arr)
+    arr[idx].y -= dy
+    return new Vector((fCallX2 - fCallX1) / dx, (fCallY2 - fCallY1) / dy)
+}
+
+function fDerivative(dx, dy, arr) {
+    const D = new Array(arr.length)
+    for (let i = 0; i < arr.length; i++) {
+        D[i] = fDerivativeIndividual(i, dx, dy, arr)
+    }
+    return D
+}
+
+function cycle(dx, dy, arr) {
+    const D = fDerivative(dx, dy, arr)
+    for (let i = 0; i < arr.length; i++) {
+        arr[i].x -= D[i].x
+        arr[i].y -= D[i].y
+    }
+}
+
+//console.log(f(arr))
+//console.log(fDerivative(10, 10, arr))
+
+document.onpointerdown = () => {
+    for (let i = 0; i < 1; i++) {
+        cycle(10, 10, arr)
+    }
+    context.clearRect(0, 0, 500, 500)
+    for (let i = 0; i < 10; i++) {
+        arr[i].drawIt(context)
+    }
+>>>>>>> c5d8e7526032d3364816a8981ff16fa3a7f2248f
 }
