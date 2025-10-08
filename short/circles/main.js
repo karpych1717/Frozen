@@ -1,16 +1,10 @@
 /* global _canvas */
 'use strict'
 import Circle from './Circle.js'
-<<<<<<< HEAD
-
-_canvas.width = 500
-_canvas.height = 300
-=======
 import Vector from './Vector.js'
 
 _canvas.width = 500
 _canvas.height = 500
->>>>>>> c5d8e7526032d3364816a8981ff16fa3a7f2248f
 _canvas.style.background = 'gray'
 _canvas.style.border = '3px solid black'
 
@@ -24,19 +18,12 @@ for (let i = 0; i < 10; i++) {
     arr[i] = new Circle(
         frame + Math.random() * (_canvas.width - 2 * frame),
         frame + Math.random() * (_canvas.height - 2 * frame),
-<<<<<<< HEAD
-        20,
-        Math.random()
-=======
         40,
         'rgb(' + Math.random()*255 + ', ' + Math.random()*255 + ', ' + Math.random()*255 + ')'
->>>>>>> c5d8e7526032d3364816a8981ff16fa3a7f2248f
     )
 }
 for (let i = 0; i < 10; i++) {
     arr[i].drawIt(context)
-<<<<<<< HEAD
-=======
 }
 
 function fIndividual(idx, arr) {
@@ -100,5 +87,4 @@ document.onpointerdown = () => {
     for (let i = 0; i < 10; i++) {
         arr[i].drawIt(context)
     }
->>>>>>> c5d8e7526032d3364816a8981ff16fa3a7f2248f
 }
