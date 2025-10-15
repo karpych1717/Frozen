@@ -21,7 +21,7 @@ setUpArrays()
 let maze = generator(2, 12)
 field.drawIt(context)
 
-let agent = new Agent(10, 100, 0, 2, 10)
+let agent = new Agent(9, 250, 0, 2, 10)
 agent.drawIt(context)
 
 _iterateButton.onclick = () => {
