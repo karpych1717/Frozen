@@ -15,6 +15,13 @@ class Circle {
   }
 }
 
+class Vector {
+  constructor (x, y) {
+    this.x = x
+    this.y = y
+  }
+}
+
 class Rectangle {
   constructor (x, y, w, h, val, border_px = 0) {
     this.x = x
@@ -72,4 +79,56 @@ class Field {
   }
 }
 
-export default Field
+class Snake {
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+    this.array = new Array()
+  }
+  
+  push(x, y) {
+    this.array.push(new Vector(x, y))
+  }
+
+  drawIt(context, col) {
+    context.beginPath()
+    context.moveTo(this.x, this.y)
+    for (let i = 0; i < this.array.length; i++) {
+      context.lineTo(this.array[i].x, this.array[i].y)
+    }
+    context.fillStyle = col;
+    context.fill()
+    context.stroke()
+  }
+}
+
+class Agent extends Rectangle {
+  constructor(x, y, vx, vy, a) {
+    super(x, y, a, a, 255, 0)
+    this.x = x
+    this.y = y
+    this.vx = vx
+    this.vy = vy
+    this.a = a
+    this.path = new Snake(x, y)
+  }
+
+  drawIt (context) {
+    this.path.drawIt(context)
+
+    context.beginPath()
+    context.fillStyle = `rgb(${255}, ${255}, ${255})`
+    context.fillRect(this.x - this.a / 2, this.y - this.a / 2, this.x + this.a / 2, this.y + this.a / 2)
+    context.fill()
+    context.stroke()
+  }
+
+  update(dt) {
+    this.x += this.vx * dt
+    this.y += this.vy * dt
+
+    this.path.push(this.x, this.y)
+  }
+}
+
+export { Field, Agent }

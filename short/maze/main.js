@@ -1,6 +1,6 @@
 /* global _canvas */
 'use strict'
-import Field from './Classes.js'
+import { Field, Agent } from './Classes.js'
 
 _canvas.width = 500
 _canvas.height = 500
@@ -20,6 +20,9 @@ for (let i = 0; i < 25; i += 1) used[i] = new Array(25).fill(0)
 setUpArrays()
 let maze = generator(2, 12)
 field.drawIt(context)
+
+let agent = new Agent(10, 100, 0, 2, 10)
+agent.drawIt(context)
 
 _iterateButton.onclick = () => {
     if (maze.next().done) console.log("done")
