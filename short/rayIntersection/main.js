@@ -2,6 +2,7 @@
 'use strict'
 import Circle from './Circle.js'
 import Vector from './Vector.js'
+import Line from './Line.js'
 
 _canvas.width = 500
 _canvas.height = 500
@@ -15,6 +16,10 @@ const context = _canvas.getContext('2d')
 
 const A = new Circle(200, 250, 10, "red")
 const B = new Circle(300, 250, 10, "blue")
+const ray = new Line(A.x, A.y, B.x, B.y)
+
+let point = new Vector(0, 0)
+const C = new Circle(0, 0, 10, "Yellow")
 draw(context)
 
 
@@ -26,6 +31,23 @@ function draw(context) {
     context.clearRect(0, 0, 500, 500)
     A.drawIt(context)
     B.drawIt(context)
+    
+    point = ray.intersectX(0);
+    C.x = point.x
+    C.y = point.y
+    C.drawIt(context)
+    point = ray.intersectX(500);
+    C.x = point.x
+    C.y = point.y
+    C.drawIt(context)
+    point = ray.intersectY(0);
+    C.x = point.x
+    C.y = point.y
+    C.drawIt(context)
+    point = ray.intersectY(500);
+    C.x = point.x
+    C.y = point.y
+    C.drawIt(context)
 }
 
 function clickHandler(event) {
@@ -57,6 +79,7 @@ function moveHandler(event, context) {
     if (moveA) {
         A.x = event.offsetX
         A.y = event.offsetY
+        ray.update(A.x, A.y, B.x, B.y)
 
         draw(context)
     }
@@ -64,6 +87,7 @@ function moveHandler(event, context) {
     if (moveB) {
         B.x = event.offsetX
         B.y = event.offsetY
+        ray.update(A.x, A.y, B.x, B.y)
 
         draw(context)
     }
