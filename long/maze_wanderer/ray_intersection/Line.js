@@ -4,6 +4,8 @@ class Line {
   constructor (x0, y0, x1, y1) {
     this.x0 = x0
     this.y0 = y0
+    this.x1 = x1
+    this.y1 = y1
     this.dx = x1 - x0
     this.dy = y1 - y0
 
@@ -12,9 +14,18 @@ class Line {
     this.dy_normalized = this.dy / this.len2
   }
 
+  drawIt(context) {
+    context.beginPath()
+    context.moveTo(this.x0, this.y0)
+    context.lineTo(this.x1, this.y1)
+    context.stroke()
+  }
+
   update(x0, y0, x1, y1) {
     this.x0 = x0
     this.y0 = y0
+    this.x1 = x1
+    this.y1 = y1
     this.dx = x1 - x0
     this.dy = y1 - y0
 

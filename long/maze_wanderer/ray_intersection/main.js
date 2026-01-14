@@ -20,51 +20,83 @@ const B = new Circle(300, 250, 10, "blue")
 const ray = new Line(A.x, A.y, B.x, B.y)
 
 const C = new Circle(0, 0, 5, "yellow")
-const S = new Square(100, 100, 100, "green")
 const border = new Square(0, 0, 500, "blue")
+
+const SqMoveId = 3
+const squares = new Array(5)
+for (let i = 0; i < squares.length; i++) {
+  squares[i] = new Square(100, 100, 50, "green")
+}
 let p = new Vector(0, 0)
 
 draw(context)
 
 
 
-let moveA = false
-let moveB = false
-let moveS = false
+let move = 0
 
-function draw(context) {
+function draw(context) { // work in progress
     context.clearRect(0, 0, 500, 500)
     A.drawIt(context)
     B.drawIt(context)
-    S.drawIt(context)
-    
+    ray.drawIt(context)
+
     p.x = 1000000
     p.y = 1000000
+    
+    for (let i = 0; i < squares.length; i++) {
+      squares[i].drawIt(context)
+    }
 
     let intersects = border.getIntersectByLine(ray)
-    intersects = intersects.concat(S.getIntersectByLine(ray))
     for (let i = 0; i < intersects.length; i++) {
+      C.x = intersects[i].x
+      C.y = intersects[i].y
+      C.drawIt(context)
+      
+      if ((A.x >= B.x && C.x >= B.x) || (A.x <= B.x && C.x <= B.x)) {
+        if (Math.abs(B.x - C.x) < Math.abs(B.x - p.x)) {
+          p.x = intersects[i].x
+          p.y = intersects[i].y
+          break
+        }
+      }
+
+      if (A.x == B.x) {
+        if ((A.y >= B.y && C.y >= B.y) || (A.y <= B.y && C.y <= B.y)) {
+          if (Math.abs(B.y - C.y) < Math.abs(B.y - p.y)) {
+            p.x = intersects[i].x
+            p.y = intersects[i].y
+            break
+          }
+        }
+      }
+    }
+    for (let idx = 0; idx < squares.length; idx++) {
+      intersects = squares[idx].getIntersectByLine(ray)
+      for (let i = 0; i < intersects.length; i++) {
         C.x = intersects[i].x
         C.y = intersects[i].y
         C.drawIt(context)
-
+        
         if ((A.x >= B.x && C.x >= B.x) || (A.x <= B.x && C.x <= B.x)) {
-            if (Math.abs(B.x - C.x) < Math.abs(B.x - p.x)) {
-                p.x = C.x
-                p.y = C.y
-            }
+          if (Math.abs(B.x - C.x) < Math.abs(B.x - p.x)) {
+            p.x = intersects[i].x
+            p.y = intersects[i].y
+          }
         }
 
         if (A.x == B.x) {
-            if ((A.y >= B.y && C.y >= B.y) || (A.y <= B.y && C.y <= B.y)) {
-                if (Math.abs(B.y - C.y) < Math.abs(B.y - p.y)) {
-                    p.x = C.x
-                    p.y = C.y
-                }
+          if ((A.y >= B.y && C.y >= B.y) || (A.y <= B.y && C.y <= B.y)) {
+            if (Math.abs(B.y - C.y) < Math.abs(B.y - p.y)) {
+              p.x = intersects[i].x
+              p.y = intersects[i].y
             }
+          }
         }
+      }
     }
-
+    console.log(p.x, p.y)
     context.beginPath()
     context.moveTo(p.x, p.y)
     context.lineTo(B.x, B.y)
@@ -76,68 +108,48 @@ function draw(context) {
 }
 
 function clickHandler(event) {
-    //console.log(event.offsetX, event.offsetY)
+  //console.log(event.offsetX, event.offsetY)
 
-    let distanceA = (A.x - event.offsetX) ** 2 + (A.y - event.offsetY) ** 2
-    let distanceB = (B.x - event.offsetX) ** 2 + (B.y - event.offsetY) ** 2
-    let onA = false
-    let onB = false
-    let onS = false
-    if (distanceA <= A.r ** 2) onA = true
-    if (distanceB <= B.r ** 2) onB = true
-
-    if (S.x <= event.offsetX &&
-        event.offsetX <= S.x + S.l &&
-        S.y <= event.offsetY &&
-        event.offsetY <= S.y + S.l
-    ) onS = true
-
-    if (onA && !moveA) {
-        moveA = true
-        moveB = false
-        moveS = false
-    } else if (onB && !moveB) {
-        moveA = false
-        moveB = true
-        moveS = false
-    } else if (onS && !moveS) {
-        moveA = false
-        moveB = false
-        moveS = true
-    } else {
-        moveA = false
-        moveB = false
-        moveS = false
+  if (A.onIt(event.offsetX, event.offsetY) && move != 1) {
+    move = 1
+  } else if (B.onIt(event.offsetX, event.offsetY) && move != 2) {
+    move = 2
+  } else {
+    let moveOld = move
+    move = 0
+    for (let i = 0; i < squares.length; i++) {
+      if (squares[i].onIt(event.offsetX, event.offsetY) && moveOld != i + SqMoveId) {
+        move = i + SqMoveId
+        break
+      }
     }
-
+  }
+  console.log(move)
 }
 
 function moveHandler(event, context) {
-    //console.log(event.offsetX, event.offsetY)
+  //console.log(event.offsetX, event.offsetY)
+  console.log(move)
+  if (move == 1) {
+    A.x = event.offsetX
+    A.y = event.offsetY
+    ray.update(A.x, A.y, B.x, B.y)
+  }
 
-    if (moveA) {
-        A.x = event.offsetX
-        A.y = event.offsetY
-        ray.update(A.x, A.y, B.x, B.y)
+  if (move == 2) {
+    B.x = event.offsetX
+    B.y = event.offsetY
+    ray.update(A.x, A.y, B.x, B.y)
+  }
 
-        draw(context)
-    }
+  if (move > 2) {
+    squares[move - SqMoveId].x = event.offsetX - squares[move - SqMoveId].l / 2
+    squares[move - SqMoveId].y = event.offsetY - squares[move - SqMoveId].l / 2
+  }
 
-    if (moveB) {
-        B.x = event.offsetX
-        B.y = event.offsetY
-        ray.update(A.x, A.y, B.x, B.y)
-
-        draw(context)
-    }
-
-    if (moveS) {
-        S.x = event.offsetX - S.l / 2
-        S.y = event.offsetY - S.l / 2
-
-        draw(context)
-    }
-
+  if (move != 0) {
+    draw(context)
+  }
 }
 
 _canvas.onpointerdown = (event) => clickHandler(event)

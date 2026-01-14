@@ -14,6 +14,13 @@ class Circle {
     context.stroke()
   }
 
+  onIt (x, y) {
+    if ((this.x - x) ** 2 + (this.y - y) ** 2 <= this.r ** 2) {
+      return true
+    }
+    return false
+  }
+
   getRadius () {
     return this.r
   }

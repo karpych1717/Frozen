@@ -17,6 +17,15 @@ class Square {
     context.stroke()
   }
 
+  onIt (x, y) {
+    if (this.x <= x && x <= this.x + this.l
+      && this.y <= y && y <= this.y + this.l
+    ) {
+      return true
+    }
+    return false
+  }
+
   pointInArray(array, point) {
     for (let i = 0; i < array.length; i++) {
       if (array[i].x == point.x && array[i].y == point.y) {
