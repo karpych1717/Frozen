@@ -1,4 +1,3 @@
-
 import Vector from './Vector.js'
 import Line from './Line.js'
 
