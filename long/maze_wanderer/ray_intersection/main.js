@@ -22,10 +22,19 @@ const ray = new Line(A.x, A.y, B.x, B.y)
 const C = new Circle(0, 0, 5, "yellow")
 const border = new Square(0, 0, 500, "blue")
 
+const moveSpeedB = 3
+let mouseToSquare = new Vector(0, 0)
+
 const SqMoveId = 3
-const squares = new Array(5)
+const squareSide = 50
+const squares = new Array(10)
 for (let i = 0; i < squares.length; i++) {
-  squares[i] = new Square(100, 100, 50, "green")
+  squares[i] = new Square(
+    Math.random() * (_canvas.width - squareSide),
+    Math.random() * (_canvas.height - squareSide),
+    squareSide,
+    "green"
+  )
 }
 let p = new Vector(0, 0)
 
@@ -96,7 +105,7 @@ function draw(context) { // work in progress
         }
       }
     }
-    console.log(p.x, p.y)
+    
     context.beginPath()
     context.moveTo(p.x, p.y)
     context.lineTo(B.x, B.y)
@@ -107,50 +116,71 @@ function draw(context) { // work in progress
     context.lineWidth = 1
 }
 
+function pointerUpHandler(event) {
+  move = 0
+}
+
 function clickHandler(event) {
   //console.log(event.offsetX, event.offsetY)
 
-  if (A.onIt(event.offsetX, event.offsetY) && move != 1) {
-    move = 1
-  } else if (B.onIt(event.offsetX, event.offsetY) && move != 2) {
-    move = 2
-  } else {
-    let moveOld = move
-    move = 0
-    for (let i = 0; i < squares.length; i++) {
-      if (squares[i].onIt(event.offsetX, event.offsetY) && moveOld != i + SqMoveId) {
-        move = i + SqMoveId
-        break
-      }
+  let moveOld = move
+  move = 0
+  for (let i = 0; i < squares.length; i++) {
+    if (squares[i].onIt(event.offsetX, event.offsetY) && moveOld != i + SqMoveId) {
+      move = i + SqMoveId
+      mouseToSquare.x = squares[i].x - event.offsetX
+      mouseToSquare.y = squares[i].y - event.offsetY
+      break
     }
   }
-  console.log(move)
 }
 
 function moveHandler(event, context) {
   //console.log(event.offsetX, event.offsetY)
-  console.log(move)
-  if (move == 1) {
-    A.x = event.offsetX
-    A.y = event.offsetY
-    ray.update(A.x, A.y, B.x, B.y)
-  }
-
-  if (move == 2) {
-    B.x = event.offsetX
-    B.y = event.offsetY
-    ray.update(A.x, A.y, B.x, B.y)
-  }
+  A.x = event.offsetX
+  A.y = event.offsetY
 
   if (move > 2) {
-    squares[move - SqMoveId].x = event.offsetX - squares[move - SqMoveId].l / 2
-    squares[move - SqMoveId].y = event.offsetY - squares[move - SqMoveId].l / 2
+    squares[move - SqMoveId].x = event.offsetX + mouseToSquare.x
+    squares[move - SqMoveId].y = event.offsetY + mouseToSquare.y
   }
 
-  if (move != 0) {
+  ray.update(A.x, A.y, B.x, B.y)
+  draw(context)
+}
+
+function keyPressHandler(event) {
+  const angleAB = Math.atan2(A.x - B.x, A.y - B.y)
+  let updateB = false
+  if (event.code === "KeyW") {
+    B.x += moveSpeedB * Math.sin(angleAB)
+    B.y += moveSpeedB * Math.cos(angleAB)
+    updateB = true
+  }
+  if (event.code === "KeyS") {
+    B.x -= moveSpeedB * Math.sin(angleAB)
+    B.y -= moveSpeedB * Math.cos(angleAB)
+    updateB = true
+  }
+  if (event.code === "KeyA") {
+    B.x += moveSpeedB * Math.sin(angleAB + Math.PI / 2)
+    B.y += moveSpeedB * Math.cos(angleAB + Math.PI / 2)
+    updateB = true
+  }
+  if (event.code === "KeyD") {
+    B.x -= moveSpeedB * Math.sin(angleAB + Math.PI / 2)
+    B.y -= moveSpeedB * Math.cos(angleAB + Math.PI / 2)
+    updateB = true
+  }
+  if (updateB) {
+    B.x = Math.min(Math.max(0, B.x), _canvas.width)
+    B.y = Math.min(Math.max(0, B.y), _canvas.height)
+    ray.update(A.x, A.y, B.x, B.y)
     draw(context)
   }
 }
 
+_canvas.onpointerup = (event) => pointerUpHandler(event)
 _canvas.onpointerdown = (event) => clickHandler(event)
 _canvas.onpointermove = (event) => moveHandler(event, context)
+document.addEventListener("keydown", (event) => keyPressHandler(event));
