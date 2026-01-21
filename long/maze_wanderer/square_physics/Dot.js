@@ -5,14 +5,17 @@ class Dot extends Circle {
     super(x, y, r, c)
     this.vx = 0
     this.vy = 0
+    this.va = 0
     this.angle = 0
+    this.speed = 0
   }
 
   update (dt) {
+    this.vx = this.speed * Math.cos(this.angle)
+    this.vy = this.speed * Math.sin(this.angle)
     this.x += this.vx * dt
     this.y += this.vy * dt
-    this.vx = 0
-    this.vy = 0
+    this.angle += this.va * dt
   }
 
   drawIt (context) {
