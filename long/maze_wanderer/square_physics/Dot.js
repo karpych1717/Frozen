@@ -1,34 +1,44 @@
-import Circle from "./Circle.js"
+import Square from "./Square.js"
 
-class Dot extends Circle {
-  constructor (x, y, r, c) {
-    super(x, y, r, c)
+class Dot extends Square {
+  constructor (x, y, a, l, col) {
+    super(x, y, a, l, col)
     this.vx = 0
     this.vy = 0
     this.va = 0
-    this.angle = 0
     this.speed = 0
   }
 
   update (dt) {
-    this.vx = this.speed * Math.cos(this.angle)
-    this.vy = this.speed * Math.sin(this.angle)
+    this.vx = this.speed * Math.cos(this.a)
+    this.vy = this.speed * Math.sin(this.a)
     this.x += this.vx * dt
     this.y += this.vy * dt
-    this.angle += this.va * dt
+    this.a += this.va * dt
   }
 
   drawIt (context) {
     context.beginPath()
-    context.arc(this.x, this.y, this.r, 0, 2 * Math.PI)
-    context.fillStyle = this.c;
+    context.moveTo(
+      this.x + this.l * Math.sqrt(2) * Math.cos(this.a + Math.PI / 4),
+      this.y + this.l * Math.sqrt(2) * Math.sin(this.a + Math.PI / 4)
+    )
+    for (let i = 1; i <= 4; i++) {
+      context.lineTo(
+        this.x + this.l *
+        Math.sqrt(2) * Math.cos(this.a + Math.PI / 4 + Math.PI / 2 * i),
+        this.y + this.l *
+        Math.sqrt(2) * Math.sin(this.a + Math.PI / 4 + Math.PI / 2 * i)
+      )
+    }
+    context.fillStyle = `hsl(${this.col},100%,50%)`;
     context.fill()
     context.stroke()
     context.beginPath()
     context.moveTo(this.x, this.y)
     context.lineTo(
-      this.x + this.r * 2 * Math.cos(this.angle),
-      this.y + this.r * 2 * Math.sin(this.angle)
+      this.x + this.l * 2 * Math.cos(this.a),
+      this.y + this.l * 2 * Math.sin(this.a)
     )
     context.fillStyle = "black";
     context.fill()
