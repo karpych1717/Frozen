@@ -13,13 +13,43 @@ const draw_color_prime = 'rgb(143, 231, 0)'
 const xShift = 40
 const yShift = 40
 
-let x = 200 * Math.random() + 10
-let y = 200 * Math.random() + 10
-
 let angle = Math.PI / 35
 
-let x_prime = x * Math.cos(angle) + y * Math.sin(angle)
-let y_prime = -x * Math.sin(angle) + y * Math.cos(angle)
+
+class Matrix {
+  constructor (h, w, array) {
+    this.h = h
+    this.w = w
+    this.arr = array
+  }
+
+  mult (m2) {
+    if (this.w != m2.h) {
+      console.error("matrix multiplication dimensions error!")
+      return new Matrix (1, 1, [[null]])
+    }
+    let m3Array = new Array(this.h)
+    for (let i = 0; i < this.h; i++) {
+      m3Array[i] = new Array(m2.w)
+      for (let j = 0; j < m2.w; j++) {
+        m3Array[i][j] = 0
+        for (let k = 0; k < this.w; k++) {
+          m3Array[i][j] += this.arr[i][k] * m2.arr[k][j]
+        }
+      }
+    }
+    return new Matrix(m2.w, this.h, m3Array)
+  }
+}
+
+const p = new Matrix(2, 1, [[200 * Math.random() + 10], [200 * Math.random() + 10]])
+
+let transform = new Matrix(2, 2, [
+  [Math.cos(angle), Math.sin(angle)],
+  [-Math.sin(angle), Math.cos(angle)]
+])
+
+let p_prime = transform.mult(p)
 
 _canvas.onpointerdown = clickHandler
 document.onkeydown = keyHandler
@@ -57,11 +87,11 @@ function draw () {
   context.font = 'normal 30px monospace'
 
   context.fillStyle = draw_color
-  context.fillText('x = ' + x, 320, 80)
-  context.fillText('y = ' + y, 320, 110)
+  context.fillText('x = ' + p.arr[0][0], 320, 80)
+  context.fillText('y = ' + p.arr[1][0], 320, 110)
   context.fillStyle = draw_color_prime
-  context.fillText('x\'= ' + x_prime, 320, 150)
-  context.fillText('y\'= ' + y_prime, 320, 180)
+  context.fillText('x\'= ' + p_prime.arr[0][0], 320, 150)
+  context.fillText('y\'= ' + p_prime.arr[1][0], 320, 180)
 
   context.font = 'normal 14px monospace'
   context.fillStyle = 'rgb(54, 0, 0)'
@@ -73,7 +103,7 @@ function draw () {
 
   context.drawImage(
     cursor,
-    xShift + x - 15, yShift + y - 15,
+    xShift + p.arr[0][0] - 15, yShift + p.arr[1][0] - 15,
     30, 30
   )
 
@@ -107,11 +137,10 @@ function drawAxis (name) {
 }
 
 function clickHandler (event) {
-  x = event.offsetX - xShift
-  y = event.offsetY - yShift
+  p.arr[0][0] = event.offsetX - xShift
+  p.arr[1][0] = event.offsetY - yShift
 
-  x_prime = x * Math.cos(angle) + y * Math.sin(angle)
-  y_prime = -x * Math.sin(angle) + y * Math.cos(angle)
+  p_prime = transform.mult(p)
 }
 
 function keyHandler (event) {
@@ -124,6 +153,10 @@ function keyHandler (event) {
       break
   }
 
-  x_prime = x * Math.cos(angle) + y * Math.sin(angle)
-  y_prime = -x * Math.sin(angle) + y * Math.cos(angle)
+  transform = new Matrix(2, 2, [
+    [Math.cos(angle), Math.sin(angle)],
+    [-Math.sin(angle), Math.cos(angle)]
+  ])
+  
+  p_prime = transform.mult(p)
 }
