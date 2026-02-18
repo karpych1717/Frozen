@@ -15,10 +15,11 @@ const yShift = 40
 
 let x = 200 * Math.random() + 10
 let y = 200 * Math.random() + 10
-let x_prime = null
-let y_prime = null
 
 let angle = Math.PI / 35
+
+let x_prime = x * Math.cos(angle) + y * Math.sin(angle)
+let y_prime = -x * Math.sin(angle) + y * Math.cos(angle)
 
 _canvas.onpointerdown = clickHandler
 document.onkeydown = keyHandler
@@ -108,6 +109,9 @@ function drawAxis (name) {
 function clickHandler (event) {
   x = event.offsetX - xShift
   y = event.offsetY - yShift
+
+  x_prime = x * Math.cos(angle) + y * Math.sin(angle)
+  y_prime = -x * Math.sin(angle) + y * Math.cos(angle)
 }
 
 function keyHandler (event) {
@@ -119,4 +123,7 @@ function keyHandler (event) {
       angle += Math.PI / 35
       break
   }
+
+  x_prime = x * Math.cos(angle) + y * Math.sin(angle)
+  y_prime = -x * Math.sin(angle) + y * Math.cos(angle)
 }
