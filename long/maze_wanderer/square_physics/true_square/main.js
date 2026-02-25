@@ -108,10 +108,10 @@ function keyDownHandler(event) {
         a.fxR = -0.001
     }
     if (event.key == 'a') {
-        a.fyR = 0.001
+        a.fyR = -0.001
     }
     if (event.key == 'd') {
-        a.fyR = -0.001
+        a.fyR = 0.001
     }
     if (event.key == 'q') {
         a.va = -0.005
