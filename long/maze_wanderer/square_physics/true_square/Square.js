@@ -77,6 +77,17 @@ class Square extends Point {
     }
     return false
   }
+
+  boundToBox(x1, y1, x2, y2) {
+    this.x = Math.min(Math.max(this.x, 
+      x1),
+      x2
+    )
+    this.y = Math.min(Math.max(this.y, 
+      y1),
+      y2
+    )
+  }
 }
 
 export default Square

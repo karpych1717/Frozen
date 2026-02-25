@@ -2,6 +2,7 @@
 
 import Point from "./Point.js"
 import Square from "./Square.js"
+import SquarePhysics from "./SquarePhysics.js"
 
 _canvas.width = 500
 _canvas.height = 500
@@ -13,12 +14,10 @@ document.body.style.justifyContent = 'center'
 
 const context = _canvas.getContext('2d')
 
-const a = new Square(100, 100, 0, 50, "red")
+const a = new SquarePhysics(100, 100, 0, 50, "red")
 const b = new Square(300, 300, 0, 50, "red")
 
 function update(dt) {
-    a.va = 0
-    b.va = 0
     if (movingId == 1 && spacePressed) {
         a.va = 0.005
     } else if (movingId == 2 && spacePressed) {
@@ -35,6 +34,9 @@ function update(dt) {
         a.col = "red"
         b.col = "red"
     }
+
+    a.boundToBox(0, 0, 500, 500)
+    b.boundToBox(0, 0, 500, 500)
 }
 
 function draw() {
@@ -88,12 +90,34 @@ function mouseMoveHandler(event) {
 }
 
 function keyUpHandler(event) {
+    a.va = 0
+    b.va = 0
+    a.fxR = 0
+    a.fyR = 0
     spacePressed = false
 }
 
 function keyDownHandler(event) {
     if (event.key == ' ') {
         spacePressed = true
+    }
+    if (event.key == 'w') {
+        a.fxR = 0.001
+    }
+    if (event.key == 's') {
+        a.fxR = -0.001
+    }
+    if (event.key == 'a') {
+        a.fyR = 0.001
+    }
+    if (event.key == 'd') {
+        a.fyR = -0.001
+    }
+    if (event.key == 'q') {
+        a.va = -0.005
+    }
+    if (event.key == 'e') {
+        a.va = 0.005
     }
 }
 
