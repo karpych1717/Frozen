@@ -36,6 +36,8 @@ const a = new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.00002, 0.001)
 const Acceleration = 0.001
 
 function update(dt) {
+    a.updateIt(dt)
+    
     for (let i = 0; i < n; i++) {
         for (let j = 0; j < m; j++) {
             if (a.squareIntersecting(map[i][j])) {
@@ -46,7 +48,6 @@ function update(dt) {
         }
     }
 
-    a.updateIt(dt)
     a.boundToBox(0, 0, 500, 500)
 }
 

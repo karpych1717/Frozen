@@ -75,7 +75,6 @@ class SquarePhysics extends Square {
     let a2 = Math.atan2(this.vy, this.vx) + Math.PI
     this.aFx += fF2 * Math.cos(a2)
     this.aFy += fF2 * Math.sin(a2)
-    console.log(fF2)
 
     if (Math.abs(this.vx) < Math.abs(this.aFx * dt)) this.vx = 0
     else if (this.vx < 0) {
