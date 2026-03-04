@@ -46,7 +46,30 @@ for (let i = 16; i < 45; i++) {
 const a = new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.00002, 0.001)
 const Acceleration = 0.001
 
+function checkPosition(sq) {
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+            if (map[i][j] == null) continue;
+            if (sq.squareIntersecting(map[i][j])) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
 function update(dt) {
+    const nextA = a.nextPosition()
+    let nextAx = nextA
+    nextAx.x = a.x
+    if (checkPosition(nextAx)) {
+        a.vx = -0.1 * a.vx
+    }
+    let nextAy = nextA
+    nextAy.y = a.y
+    if (checkPosition(nextAy)) {
+        a.vy = -0.1 * a.vy
+    }
     a.updateIt(dt)
 
     for (let i = 0; i < n; i++) {
@@ -59,6 +82,7 @@ function update(dt) {
             }
         }
     }
+
 
     a.boundToBox(0, 0, 500, 500)
 }
