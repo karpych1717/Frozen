@@ -14,34 +14,50 @@ document.body.style.justifyContent = 'center'
 
 const context = _canvas.getContext('2d')
 
-const a = new SquarePhysics(100, 100, 0, 50, "red")
-const b = new Square(300, 300, 0, 50, "red")
+const n = 50
+const m = 50
+const squareLength = 10
+
+const map = new Array(n)
+for (let i = 0; i < n; i++) {
+    map[i] = new Array(m)
+    for (let j = 0; j < m; j++) {
+        map[i][j] = new Square(
+            squareLength / 2 + i * squareLength,
+            squareLength / 2 + j * squareLength,
+            0,
+            squareLength,
+            "red"
+        )
+    }
+}
+
+const a = new SquarePhysics(100, 100, 0, 50, "null", 9.8, 0.00005)
+const Acceleration = 0.001
 
 function update(dt) {
-    if (movingId == 1 && spacePressed) {
-        a.va = 0.005
-    } else if (movingId == 2 && spacePressed) {
-        b.va = 0.005
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+            if (a.squareIntersecting(map[i][j])) {
+                map[i][j].col = "red"
+            } else {
+                map[i][j].col = "green"
+            }
+        }
     }
 
     a.updateIt(dt)
-    b.updateIt(dt)
-
-    if (a.squareIntersecting(b)) {
-        a.col = "green"
-        b.col = "green"
-    } else {
-        a.col = "red"
-        b.col = "red"
-    }
-
     a.boundToBox(0, 0, 500, 500)
-    b.boundToBox(0, 0, 500, 500)
 }
 
 function draw() {
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+            map[i][j].drawIt(context)
+        }
+    }
+    
     a.drawIt(context)
-    b.drawIt(context)
 }
 
 let told = 0
@@ -58,43 +74,37 @@ function render (time) {
 
 window.requestAnimationFrame(render)
 
-let movingId = 0
-let movingDelta = new Point(0, 0)
-let spacePressed = false
-
 function mouseUpHandler(event) {
     let p = new Point(event.offsetX, event.offsetY)
-    movingId = 0
 }
 
 function pointerDownHandler(event) {
     let p = new Point(event.offsetX, event.offsetY)
-    if (a.isPointIn(p)) {
-        movingId = 1
-        movingDelta = a.pointToCenter(p)
-    } else if (b.isPointIn(p)) {
-        movingId = 2
-        movingDelta = b.pointToCenter(p)
-    } else {
-        movingId = 0
-    }
 }
 
 function mouseMoveHandler(event) {
     let p = new Point(event.offsetX, event.offsetY)
-    if (movingId == 1) {
-        a.transformPosition(p.addPoint(movingDelta))
-    } else if (movingId == 2) {
-        b.transformPosition(p.addPoint(movingDelta))
-    }
 }
 
 function keyUpHandler(event) {
-    a.va = 0
-    b.va = 0
-    a.fxR = 0
-    a.fyR = 0
-    spacePressed = false
+    if (event.key == 'w') {
+        a.fxR = 0
+    }
+    if (event.key == 's') {
+        a.fxR = 0
+    }
+    if (event.key == 'a') {
+        a.fyR = 0
+    }
+    if (event.key == 'd') {
+        a.fyR = 0
+    }
+    if (event.key == 'q') {
+        a.va = 0
+    }
+    if (event.key == 'e') {
+        a.va = 0
+    }
 }
 
 function keyDownHandler(event) {
@@ -102,16 +112,16 @@ function keyDownHandler(event) {
         spacePressed = true
     }
     if (event.key == 'w') {
-        a.fxR = 0.001
+        a.fxR = Acceleration
     }
     if (event.key == 's') {
-        a.fxR = -0.001
+        a.fxR = -Acceleration
     }
     if (event.key == 'a') {
-        a.fyR = -0.001
+        a.fyR = -Acceleration
     }
     if (event.key == 'd') {
-        a.fyR = 0.001
+        a.fyR = Acceleration
     }
     if (event.key == 'q') {
         a.va = -0.005

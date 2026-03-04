@@ -2,8 +2,11 @@ import Point from "./Point.js"
 import Square from "./Square.js"
 
 class SquarePhysics extends Square {
-  constructor (x, y, a, l, col) {
+  constructor (x, y, a, l, col, g, kf) {
     super(x, y, a, l, col)
+    this.g = g
+    this.kf = kf
+
     this.ax = 0
     this.ay = 0
     this.vx = 0
@@ -13,6 +16,9 @@ class SquarePhysics extends Square {
     this.fy = 0
     this.fxR = 0
     this.fyR = 0
+    this.aF = 0
+    this.aFx = 0
+    this.aFy = 0
   }
 
   drawIt (context) {
@@ -27,8 +33,10 @@ class SquarePhysics extends Square {
             this.y + Math.sin(this.a + Math.PI * i / 4) * this.halfDiagonal
         )
     }
-    context.fillStyle = this.col
-    context.fill()
+    if (this.col != "null") {
+      context.fillStyle = this.col
+      context.fill()
+    }
     context.stroke()
     context.beginPath()
     context.moveTo(this.x,this.y)
@@ -46,11 +54,31 @@ class SquarePhysics extends Square {
     this.fy = -this.fxR * Math.sin(-this.a) + this.fyR * Math.cos(-this.a)
     this.ax = this.fx / this.m
     this.ay = this.fy / this.m
+    
+    this.x += this.vx * dt + this.ax * dt / 2
+    this.y += this.vy * dt + this.ay * dt / 2
+    
     this.vx += this.ax * dt
     this.vy += this.ay * dt
+
+    this.aF = this.kf * this.g
+    this.aFx = this.aF * Math.cos(this.a)
+    this.aFy = this.aF * Math.sin(this.a)
+
+    if (Math.abs(this.vx) < Math.abs(this.aFx * dt)) this.vx = 0
+    else if (this.vx < 0) {
+      this.vx += Math.abs(this.aFx * dt)
+    } else {
+      this.vx -= Math.abs(this.aFx * dt)
+    }
+
+    if (Math.abs(this.vy) < Math.abs(this.aFy * dt)) this.vy = 0
+    else if (this.vy < 0) {
+      this.vy += Math.abs(this.aFy * dt)
+    } else {
+      this.vy -= Math.abs(this.aFy * dt)
+    }
     
-    this.x += this.vx * dt
-    this.y += this.vy * dt
     this.a += this.va * dt
   }
 }

@@ -25,8 +25,10 @@ class Square extends Point {
             this.y + Math.sin(this.a + Math.PI * i / 4) * this.halfDiagonal
         )
     }
-    context.fillStyle = this.col
-    context.fill()
+    if (this.col != "null") {
+      context.fillStyle = this.col
+      context.fill()
+    }
     context.stroke()
   }
 
