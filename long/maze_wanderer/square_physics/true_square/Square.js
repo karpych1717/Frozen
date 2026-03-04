@@ -26,6 +26,7 @@ class Square extends Point {
         )
     }
     if (this.col != "null") {
+      context.strokeStyle = this.col
       context.fillStyle = this.col
       context.fill()
     }

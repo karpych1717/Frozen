@@ -32,7 +32,7 @@ for (let i = 0; i < n; i++) {
     }
 }
 
-const a = new SquarePhysics(100, 100, 0, 50, "null", 9.8, 0.00005)
+const a = new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.00002, 0.001)
 const Acceleration = 0.001
 
 function update(dt) {
@@ -94,15 +94,9 @@ function keyUpHandler(event) {
         a.fxR = 0
     }
     if (event.key == 'a') {
-        a.fyR = 0
-    }
-    if (event.key == 'd') {
-        a.fyR = 0
-    }
-    if (event.key == 'q') {
         a.va = 0
     }
-    if (event.key == 'e') {
+    if (event.key == 'd') {
         a.va = 0
     }
 }
@@ -118,15 +112,9 @@ function keyDownHandler(event) {
         a.fxR = -Acceleration
     }
     if (event.key == 'a') {
-        a.fyR = -Acceleration
-    }
-    if (event.key == 'd') {
-        a.fyR = Acceleration
-    }
-    if (event.key == 'q') {
         a.va = -0.005
     }
-    if (event.key == 'e') {
+    if (event.key == 'd') {
         a.va = 0.005
     }
 }

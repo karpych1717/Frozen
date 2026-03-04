@@ -2,10 +2,11 @@ import Point from "./Point.js"
 import Square from "./Square.js"
 
 class SquarePhysics extends Square {
-  constructor (x, y, a, l, col, g, kf) {
+  constructor (x, y, a, l, col, g, kf, Kr) {
     super(x, y, a, l, col)
     this.g = g
     this.kf = kf
+    this.Kr = Kr
 
     this.ax = 0
     this.ay = 0
@@ -34,6 +35,7 @@ class SquarePhysics extends Square {
         )
     }
     if (this.col != "null") {
+      context.strokeStyle = this.col
       context.fillStyle = this.col
       context.fill()
     }
@@ -44,6 +46,7 @@ class SquarePhysics extends Square {
         this.x + Math.cos(this.a) * this.l,
         this.y + Math.sin(this.a) * this.l
     )
+    context.strokeStyle = "black"
     context.fillStyle = "black"
     context.fill()
     context.stroke()
@@ -64,6 +67,13 @@ class SquarePhysics extends Square {
     this.aF = this.kf * this.g
     this.aFx = this.aF * Math.cos(this.a)
     this.aFy = this.aF * Math.sin(this.a)
+    
+    let v = Math.sqrt(this.vx ** 2 + this.vy ** 2)
+    let fF2 = -v * this.Kr
+    let a2 = Math.atan2(this.vy, this.vx) + Math.PI
+    this.aFx += fF2 * Math.cos(a2)
+    this.aFy += fF2 * Math.sin(a2)
+    console.log(fF2)
 
     if (Math.abs(this.vx) < Math.abs(this.aFx * dt)) this.vx = 0
     else if (this.vx < 0) {
