@@ -60,8 +60,8 @@ class SquarePhysics extends Square {
     this.ax = this.fx / this.m
     this.ay = this.fy / this.m
     
-    this.x += this.vx * dt + this.ax * dt / 2
-    this.y += this.vy * dt + this.ay * dt / 2
+    this.x += this.vx * dt + this.ax * dt * dt / 2
+    this.y += this.vy * dt + this.ay * dt * dt / 2
     
     this.vx += this.ax * dt
     this.vy += this.ay * dt
