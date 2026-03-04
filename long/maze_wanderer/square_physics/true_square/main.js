@@ -18,7 +18,7 @@ const n = 50
 const m = 50
 const squareLength = 10
 
-const map = new Array(n)
+let map = new Array(n)
 for (let i = 0; i < n; i++) {
     map[i] = new Array(m)
     for (let j = 0; j < m; j++) {
@@ -32,14 +32,26 @@ for (let i = 0; i < n; i++) {
     }
 }
 
+for (let i = 5; i < 25; i++) {
+    for (let j = 5; j < 20; j++) {
+        map[i][j] = null
+    }
+}
+for (let i = 16; i < 45; i++) {
+    for (let j = 20; j < 45; j++) {
+        map[i][j] = null
+    }
+}
+
 const a = new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.00002, 0.001)
 const Acceleration = 0.001
 
 function update(dt) {
     a.updateIt(dt)
-    
+
     for (let i = 0; i < n; i++) {
         for (let j = 0; j < m; j++) {
+            if (map[i][j] == null) continue;
             if (a.squareIntersecting(map[i][j])) {
                 map[i][j].col = "red"
             } else {
@@ -54,6 +66,7 @@ function update(dt) {
 function draw() {
     for (let i = 0; i < n; i++) {
         for (let j = 0; j < m; j++) {
+            if (map[i][j] == null) continue;
             map[i][j].drawIt(context)
         }
     }
