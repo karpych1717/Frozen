@@ -26,7 +26,8 @@ class Square extends Point {
         )
     }
     if (this.col != "null") {
-      context.strokeStyle = this.col
+      context.strokeStyle = "lime"
+      context.lineWidth = 0.25
       context.fillStyle = this.col
       context.fill()
     }

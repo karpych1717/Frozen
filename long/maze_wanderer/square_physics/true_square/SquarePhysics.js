@@ -35,7 +35,8 @@ class SquarePhysics extends Square {
         )
     }
     if (this.col != "null") {
-      context.strokeStyle = this.col
+      context.strokeStyle = "white"
+      context.lineWidth = 0.25
       context.fillStyle = this.col
       context.fill()
     }
@@ -47,6 +48,7 @@ class SquarePhysics extends Square {
         this.y + Math.sin(this.a) * this.l
     )
     context.strokeStyle = "black"
+    context.lineWidth = 1
     context.fillStyle = "black"
     context.fill()
     context.stroke()
