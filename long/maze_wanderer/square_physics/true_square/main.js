@@ -75,6 +75,9 @@ function update(dt) {
     if (checkPosition(nextAx) || checkPosition(nextAy)) {
         a.fxR = -0.1 * a.fxR
     }
+    if (checkPosition(nextAa)) {
+        a.va = -0.1 * a.va
+    }
     a.updateIt(dt)
 
     for (let i = 0; i < n; i++) {
