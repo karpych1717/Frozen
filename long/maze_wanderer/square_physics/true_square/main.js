@@ -59,12 +59,10 @@ function checkPosition(sq) {
 }
 
 function update(dt) {
-    const nextAx = a.copy();
+    const nextAx = a.copy()
     nextAx.updateItX(dt)
-    const nextAy = a.copy();
+    const nextAy = a.copy()
     nextAy.updateItY(dt)
-    const nextAa = a.copy();
-    nextAa.updateItA(dt)
 
     if (checkPosition(nextAx)) {
         a.vx = -0.1 * a.vx
@@ -75,8 +73,10 @@ function update(dt) {
     if (checkPosition(nextAx) || checkPosition(nextAy)) {
         a.fxR = -0.1 * a.fxR
     }
-    if (checkPosition(nextAa)) {
-        a.va = -0.1 * a.va
+    const nextA = a.copy()
+    nextA.updateIt(dt)
+    if (checkPosition(nextA)) {
+        a.va = 0
     }
     a.updateIt(dt)
 
