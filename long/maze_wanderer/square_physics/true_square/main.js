@@ -59,16 +59,13 @@ function checkPosition(sq) {
 }
 
 function update(dt) {
-    const nextA = a.nextPosition()
+    const nextA = a.nextPosition(dt)
     let nextAx = nextA
-    nextAx.x = a.x
-    if (checkPosition(nextAx)) {
+    if (checkPosition(nextA)) {
+        a.fxR = -0.1 * a.fxR
         a.vx = -0.1 * a.vx
-    }
-    let nextAy = nextA
-    nextAy.y = a.y
-    if (checkPosition(nextAy)) {
         a.vy = -0.1 * a.vy
+        a.va = 0
     }
     a.updateIt(dt)
 

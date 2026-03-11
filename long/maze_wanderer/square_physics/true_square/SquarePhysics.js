@@ -8,7 +8,6 @@ class SquarePhysics extends Square {
     this.kf = kf
     this.Kr = Kr
 
-    this.lastDt = 0
     this.ax = 0
     this.ay = 0
     this.vx = 0
@@ -56,8 +55,6 @@ class SquarePhysics extends Square {
   }
   
   updateIt(dt) {
-    this.lastDt = dt;
-
     this.fx = this.fxR * Math.cos(-this.a) + this.fyR * Math.sin(-this.a)
     this.fy = -this.fxR * Math.sin(-this.a) + this.fyR * Math.cos(-this.a)
     this.ax = this.fx / this.m
@@ -96,11 +93,30 @@ class SquarePhysics extends Square {
     this.a += this.va * dt
   }
 
-  nextPosition() {
+  copy() {
     const sq = new SquarePhysics(
       this.x, this.y, this.a, this.l, this.col,this.g, this.kf, this.Kr
     )
-    sq.updateIt(this.lastDt)
+    
+    sq.ax = this.ax
+    sq.ay = this.ay
+    sq.vx = this.vx
+    sq.vy = this.vy
+    sq.m = this.m
+    sq.fx = this.fx
+    sq.fy = this.fy
+    sq.fxR = this.fxR
+    sq.fyR = this.fyR
+    sq.aF = this.aF
+    sq.aFx = this.aFx
+    sq.aFy = this.aFy
+
+    return sq
+  }
+
+  nextPosition(dt) {
+    const sq = this.copy()
+    sq.updateIt(dt)
     return sq
   }
 }
