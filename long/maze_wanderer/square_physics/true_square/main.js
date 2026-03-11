@@ -18,6 +18,8 @@ const n = 50
 const m = 50
 const squareLength = 10
 
+const keyboard = {}
+
 let map = new Array(n)
 for (let i = 0; i < n; i++) {
     map[i] = new Array(m)
@@ -59,6 +61,21 @@ function checkPosition(sq) {
 }
 
 function update(dt) {
+    if (keyboard['w']) {
+        a.fxR = Acceleration
+    } else if (keyboard['s']) {
+        a.fxR = -Acceleration
+    } else {
+        a.fxR = 0
+    }
+    if (keyboard['a']) {
+        a.va = -0.005
+    } else if (keyboard['d']) {
+        a.va = 0.005
+    } else {
+        a.va = 0
+    }
+
     const nextAx = a.copy()
     nextAx.updateItX(dt)
     const nextAy = a.copy()
@@ -133,36 +150,11 @@ function mouseMoveHandler(event) {
 }
 
 function keyUpHandler(event) {
-    if (event.key == 'w') {
-        a.fxR = 0
-    }
-    if (event.key == 's') {
-        a.fxR = 0
-    }
-    if (event.key == 'a') {
-        a.va = 0
-    }
-    if (event.key == 'd') {
-        a.va = 0
-    }
+    keyboard[event.key] = false
 }
 
 function keyDownHandler(event) {
-    if (event.key == ' ') {
-        spacePressed = true
-    }
-    if (event.key == 'w') {
-        a.fxR = Acceleration
-    }
-    if (event.key == 's') {
-        a.fxR = -Acceleration
-    }
-    if (event.key == 'a') {
-        a.va = -0.005
-    }
-    if (event.key == 'd') {
-        a.va = 0.005
-    }
+    keyboard[event.key] = true
 }
 
 document.onmouseup = mouseUpHandler
