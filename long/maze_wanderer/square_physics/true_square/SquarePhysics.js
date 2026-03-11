@@ -163,6 +163,7 @@ class SquarePhysics extends Square {
     sq.aF = this.aF
     sq.aFx = this.aFx
     sq.aFy = this.aFy
+    sq.va = this.va
 
     return sq
   }
