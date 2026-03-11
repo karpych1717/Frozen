@@ -59,12 +59,21 @@ function checkPosition(sq) {
 }
 
 function update(dt) {
-    const nextA = a.nextPosition(dt)
-    if (checkPosition(nextA)) {
-        a.fxR = -0.1 * a.fxR
+    const nextAx = a.copy();
+    nextAx.updateItX(dt)
+    const nextAy = a.copy();
+    nextAy.updateItY(dt)
+    const nextAa = a.copy();
+    nextAa.updateItA(dt)
+
+    if (checkPosition(nextAx)) {
         a.vx = -0.1 * a.vx
+    }
+    if (checkPosition(nextAy)) {
         a.vy = -0.1 * a.vy
-        a.va = 0
+    }
+    if (checkPosition(nextAx) || checkPosition(nextAy)) {
+        a.fxR = -0.1 * a.fxR
     }
     a.updateIt(dt)
 

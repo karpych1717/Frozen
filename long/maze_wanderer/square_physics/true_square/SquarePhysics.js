@@ -93,6 +93,59 @@ class SquarePhysics extends Square {
     this.a += this.va * dt
   }
 
+  updateItX(dt) {
+    this.fx = this.fxR * Math.cos(-this.a) + this.fyR * Math.sin(-this.a)
+    this.ax = this.fx / this.m
+    
+    this.x += this.vx * dt + this.ax * dt * dt / 2
+    
+    this.vx += this.ax * dt
+
+    this.aF = this.kf * this.g
+    this.aFx = this.aF * Math.cos(this.a)
+    
+    let v = Math.sqrt(this.vx ** 2 + this.vy ** 2)
+    let fF2 = -v * this.Kr
+    let a2 = Math.atan2(this.vy, this.vx) + Math.PI
+    this.aFx += fF2 * Math.cos(a2)
+
+    if (Math.abs(this.vx) < Math.abs(this.aFx * dt)) this.vx = 0
+    else if (this.vx < 0) {
+      this.vx += Math.abs(this.aFx * dt)
+    } else {
+      this.vx -= Math.abs(this.aFx * dt)
+    }
+  }
+  
+  updateItY(dt) {
+    this.fy = -this.fxR * Math.sin(-this.a) + this.fyR * Math.cos(-this.a)
+    this.ay = this.fy / this.m
+    
+    this.y += this.vy * dt + this.ay * dt * dt / 2
+    
+    this.vy += this.ay * dt
+
+    this.aF = this.kf * this.g
+    this.aFy = this.aF * Math.sin(this.a)
+    
+    let v = Math.sqrt(this.vx ** 2 + this.vy ** 2)
+    let fF2 = -v * this.Kr
+    let a2 = Math.atan2(this.vy, this.vx) + Math.PI
+    
+    this.aFy += fF2 * Math.sin(a2)
+
+    if (Math.abs(this.vy) < Math.abs(this.aFy * dt)) this.vy = 0
+    else if (this.vy < 0) {
+      this.vy += Math.abs(this.aFy * dt)
+    } else {
+      this.vy -= Math.abs(this.aFy * dt)
+    }
+  }
+  
+  updateItA(dt) {
+    this.a += this.va * dt
+  }
+
   copy() {
     const sq = new SquarePhysics(
       this.x, this.y, this.a, this.l, this.col,this.g, this.kf, this.Kr
