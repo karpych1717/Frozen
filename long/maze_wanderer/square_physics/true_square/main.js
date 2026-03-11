@@ -60,7 +60,6 @@ function checkPosition(sq) {
 
 function update(dt) {
     const nextA = a.nextPosition(dt)
-    let nextAx = nextA
     if (checkPosition(nextA)) {
         a.fxR = -0.1 * a.fxR
         a.vx = -0.1 * a.vx
