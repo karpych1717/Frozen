@@ -61,16 +61,16 @@ function checkPosition(sq) {
 }
 
 function update(dt) {
-    if (keyboard['w']) {
+    if (keyboard['KeyW']) {
         a.fxR = Acceleration
-    } else if (keyboard['s']) {
+    } else if (keyboard['KeyS']) {
         a.fxR = -Acceleration
     } else {
         a.fxR = 0
     }
-    if (keyboard['a']) {
+    if (keyboard['KeyA']) {
         a.va = -0.005
-    } else if (keyboard['d']) {
+    } else if (keyboard['KeyD']) {
         a.va = 0.005
     } else {
         a.va = 0
@@ -150,11 +150,11 @@ function mouseMoveHandler(event) {
 }
 
 function keyUpHandler(event) {
-    keyboard[event.key] = false
+    keyboard[event.code] = false
 }
 
 function keyDownHandler(event) {
-    keyboard[event.key] = true
+    keyboard[event.code] = true
 }
 
 document.onmouseup = mouseUpHandler
