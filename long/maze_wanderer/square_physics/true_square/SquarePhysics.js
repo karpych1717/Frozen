@@ -9,7 +9,7 @@ class SquarePhysics extends Square {
     this.kf = kf
     this.Kr = Kr
 
-    this.lineLength = 1000
+    this.lineLength = 10
     this.line = new Line(
       x, y, 
       this.lineLength * Math.cos(a),
@@ -37,15 +37,19 @@ class SquarePhysics extends Square {
 
   resetLine() {
     console.log(this.drawLine.x1, this.drawLine.y1)
-    this.line.x0 = this.x
-    this.line.y0 = this.y
-    this.line.x1 = this.lineLength * Math.cos(this.a)
-    this.line.y1 = this.lineLength * Math.sin(this.a)
+    this.line.update(
+      this.x - this.lineLength * Math.cos(this.a),
+      this.y - this.lineLength * Math.sin(this.a),
+      this.x,
+      this.y
+    )
 
-    this.drawLine.x0 = this.x
-    this.drawLine.y0 = this.y
-    this.drawLine.x1 = 1000000
-    this.drawLine.y1 = 1000000
+    this.drawLine.update(
+      this.x,
+      this.y,
+      10000,
+      10000
+    )
   }
 
   updateLine(square) {
@@ -107,6 +111,7 @@ class SquarePhysics extends Square {
     context.stroke()
 
     this.drawLine.drawIt(context)
+    this.line.drawIt(context)
   }
   
   updateIt(dt) {
