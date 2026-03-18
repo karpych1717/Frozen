@@ -113,26 +113,26 @@ class Square extends Point {
 
   getIntersectByLine(line) {
     let intersects = new Array()
-    let point = line.intersectX(this.x)
-    if (this.y <= point.y && point.y <= this.y + this.l) {
+    let point = line.intersectX(this.x - this.halfLength)
+    if (this.y - this.halfLength <= point.y && point.y <= this.y + this.halfLength) {
       if (!this.pointInArray(intersects, point)) {
         intersects.push(point)
       }
     }
-    point = line.intersectX(this.x + this.l)
-    if (this.y <= point.y && point.y <= this.y + this.l) {
+    point = line.intersectX(this.x + this.halfLength)
+    if (this.y - this.halfLength <= point.y && point.y <= this.y + this.halfLength) {
       if (!this.pointInArray(intersects, point)) {
         intersects.push(point)
       }
     }
-    point = line.intersectY(this.y)
-    if (this.x <= point.x && point.x <= this.x + this.l) {
+    point = line.intersectY(this.y - this.halfLength)
+    if (this.x - this.halfLength <= point.x && point.x <= this.x + this.halfLength) {
       if (!this.pointInArray(intersects, point)) {
         intersects.push(point)
       }
     }
-    point = line.intersectY(this.y + this.l)
-    if (this.x <= point.x && point.x <= this.x + this.l) {
+    point = line.intersectY(this.y + this.halfLength)
+    if (this.x - this.halfLength <= point.x && point.x <= this.x + this.halfLength) {
       if (!this.pointInArray(intersects, point)) {
         intersects.push(point)
       }
