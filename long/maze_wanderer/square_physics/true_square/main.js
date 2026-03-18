@@ -97,9 +97,13 @@ function update(dt) {
     }
     a.updateIt(dt)
 
+    a.resetLine()
     for (let i = 0; i < n; i++) {
         for (let j = 0; j < m; j++) {
             if (map[i][j] == null) continue;
+            
+            a.updateLine(map[i][j])
+
             if (a.squareIntersecting(map[i][j])) {
                 map[i][j].col = "red"
             } else {
@@ -107,7 +111,6 @@ function update(dt) {
             }
         }
     }
-
 
     a.boundToBox(0, 0, 500, 500)
 }

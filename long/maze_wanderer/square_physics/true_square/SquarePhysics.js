@@ -1,5 +1,6 @@
 import Point from "./Point.js"
 import Square from "./Square.js"
+import Line from './Line.js'
 
 class SquarePhysics extends Square {
   constructor (x, y, a, l, col, g, kf, Kr) {
@@ -7,6 +8,18 @@ class SquarePhysics extends Square {
     this.g = g
     this.kf = kf
     this.Kr = Kr
+
+    this.lineLength = 1000
+    this.line = new Line(
+      x, y, 
+      this.lineLength * Math.cos(a),
+      this.lineLength * Math.sin(a)
+    )
+    this.drawLine = new Line(
+      x, y, 
+      this.lineLength * Math.cos(a),
+      this.lineLength * Math.sin(a)
+    )
 
     this.ax = 0
     this.ay = 0
@@ -20,6 +33,46 @@ class SquarePhysics extends Square {
     this.aF = 0
     this.aFx = 0
     this.aFy = 0
+  }
+
+  resetLine() {
+    console.log(this.drawLine.x1, this.drawLine.y1)
+    this.line.x0 = this.x
+    this.line.y0 = this.y
+    this.line.x1 = this.lineLength * Math.cos(this.a)
+    this.line.y1 = this.lineLength * Math.sin(this.a)
+
+    this.drawLine.x0 = this.x
+    this.drawLine.y0 = this.y
+    this.drawLine.x1 = 1000000
+    this.drawLine.y1 = 1000000
+  }
+
+  updateLine(square) {
+    const intersects = square.getIntersectByLine(this.line)
+    for (let i = 0; i < intersects.length; i++) {
+      if (
+        (this.line.x0 >= this.line.x1 && intersects[i].x >= this.line.x1) ||
+        (this.line.x0 <= this.line.x1 && intersects[i].x <= this.line.x1)
+      ) {
+        if (Math.abs(this.line.x1 - intersects[i].x) < Math.abs(this.line.x1 - this.drawLine.x1)) {
+          this.drawLine.x1 = intersects[i].x
+          this.drawLine.y1 = intersects[i].y
+        }
+      }
+
+      if (this.line.x0 == this.line.x1) {
+        if (
+          (this.line.y0 >= this.line.y1 && intersects[i].y >= this.line.y1) ||
+          (this.line.y0 <= this.line.y1 && intersects[i].y <= this.line.y1)
+        ) {
+          if (Math.abs(this.line.y1 - intersects[i].y) < Math.abs(this.line.y1 - this.drawLine.y1)) {
+            this.drawLine.x1 = intersects[i].x
+            this.drawLine.y1 = intersects[i].y
+          }
+        }
+      }
+    }
   }
 
   drawIt (context) {
@@ -52,6 +105,8 @@ class SquarePhysics extends Square {
     context.fillStyle = "black"
     context.fill()
     context.stroke()
+
+    this.drawLine.drawIt(context)
   }
   
   updateIt(dt) {
