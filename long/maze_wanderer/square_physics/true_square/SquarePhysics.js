@@ -38,8 +38,8 @@ class SquarePhysics extends Square {
   resetLine() {
     console.log(this.drawLine.x1, this.drawLine.y1)
     this.line.update(
-      this.x - this.lineLength * Math.cos(this.a),
-      this.y - this.lineLength * Math.sin(this.a),
+      this.x + this.lineLength * Math.cos(this.a),
+      this.y + this.lineLength * Math.sin(this.a),
       this.x,
       this.y
     )
