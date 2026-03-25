@@ -4,10 +4,9 @@ import Line from './Line.js'
 import Ray from './Ray.js'
 
 class SquarePhysics extends Square {
-  constructor (x, y, a, l, col, g, kf, Kr) {
+  constructor (x, y, a, l, col, g, Kr) {
     super(x, y, a, l, col)
     this.g = g
-    this.kf = kf
     this.Kr = Kr
 
     this.rays = new Array(3)
@@ -24,9 +23,6 @@ class SquarePhysics extends Square {
     this.fy = 0
     this.fxR = 0
     this.fyR = 0
-    this.aF = 0
-    this.aFx = 0
-    this.aFy = 0
   }
 
   resetLine() {
@@ -93,30 +89,17 @@ class SquarePhysics extends Square {
     
     this.vx += this.ax * dt
     this.vy += this.ay * dt
-
-    this.aF = this.kf * this.g
-    this.aFx = this.aF * Math.cos(this.a)
-    this.aFy = this.aF * Math.sin(this.a)
     
     let v = Math.sqrt(this.vx ** 2 + this.vy ** 2)
-    let fF2 = -v * this.Kr
-    let a2 = Math.atan2(this.vy, this.vx) + Math.PI
-    this.aFx += fF2 * Math.cos(a2)
-    this.aFy += fF2 * Math.sin(a2)
+    let speedAngle = Math.atan2(this.vy, this.vx)
+    this.aFx = -v * this.Kr * Math.cos(speedAngle)
+    this.aFy = -v * this.Kr * Math.sin(speedAngle)
 
     if (Math.abs(this.vx) < Math.abs(this.aFx * dt)) this.vx = 0
-    else if (this.vx < 0) {
-      this.vx += Math.abs(this.aFx * dt)
-    } else {
-      this.vx -= Math.abs(this.aFx * dt)
-    }
+    else this.vx += this.aFx * dt
 
     if (Math.abs(this.vy) < Math.abs(this.aFy * dt)) this.vy = 0
-    else if (this.vy < 0) {
-      this.vy += Math.abs(this.aFy * dt)
-    } else {
-      this.vy -= Math.abs(this.aFy * dt)
-    }
+    else this.vy += this.aFy * dt
     
     this.a += this.va * dt
   }
@@ -128,21 +111,13 @@ class SquarePhysics extends Square {
     this.x += this.vx * dt + this.ax * dt * dt / 2
     
     this.vx += this.ax * dt
-
-    this.aF = this.kf * this.g
-    this.aFx = this.aF * Math.cos(this.a)
     
     let v = Math.sqrt(this.vx ** 2 + this.vy ** 2)
-    let fF2 = -v * this.Kr
-    let a2 = Math.atan2(this.vy, this.vx) + Math.PI
-    this.aFx += fF2 * Math.cos(a2)
+    let speedAngle = Math.atan2(this.vy, this.vx)
+    this.aFx = -v * this.Kr * Math.cos(speedAngle)
 
     if (Math.abs(this.vx) < Math.abs(this.aFx * dt)) this.vx = 0
-    else if (this.vx < 0) {
-      this.vx += Math.abs(this.aFx * dt)
-    } else {
-      this.vx -= Math.abs(this.aFx * dt)
-    }
+    else this.vx += this.aFx * dt
   }
   
   updateItY(dt) {
@@ -153,21 +128,12 @@ class SquarePhysics extends Square {
     
     this.vy += this.ay * dt
 
-    this.aF = this.kf * this.g
-    this.aFy = this.aF * Math.sin(this.a)
-    
     let v = Math.sqrt(this.vx ** 2 + this.vy ** 2)
-    let fF2 = -v * this.Kr
-    let a2 = Math.atan2(this.vy, this.vx) + Math.PI
-    
-    this.aFy += fF2 * Math.sin(a2)
+    let speedAngle = Math.atan2(this.vy, this.vx)
+    this.aFy = -v * this.Kr * Math.sin(speedAngle)
 
     if (Math.abs(this.vy) < Math.abs(this.aFy * dt)) this.vy = 0
-    else if (this.vy < 0) {
-      this.vy += Math.abs(this.aFy * dt)
-    } else {
-      this.vy -= Math.abs(this.aFy * dt)
-    }
+    else this.vy += this.aFy * dt
   }
   
   updateItA(dt) {
@@ -188,9 +154,6 @@ class SquarePhysics extends Square {
     sq.fy = this.fy
     sq.fxR = this.fxR
     sq.fyR = this.fyR
-    sq.aF = this.aF
-    sq.aFx = this.aFx
-    sq.aFy = this.aFy
     sq.va = this.va
 
     return sq

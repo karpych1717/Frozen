@@ -45,7 +45,7 @@ for (let i = 16; i < 45; i++) {
     }
 }
 
-const a = new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.00002, 0.001)
+const a = new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.001)
 const Acceleration = 0.001
 
 function checkPosition(sq) {
