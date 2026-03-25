@@ -1,6 +1,7 @@
 import Point from "./Point.js"
 import Square from "./Square.js"
 import Line from './Line.js'
+import Ray from './Ray.js'
 
 class SquarePhysics extends Square {
   constructor (x, y, a, l, col, g, kf, Kr) {
@@ -9,17 +10,10 @@ class SquarePhysics extends Square {
     this.kf = kf
     this.Kr = Kr
 
-    this.lineLength = 10
-    this.line = new Line(
-      x, y, 
-      this.lineLength * Math.cos(a),
-      this.lineLength * Math.sin(a)
-    )
-    this.drawLine = new Line(
-      x, y, 
-      this.lineLength * Math.cos(a),
-      this.lineLength * Math.sin(a)
-    )
+    this.rays = new Array(3)
+    this.rays[0] = new Ray(this.x, this.y, this.a + Math.PI / 4)
+    this.rays[1] = new Ray(this.x, this.y, this.a)
+    this.rays[2] = new Ray(this.x, this.y, this.a - Math.PI / 4)
 
     this.ax = 0
     this.ay = 0
@@ -36,46 +30,19 @@ class SquarePhysics extends Square {
   }
 
   resetLine() {
-    console.log(this.drawLine.x1, this.drawLine.y1)
-    this.line.update(
-      this.x + this.lineLength * Math.cos(this.a),
-      this.y + this.lineLength * Math.sin(this.a),
-      this.x,
-      this.y
+    console.log(
+      Math.ceil(this.rays[0].length()),
+      Math.ceil(this.rays[1].length()),
+      Math.ceil(this.rays[2].length())
     )
-
-    this.drawLine.update(
-      this.x,
-      this.y,
-      10000,
-      10000
-    )
+    this.rays[0].update(this.x, this.y, this.a + Math.PI / 4)
+    this.rays[1].update(this.x, this.y, this.a)
+    this.rays[2].update(this.x, this.y, this.a - Math.PI / 4)
   }
 
   updateLine(square) {
-    const intersects = square.getIntersectByLine(this.line)
-    for (let i = 0; i < intersects.length; i++) {
-      if (
-        (this.line.x0 >= this.line.x1 && intersects[i].x >= this.line.x1) ||
-        (this.line.x0 <= this.line.x1 && intersects[i].x <= this.line.x1)
-      ) {
-        if (Math.abs(this.line.x1 - intersects[i].x) < Math.abs(this.line.x1 - this.drawLine.x1)) {
-          this.drawLine.x1 = intersects[i].x
-          this.drawLine.y1 = intersects[i].y
-        }
-      }
-
-      if (this.line.x0 == this.line.x1) {
-        if (
-          (this.line.y0 >= this.line.y1 && intersects[i].y >= this.line.y1) ||
-          (this.line.y0 <= this.line.y1 && intersects[i].y <= this.line.y1)
-        ) {
-          if (Math.abs(this.line.y1 - intersects[i].y) < Math.abs(this.line.y1 - this.drawLine.y1)) {
-            this.drawLine.x1 = intersects[i].x
-            this.drawLine.y1 = intersects[i].y
-          }
-        }
-      }
+    for (let i = 0; i < 3; i++) {
+      this.rays[i].updateBySquare(square)
     }
   }
 
@@ -110,8 +77,9 @@ class SquarePhysics extends Square {
     context.fill()
     context.stroke()
 
-    this.drawLine.drawIt(context)
-    this.line.drawIt(context)
+    for (let i = 0; i < 3; i++) {
+      this.rays[i].drawIt(context)
+    }
   }
   
   updateIt(dt) {

@@ -43,6 +43,10 @@ class Line {
     let t = (y - this.y0) / this.dy_normalized
     return new Vector(this.x0 + this.dx_normalized * t, y)
   }
+  
+  length() {
+    return Math.sqrt((this.x0 - this.x1) ** 2 + (this.y0 - this.y1) ** 2)
+  }
 }
 
 export default Line
