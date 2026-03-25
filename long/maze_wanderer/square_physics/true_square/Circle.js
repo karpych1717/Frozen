@@ -15,10 +15,7 @@ class Circle {
   }
 
   onIt (x, y) {
-    if ((this.x - x) ** 2 + (this.y - y) ** 2 <= this.r ** 2) {
-      return true
-    }
-    return false
+    return (this.x - x) ** 2 + (this.y - y) ** 2 <= this.r ** 2
   }
 
   getRadius () {

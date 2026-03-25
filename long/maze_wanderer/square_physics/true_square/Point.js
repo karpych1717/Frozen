@@ -18,10 +18,7 @@ class Point {
     }
 
     isInBox(x1, y1, x2, y2) {
-        if (x1 <= this.x && this.x <= x2 && y1 <= this.y && this.y <= y2) {
-            return true
-        }
-        return false
+        return x1 <= this.x && this.x <= x2 && y1 <= this.y && this.y <= y2
     }
 }
 

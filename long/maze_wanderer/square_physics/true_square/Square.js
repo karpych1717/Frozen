@@ -16,14 +16,14 @@ class Square extends Point {
   drawIt (context) {
     context.beginPath()
     context.moveTo(
-        this.x + Math.cos(this.a + Math.PI / 4) * this.halfDiagonal,
-        this.y + Math.sin(this.a + Math.PI / 4) * this.halfDiagonal
+      this.x + Math.cos(this.a + Math.PI / 4) * this.halfDiagonal,
+      this.y + Math.sin(this.a + Math.PI / 4) * this.halfDiagonal
     )
     for (let i = 1; i <= 9; i += 2) {
-        context.lineTo(
-            this.x + Math.cos(this.a + Math.PI * i / 4) * this.halfDiagonal,
-            this.y + Math.sin(this.a + Math.PI * i / 4) * this.halfDiagonal
-        )
+      context.lineTo(
+        this.x + Math.cos(this.a + Math.PI * i / 4) * this.halfDiagonal,
+        this.y + Math.sin(this.a + Math.PI * i / 4) * this.halfDiagonal
+      )
     }
     if (this.col != "null") {
       context.strokeStyle = "lime"
@@ -83,23 +83,13 @@ class Square extends Point {
   }
 
   boundToBox(x1, y1, x2, y2) {
-    this.x = Math.min(Math.max(this.x, 
-      x1),
-      x2
-    )
-    this.y = Math.min(Math.max(this.y, 
-      y1),
-      y2
-    )
+    this.x = Math.min(Math.max(this.x, x1), x2)
+    this.y = Math.min(Math.max(this.y, y1), y2)
   }
 
   onIt (x, y) {
-    if (this.x <= x && x <= this.x + this.l
-      && this.y <= y && y <= this.y + this.l
-    ) {
-      return true
-    }
-    return false
+    return this.x <= x && x <= this.x + this.l &&
+    this.y <= y && y <= this.y + this.l
   }
 
   pointInArray(array, point) {
