@@ -29,9 +29,10 @@ class Line {
     this.dx = x1 - x0
     this.dy = y1 - y0
 
-    this.len2 = Math.sqrt(this.dx ** 2 + this.dy ** 2)
-    this.dx_normalized = this.dx / this.len2
-    this.dy_normalized = this.dy / this.len2
+    this.len2 = this.dx ** 2 + this.dy ** 2
+    this.len = Math.sqrt(this.len2)
+    this.dx_normalized = this.dx / this.len
+    this.dy_normalized = this.dy / this.len
   }
 
   intersectX(x) {
