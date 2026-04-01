@@ -24,7 +24,7 @@ const keyboard = {}
 
 const brain = new Brain(new Matrix(4, 3), new Matrix(3, 4))
 brain.inner.random()
-brain.outer.random()
+brain.output.random()
 
 let map = new Array(n)
 for (let i = 0; i < n; i++) {
