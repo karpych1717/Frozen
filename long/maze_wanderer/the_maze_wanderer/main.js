@@ -3,6 +3,8 @@
 import Point from "./Point.js"
 import Square from "./Square.js"
 import SquarePhysics from "./SquarePhysics.js"
+import Matrix from "./Matrix.js"
+import Brain from "./Brain.js"
 
 _canvas.width = 500
 _canvas.height = 500
@@ -19,6 +21,10 @@ const m = 50
 const squareLength = 10
 
 const keyboard = {}
+
+const brain = new Brain(new Matrix(4, 3), new Matrix(3, 4))
+brain.inner.random()
+brain.outer.random()
 
 let map = new Array(n)
 for (let i = 0; i < n; i++) {
@@ -61,20 +67,13 @@ function checkPosition(sq) {
 }
 
 function update(dt) {
-    if (keyboard['KeyW']) {
-        a.fxR = Acceleration
-    } else if (keyboard['KeyS']) {
-        a.fxR = -Acceleration
-    } else {
-        a.fxR = 0
-    }
-    if (keyboard['KeyA']) {
-        a.va = -0.005
-    } else if (keyboard['KeyD']) {
-        a.va = 0.005
-    } else {
-        a.va = 0
-    }
+
+    const input = new Array(4)
+    for (let i = 0; i < 4; i++) input[i] = new Array(1)
+    for (let i = 0; i < 3; i++) input[i] = a.rays[i].length()
+    input[3] = a.speed()
+    const decision = brain.calculate(new Matrix(4, 1, input))
+    console.log(decision)
 
     const nextAx = a.copy()
     nextAx.updateItX(dt)

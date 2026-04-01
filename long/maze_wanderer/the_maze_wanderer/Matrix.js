@@ -1,32 +1,77 @@
-import Matrix from './Matrix.js'
-import Vector from './Vector.js'
-
-class Brain {
-  constructor (inner, output) {
-    this.inner = inner
-    this.output = output
+class Matrix {
+  constructor (h, w, array) {
+    this.h = h
+    this.w = w
+    
+    this.arr = new Array(h)
+    for (let i = 0; i < h; i++) {
+        this.arr[i] = new Array(w)
+        for (let j = 0; j < w; j++) {
+            this.arr[i][j] = 0
+        }
+    }
+    if (array != null) this.arr = array
   }
 
-  sigmoid(x) {
-    return 2 / (1 + Math.exp(-x))-1;
+  zero() {
+    for (let i = 0; i < this.h; i++) {
+        for (let j = 0; j < this.w; j++) {
+            this.arr[i][j] = 0
+        }
+    }
   }
 
-  sigmoidMatrix(m) {
-    for (let i = 0; i < m.h; i++) {
-      for (let j = 0; j < m.w; j++) {
-        m[i][j] = this.sigmoid(m[i][j])
+  random() {
+    for (let i = 0; i < this.h; i++) {
+        for (let j = 0; j < this.w; j++) {
+            this.arr[i][j] = Math.random()
+        }
+    }
+  }
+
+  multiply (m2) {
+    if (this.w != m2.h) {
+      console.error("matrix multiplication dimensions error!")
+      return new Matrix (1, 1, [[null]])
+    }
+    let m3Array = new Array(this.h)
+    for (let i = 0; i < this.h; i++) {
+      m3Array[i] = new Array(m2.w)
+      for (let j = 0; j < m2.w; j++) {
+        m3Array[i][j] = 0
+        for (let k = 0; k < this.w; k++) {
+          m3Array[i][j] += this.arr[i][k] * m2.arr[k][j]
+        }
       }
     }
-    return m
+    return new Matrix(m2.w, this.h, m3Array)
+  }
+  
+  addMatrix (m2) {
+    if (this.w != m2.w || this.h != m2.h) {
+      console.error("matrix addition dimensions error!")
+      return new Matrix (1, 1, [[null]])
+    }
+    let m3Array = new Array(this.h)
+    for (let i = 0; i < this.h; i++) {
+      m3Array[i] = new Array(this.w)
+      for (let j = 0; j < this.w; j++) {
+        m3Array[i][j] = this.arr[i][j] + m2.arr[i][j]
+      }
+    }
+    return new Matrix(this.h, this.w, m3Array)
   }
 
-  calculate(input) {
-    return this.sigmoidMatrix(this.sigmoidMatrix(this.sigmoidMatrix(
-      input)
-      .multiply(this.inner))
-      .multiply(this.output)
-    )
+  addNumber (n) {
+    let m3Array = new Array(this.h)
+    for (let i = 0; i < this.h; i++) {
+      m3Array[i] = new Array(this.w)
+      for (let j = 0; j < this.w; j++) {
+        m3Array[i][j] = this.arr[i][j] + n
+      }
+    }
+    return new Matrix(this.h, this.w, m3Array)
   }
 }
 
-export { Matrix }
+export default Matrix

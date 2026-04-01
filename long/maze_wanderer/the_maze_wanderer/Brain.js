@@ -29,4 +29,4 @@ class Brain {
   }
 }
 
-export { Matrix }
+export default Brain

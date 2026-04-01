@@ -42,6 +42,10 @@ class SquarePhysics extends Square {
     }
   }
 
+  speed() {
+    return Math.sqrt(this.vx ** 2 + this.vy ** 2)
+  }
+
   drawIt (context) {
     context.beginPath()
     context.moveTo(
