@@ -49,3 +49,5 @@ class Matrix {
     return new Matrix(this.h, this.w, m3Array)
   }
 }
+
+export default Matrix
