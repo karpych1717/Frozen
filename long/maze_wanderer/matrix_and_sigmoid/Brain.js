@@ -11,11 +11,13 @@ class Brain {
     return 2 / (1 + Math.exp(-x))-1;
   }
 
-  sigmoidVector(v) {
-    return new Vector(
-      Brain.sigmoid(v.x),
-      Brain.sigmoid(v.y)
-    )
+  sigmoidMatrix(m) {
+    for (let i = 0; i < m.h; i++) {
+      for (let j = 0; j < m.w; j++) {
+        m[i][j] = this.sigmoid(m[i][j])
+      }
+    }
+    return m
   }
 
   calculate(input) {
