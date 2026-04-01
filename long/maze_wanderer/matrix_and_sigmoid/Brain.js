@@ -8,7 +8,7 @@ class Brain {
   }
 
   sigmoid(x) {
-    return 1 / (1 + Math.exp(-x));
+    return 2 / (1 + Math.exp(-x))-1;
   }
 
   sigmoidVector(v) {
