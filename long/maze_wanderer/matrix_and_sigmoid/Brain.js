@@ -21,8 +21,8 @@ class Brain {
   }
 
   calculate(input) {
-    return this.sigmoid(this.sigmoid(
-      this.sigmoid(input)
+    return this.sigmoidMatrix(this.sigmoidMatrix(this.sigmoidMatrix(
+      input)
       .multiply(this.inner))
       .multiply(this.output)
     )
