@@ -21,7 +21,11 @@ class Brain {
   }
 
   calculate(input) {
-    return input.multiply(this.inner).multiply(this.output)
+    return this.sigmoid(this.sigmoid(
+      this.sigmoid(input)
+      .multiply(this.inner))
+      .multiply(this.output)
+    )
   }
 }
 
