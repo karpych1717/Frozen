@@ -1,10 +1,11 @@
 'use strict'
 
-import Point from "./Point.js"
-import Square from "./Square.js"
-import SquarePhysics from "./SquarePhysics.js"
-import Matrix from "./Matrix.js"
-import Brain from "./Brain.js"
+import Point from "./classes/Point.js"
+import Square from "./classes/Square.js"
+import SquarePhysics from "./classes/SquarePhysics.js"
+import Matrix from "./classes/Matrix.js"
+import Brain from "./classes/Brain.js"
+import Wanderer from "./classes/Wanderer.js"
 
 _canvas.width = 500
 _canvas.height = 500
@@ -22,10 +23,6 @@ const squareLength = 10
 
 const keyboard = {}
 
-const brain = new Brain(new Matrix(4, 3), new Matrix(3, 4))
-brain.inner.random()
-brain.output.random()
-
 let map = new Array(n)
 for (let i = 0; i < n; i++) {
     map[i] = new Array(m)
@@ -40,19 +37,19 @@ for (let i = 0; i < n; i++) {
     }
 }
 
-for (let i = 5; i < 25; i++) {
-    for (let j = 5; j < 20; j++) {
-        map[i][j] = null
-    }
-}
-for (let i = 16; i < 45; i++) {
-    for (let j = 20; j < 45; j++) {
-        map[i][j] = null
+for (let r = 10; r <= 24; r++) {
+    for (let angle = 0; angle < 360; angle += 0.5) {
+        const x = Math.ceil(n/2 + r * Math.sin(angle))-1
+        const y = Math.ceil(m/2 + r * Math.cos(angle))-1
+        map[x][y] = null
     }
 }
 
-const a = new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.001)
-const Acceleration = 0.001
+const wandererCount = 5
+const wanderer = new Array(wandererCount)
+for (let i = 0; i < wandererCount; i++) {
+    wanderer[i] = new Wanderer(new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.001))
+}
 
 function checkPosition(sq) {
     for (let i = 0; i < n; i++) {
@@ -67,51 +64,47 @@ function checkPosition(sq) {
 }
 
 function update(dt) {
+    for (let idx = 0; idx < wandererCount; idx++) {
+        wanderer[idx].updateIt(dt)
 
-    const input = new Array(4)
-    for (let i = 0; i < 4; i++) input[i] = new Array(1)
-    for (let i = 0; i < 3; i++) input[i] = a.rays[i].length()
-    input[3] = a.speed()
-    const decision = brain.calculate(new Matrix(4, 1, input))
-    console.log(decision)
+        const nextAx = wanderer[idx].square.copy()
+        nextAx.updateItX(dt)
+        const nextAy = wanderer[idx].square.copy()
+        nextAy.updateItY(dt)
 
-    const nextAx = a.copy()
-    nextAx.updateItX(dt)
-    const nextAy = a.copy()
-    nextAy.updateItY(dt)
+        if (checkPosition(nextAx)) {
+            wanderer[idx].square.vx = -0.1 * wanderer[idx].square.vx
+        }
+        if (checkPosition(nextAy)) {
+            wanderer[idx].square.vy = -0.1 * wanderer[idx].square.vy
+        }
+        if (checkPosition(nextAx) || checkPosition(nextAy)) {
+            wanderer[idx].square.fxR = -0.1 * wanderer[idx].square.fxR
+        }
+        const nextA = wanderer[idx].square.copy()
+        nextA.updateIt(dt)
+        if (checkPosition(nextA)) {
+            wanderer[idx].square.va = 0
+        }
+        wanderer[idx].square.updateIt(dt)
 
-    if (checkPosition(nextAx)) {
-        a.vx = -0.1 * a.vx
-    }
-    if (checkPosition(nextAy)) {
-        a.vy = -0.1 * a.vy
-    }
-    if (checkPosition(nextAx) || checkPosition(nextAy)) {
-        a.fxR = -0.1 * a.fxR
-    }
-    const nextA = a.copy()
-    nextA.updateIt(dt)
-    if (checkPosition(nextA)) {
-        a.va = 0
-    }
-    a.updateIt(dt)
+        wanderer[idx].square.resetLine()
+        for (let i = 0; i < n; i++) {
+            for (let j = 0; j < m; j++) {
+                if (map[i][j] == null) continue;
+                
+                wanderer[idx].square.updateLine(map[i][j])
 
-    a.resetLine()
-    for (let i = 0; i < n; i++) {
-        for (let j = 0; j < m; j++) {
-            if (map[i][j] == null) continue;
-            
-            a.updateLine(map[i][j])
-
-            if (a.squareIntersecting(map[i][j])) {
-                map[i][j].col = "red"
-            } else {
-                map[i][j].col = "green"
+                if (wanderer[idx].square.squareIntersecting(map[i][j])) {
+                    map[i][j].col = "red"
+                } else {
+                    map[i][j].col = "green"
+                }
             }
         }
-    }
 
-    a.boundToBox(0, 0, 500, 500)
+        wanderer[idx].square.boundToBox(0, 0, 500, 500)
+    }
 }
 
 function draw() {
@@ -122,7 +115,9 @@ function draw() {
         }
     }
     
-    a.drawIt(context)
+    for (let i = 0; i < wandererCount; i++) {
+        wanderer[i].drawIt(context)
+    }
 }
 
 let told = 0

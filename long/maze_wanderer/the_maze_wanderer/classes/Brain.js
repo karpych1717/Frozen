@@ -14,18 +14,17 @@ class Brain {
   sigmoidMatrix(m) {
     for (let i = 0; i < m.h; i++) {
       for (let j = 0; j < m.w; j++) {
-        m[i][j] = this.sigmoid(m[i][j])
+        m.arr[i][j] = this.sigmoid(m.arr[i][j])
       }
     }
     return m
   }
 
   calculate(input) {
-    return this.sigmoidMatrix(this.sigmoidMatrix(this.sigmoidMatrix(
-      input)
-      .multiply(this.inner))
-      .multiply(this.output)
-    )
+    input = this.sigmoidMatrix(input)
+    const a = this.sigmoidMatrix(input.multiply(this.inner))
+    const b = this.sigmoidMatrix(a.multiply(this.output))
+    return b
   }
 }
 

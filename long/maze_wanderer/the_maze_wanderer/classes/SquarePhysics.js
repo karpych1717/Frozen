@@ -26,11 +26,6 @@ class SquarePhysics extends Square {
   }
 
   resetLine() {
-    console.log(
-      Math.ceil(this.rays[0].length()),
-      Math.ceil(this.rays[1].length()),
-      Math.ceil(this.rays[2].length())
-    )
     this.rays[0].update(this.x, this.y, this.a + Math.PI / 4)
     this.rays[1].update(this.x, this.y, this.a)
     this.rays[2].update(this.x, this.y, this.a - Math.PI / 4)

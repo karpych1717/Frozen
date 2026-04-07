@@ -1,38 +1,33 @@
 class Matrix {
-  constructor (h, w, array) {
-    this.h = h
+  constructor(w, h, array) {
     this.w = w
-    
+    this.h = h
+
     this.arr = new Array(h)
     for (let i = 0; i < h; i++) {
-        this.arr[i] = new Array(w)
-        for (let j = 0; j < w; j++) {
-            this.arr[i][j] = 0
-        }
+      this.arr[i] = new Array(w)
+      for (let j = 0; j < w; j++) {
+        this.arr[i][j] = array ? array[i][j] : 0
+      }
     }
-    if (array != null) this.arr = array
   }
 
   zero() {
-    for (let i = 0; i < this.h; i++) {
-        for (let j = 0; j < this.w; j++) {
-            this.arr[i][j] = 0
-        }
-    }
+    for (let i = 0; i < this.h; i++)
+      for (let j = 0; j < this.w; j++)
+        this.arr[i][j] = 0
   }
 
   random() {
-    for (let i = 0; i < this.h; i++) {
-        for (let j = 0; j < this.w; j++) {
-            this.arr[i][j] = Math.random()
-        }
-    }
+    for (let i = 0; i < this.h; i++)
+      for (let j = 0; j < this.w; j++)
+        this.arr[i][j] = Math.random()
   }
 
-  multiply (m2) {
-    if (this.w != m2.h) {
+  multiply(m2) {
+    if (this.w !== m2.h) {
       console.error("matrix multiplication dimensions error!")
-      return new Matrix (1, 1, [[null]])
+      return new Matrix(1, 1, [[null]])
     }
     let m3Array = new Array(this.h)
     for (let i = 0; i < this.h; i++) {
@@ -46,31 +41,29 @@ class Matrix {
     }
     return new Matrix(m2.w, this.h, m3Array)
   }
-  
-  addMatrix (m2) {
-    if (this.w != m2.w || this.h != m2.h) {
+
+  addMatrix(m2) {
+    if (this.w !== m2.w || this.h !== m2.h) {
       console.error("matrix addition dimensions error!")
-      return new Matrix (1, 1, [[null]])
+      return new Matrix(1, 1, [[null]])
     }
     let m3Array = new Array(this.h)
     for (let i = 0; i < this.h; i++) {
       m3Array[i] = new Array(this.w)
-      for (let j = 0; j < this.w; j++) {
+      for (let j = 0; j < this.w; j++)
         m3Array[i][j] = this.arr[i][j] + m2.arr[i][j]
-      }
     }
-    return new Matrix(this.h, this.w, m3Array)
+    return new Matrix(this.w, this.h, m3Array)
   }
 
-  addNumber (n) {
+  addNumber(n) {
     let m3Array = new Array(this.h)
     for (let i = 0; i < this.h; i++) {
       m3Array[i] = new Array(this.w)
-      for (let j = 0; j < this.w; j++) {
+      for (let j = 0; j < this.w; j++)
         m3Array[i][j] = this.arr[i][j] + n
-      }
     }
-    return new Matrix(this.h, this.w, m3Array)
+    return new Matrix(this.w, this.h, m3Array)
   }
 }
 
