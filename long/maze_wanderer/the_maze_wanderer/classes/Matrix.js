@@ -13,15 +13,27 @@ class Matrix {
   }
 
   zero() {
-    for (let i = 0; i < this.h; i++)
-      for (let j = 0; j < this.w; j++)
+    for (let i = 0; i < this.h; i++) {
+      for (let j = 0; j < this.w; j++) {
         this.arr[i][j] = 0
+      }
+    }
   }
 
   random() {
-    for (let i = 0; i < this.h; i++)
-      for (let j = 0; j < this.w; j++)
-        this.arr[i][j] = Math.random()
+    for (let i = 0; i < this.h; i++) {
+      for (let j = 0; j < this.w; j++) {
+        this.arr[i][j] = Math.random() * 2 - 1
+      }
+    }
+  }
+
+  mutate(k) {
+    for (let i = 0; i < this.h; i++) {
+      for (let j = 0; j < this.w; j++) {
+        this.arr[i][j] += (Math.random() * 2 - 1) * k
+      }
+    }
   }
 
   multiply(m2) {

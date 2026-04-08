@@ -63,6 +63,20 @@ function checkPosition(sq) {
     return false
 }
 
+function score() {
+    for (let idx = 0; idx < wandererCount; idx++) {
+        const lastAngle = Math.atan2(
+            wanderer[idx].square.lastY,
+            wanderer[idx].square.lastX
+        )
+        const newAngle = Math.atan2(
+            wanderer[idx].square.y,
+            wanderer[idx].square.x
+        )
+        wanderer[idx].score += (newAngle - lastAngle) * -10
+    }
+}
+
 function update(dt) {
     for (let idx = 0; idx < wandererCount; idx++) {
         wanderer[idx].updateIt(dt)
@@ -85,6 +99,9 @@ function update(dt) {
         nextA.updateIt(dt)
         if (checkPosition(nextA)) {
             wanderer[idx].square.va = 0
+
+
+            wanderer[idx].score -= 1
         }
         wanderer[idx].square.updateIt(dt)
 
@@ -120,13 +137,34 @@ function draw() {
     }
 }
 
-let told = 0
+let told = 0, timer = 0
+const maxDt = 50
 function render (time) {
   let dt = Math.floor(time - told)
-  context.clearRect(0, 0, 500, 500)
-  
-  update(dt)
-  draw()
+  if (dt > maxDt) dt = maxDt
+  timer += dt
+
+  if (timer < 2000) {
+    context.clearRect(0, 0, 500, 500)
+    
+    update(dt)
+    score()
+    draw()
+  } else {
+    let best = wanderer[0]
+    for (let i = 1; i < wandererCount; i++) {
+        if (best.score < wanderer[i].score) {
+            best = wanderer[i]
+        }
+    }
+    best.square.setPosition(100, 100, 0)
+    best.square.resetVariables()
+    for (let i = 0; i < wandererCount; i++) {
+        wanderer[i] = best
+        wanderer[i].mutate(0.01)
+    }
+    timer = 0
+  }
 
   window.requestAnimationFrame(render)
   told = time

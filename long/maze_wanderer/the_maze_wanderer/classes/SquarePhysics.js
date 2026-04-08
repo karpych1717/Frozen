@@ -23,6 +23,31 @@ class SquarePhysics extends Square {
     this.fy = 0
     this.fxR = 0
     this.fyR = 0
+
+    this.lastX = 0
+    this.lastY = 0
+  }
+
+  setPosition(x, y, a) {
+    this.x = x
+    this.y = y
+    this.a = a
+    this.resetLine()
+  }
+
+  resetVariables() {
+    this.ax = 0
+    this.ay = 0
+    this.vx = 0
+    this.vy = 0
+    this.m = 1
+    this.fx = 0
+    this.fy = 0
+    this.fxR = 0
+    this.fyR = 0
+
+    this.lastX = 0
+    this.lastY = 0
   }
 
   resetLine() {
@@ -82,7 +107,10 @@ class SquarePhysics extends Square {
     this.fy = -this.fxR * Math.sin(-this.a) + this.fyR * Math.cos(-this.a)
     this.ax = this.fx / this.m
     this.ay = this.fy / this.m
-    
+
+    this.lastX = this.x
+    this.lastY = this.y
+
     this.x += this.vx * dt + this.ax * dt * dt / 2
     this.y += this.vy * dt + this.ay * dt * dt / 2
     

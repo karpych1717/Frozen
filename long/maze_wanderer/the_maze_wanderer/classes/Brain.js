@@ -26,6 +26,11 @@ class Brain {
     const b = this.sigmoidMatrix(a.multiply(this.output))
     return b
   }
+
+  mutate(k) {
+    this.inner.mutate(k)
+    this.output.mutate(k)
+  }
 }
 
 export default Brain

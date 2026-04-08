@@ -9,7 +9,7 @@ class Wanderer {
     this.brain.inner.random()
     this.brain.output.random()
 
-    this.decisionThreshould = 0.25
+    this.score = 0
   }
 
   updateIt() {
@@ -26,6 +26,10 @@ class Wanderer {
 
   drawIt(context) {
     this.square.drawIt(context)
+  }
+
+  mutate(k) {
+    this.brain.mutate(k)
   }
 }
 export default Wanderer
