@@ -31,6 +31,10 @@ class Brain {
     this.inner.mutate(k)
     this.output.mutate(k)
   }
+
+  clone() {
+    return new Brain(this.inner.clone(), this.output.clone())
+  }
 }
 
 export default Brain

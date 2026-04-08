@@ -137,6 +137,10 @@ function draw() {
     }
 }
 
+function deepClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
 let told = 0, timer = 0
 const maxDt = 50
 function render (time) {
@@ -151,17 +155,19 @@ function render (time) {
     score()
     draw()
   } else {
-    let best = wanderer[0]
+    let bestIdx = 0;
     for (let i = 1; i < wandererCount; i++) {
-        if (best.score < wanderer[i].score) {
-            best = wanderer[i]
+        if (wanderer[bestIdx].score < wanderer[i].score) {
+            bestIdx = i;
         }
     }
-    best.square.setPosition(100, 100, 0)
-    best.square.resetVariables()
+
+    const bestBrain = wanderer[bestIdx].brain.clone();
+
     for (let i = 0; i < wandererCount; i++) {
-        wanderer[i] = best
-        wanderer[i].mutate(0.01)
+        wanderer[i] = new Wanderer(new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.001));
+        wanderer[i].brain = bestBrain.clone();
+        wanderer[i].mutate(0.1);
     }
     timer = 0
   }

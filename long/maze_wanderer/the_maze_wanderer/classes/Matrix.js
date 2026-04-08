@@ -77,6 +77,10 @@ class Matrix {
     }
     return new Matrix(this.w, this.h, m3Array)
   }
+
+  clone() {
+    return new Matrix(this.w, this.h, this.arr)
+  }
 }
 
 export default Matrix
