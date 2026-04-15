@@ -12,10 +12,10 @@ class Matrix {
     }
   }
 
-  zero() {
+  fill(x) {
     for (let i = 0; i < this.h; i++) {
       for (let j = 0; j < this.w; j++) {
-        this.arr[i][j] = 0
+        this.arr[i][j] = x
       }
     }
   }
@@ -32,6 +32,14 @@ class Matrix {
     for (let i = 0; i < this.h; i++) {
       for (let j = 0; j < this.w; j++) {
         this.arr[i][j] += (Math.random() * 2 - 1) * k
+      }
+    }
+  }
+
+  mutate2(k, matrix2) {
+    for (let i = 0; i < this.h; i++) {
+      for (let j = 0; j < this.w; j++) {
+        this.arr[i][j] += (Math.random() * 2 - 1) * k * matrix2.arr[i][j]
       }
     }
   }

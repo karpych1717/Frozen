@@ -107,10 +107,10 @@ function evaluate() {
         wanderer[i].brain = bestBrain.clone();
         if (i == 0) {
             continue
-        } else if (i <= wandererCount / 3) {
-            wanderer[i].mutate(0.02);
-        } else if (i <= wandererCount * 2 / 3) {
-            wanderer[i].mutate(0.2);
+        } else if (i <= wandererCount * 5 / 10) {
+            wanderer[i].mutate(1);
+        } else if (i <= wandererCount * 8 / 10) {
+            wanderer[i].mutate(0.5);
         } else {
             wanderer[i].mutate(1);
         }
