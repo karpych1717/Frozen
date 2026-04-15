@@ -12,7 +12,7 @@ class Wanderer {
     this.score = 0
   }
 
-  updateIt() {
+  updateDecicion() {
     const input = new Array(4)
     for (let i = 0; i < 4; i++) input[i] = new Array(1)
     for (let i = 0; i < 3; i++) input[0][i] = this.square.rays[i].length()
@@ -24,8 +24,38 @@ class Wanderer {
     this.square.va = (decision.arr[0][2] - decision.arr[0][3]) * 0.005
   }
 
-  drawIt(context) {
-    this.square.drawIt(context)
+  updateIt(dt, map) {
+    this.updateDecicion()
+
+    const nextAx = this.square.copy()
+    nextAx.updateItX(dt)
+    const nextAy = this.square.copy()
+    nextAy.updateItY(dt)
+
+    if (map.checkSquare(nextAx)) {
+      this.square.vx = -0.1 * this.square.vx
+    }
+    if (map.checkSquare(nextAy)) {
+      this.square.vy = -0.1 * this.square.vy
+    }
+    if (map.checkSquare(nextAx) || map.checkSquare(nextAy)) {
+      this.square.fxR = -0.1 * this.square.fxR
+    }
+
+    const nextA = this.square.copy()
+    nextA.updateIt(dt)
+    if (map.checkSquare(nextA)) {
+      this.square.va = 0
+    }
+
+    this.square.updateIt(dt)
+    this.square.resetLine()
+
+    this.square.boundToBox(0, 0, 500, 500)
+  }
+
+  drawIt(context, drawLines = false) {
+    this.square.drawIt(context, drawLines)
   }
 
   mutate(k) {

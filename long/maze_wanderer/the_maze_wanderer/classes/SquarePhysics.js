@@ -66,7 +66,7 @@ class SquarePhysics extends Square {
     return Math.sqrt(this.vx ** 2 + this.vy ** 2)
   }
 
-  drawIt (context) {
+  drawIt (context, drawLines = false) {
     context.beginPath()
     context.moveTo(
         this.x + Math.cos(this.a + Math.PI / 4) * this.halfDiagonal,
@@ -97,8 +97,10 @@ class SquarePhysics extends Square {
     context.fill()
     context.stroke()
 
-    for (let i = 0; i < 3; i++) {
-      this.rays[i].drawIt(context)
+    if (drawLines) {
+      for (let i = 0; i < 3; i++) {
+        this.rays[i].drawIt(context)
+      }
     }
   }
   
