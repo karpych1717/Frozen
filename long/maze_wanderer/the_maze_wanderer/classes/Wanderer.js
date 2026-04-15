@@ -3,8 +3,8 @@ import Matrix from './Matrix.js'
 import Brain from './Brain.js'
 
 class Wanderer {
-  constructor (square) {
-    this.square = square
+  constructor (x, y, a) {
+    this.square = new SquarePhysics(x, y, a, 25, "blue", 9.8, 0.001)
     this.brain = new Brain(new Matrix(3, 4), new Matrix(4, 3))
     this.brain.inner.random()
     this.brain.output.random()

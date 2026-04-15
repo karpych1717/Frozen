@@ -27,7 +27,7 @@ for (let r = 10; r <= 24; r++) {
 const wandererCount = 10
 const wanderer = new Array(wandererCount)
 for (let i = 0; i < wandererCount; i++) {
-    wanderer[i] = new Wanderer(new SquarePhysics(100, 100, 0, 25, "blue", 9.8, 0.001))
+    wanderer[i] = new Wanderer(100, 100, 0)
 }
 
 const kAngle = 100
@@ -103,7 +103,7 @@ function evaluate() {
 
     for (let i = 0; i < wandererCount; i++) {
         const angle = 30/180*Math.PI*(Math.random()*2-1)
-        wanderer[i] = new Wanderer(new SquarePhysics(100, 100, angle, 25, "blue", 9.8, 0.001));
+        wanderer[i] = new Wanderer(100, 100, angle);
         wanderer[i].brain = bestBrain.clone();
         if (i == 0) {
             continue
