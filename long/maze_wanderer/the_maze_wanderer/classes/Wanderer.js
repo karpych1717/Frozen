@@ -5,7 +5,7 @@ import Brain from './Brain.js'
 class Wanderer {
   constructor (x, y, a) {
     this.square = new SquarePhysics(x, y, a, 25, "blue", 9.8, 0.001)
-    this.brain = new Brain(new Matrix(3, 4), new Matrix(4, 3))
+    this.brain = new Brain(new Matrix(3, 4), new Matrix(4, 3), 0.5)
     this.brain.inner.random()
     this.brain.output.random()
 
@@ -13,10 +13,12 @@ class Wanderer {
   }
 
   updateDecicion() {
-    const input = new Array(4)
-    for (let i = 0; i < 4; i++) input[i] = new Array(1)
-    for (let i = 0; i < 3; i++) input[0][i] = this.square.rays[i].length()
-    input[0][3] = this.square.speed()
+    const input = [[
+        this.square.rays[0].length(),
+        this.square.rays[1].length(),
+        this.square.rays[2].length(),
+        this.square.speed()
+    ]]
 
     const decision = this.brain.calculate(new Matrix(4, 1, input))
 

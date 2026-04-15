@@ -29,14 +29,16 @@ class Brain {
   }
 
   mutate(k) {
-    this.th += (Math.random() * 2 - 1) * k
+    if (Math.random() >= this.th) {
+      this.th += (Math.random() * 2 - 1) * k
+    }
     this.th = Math.min(Math.max(this.th, 0), 1)
-    this.inner.mutate(k)
-    this.output.mutate(k)
+    this.inner.mutate(k, this.th)
+    this.output.mutate(k, this.th)
   }
 
   clone() {
-    return new Brain(this.inner.clone(), this.output.clone())
+    return new Brain(this.inner.clone(), this.output.clone(), this.th)
   }
 }
 

@@ -101,15 +101,15 @@ function evaluate() {
     const bestBrain = wanderer[bestIdx].brain.clone();
 
     for (let i = 0; i < wandererCount; i++) {
-        const angle = 30/180*Math.PI*(Math.random()*2-1)
-        wanderer[i] = new Wanderer(100, 100, angle);
+        const angle = 0
+        wanderer[i] = new Wanderer(100, 100, 0);
         wanderer[i].brain = bestBrain.clone();
         if (i == 0) {
             continue
         } else if (i <= wandererCount * 5 / 10) {
-            wanderer[i].mutate(0.5);
+            wanderer[i].mutate(0.2);
         } else if (i <= wandererCount * 8 / 10) {
-            wanderer[i].mutate(1);
+            wanderer[i].mutate(0.5);
         } else {
             wanderer[i].mutate(2);
         }
