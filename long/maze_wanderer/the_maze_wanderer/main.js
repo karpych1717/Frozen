@@ -1,6 +1,5 @@
 'use strict'
 
-import Matrix from "./classes/Matrix.js"
 import SquarePhysics from "./classes/SquarePhysics.js"
 import Wanderer from "./classes/Wanderer.js"
 import Map from "./classes/Map.js"
@@ -63,10 +62,22 @@ function score(dt) {
     }
 }
 
+let told = 0, timer = 0, runs = 1
+
 function update(dt) {
+  timer += dt
+	if (timer < Math.sqrt(Math.sqrt(runs)) * 1000) {
+		context.clearRect(0, 0, 500, 500)
+			
+		score(dt)
     for (let idx = 0; idx < wandererCount; idx++) {
-        wanderer[idx].updateIt(dt, map)
+      wanderer[idx].updateIt(dt, map)
     }
+	} else {
+		runs += 1
+		evaluate()
+		timer = 0
+	}
 }
 
 function draw() {
@@ -75,9 +86,6 @@ function draw() {
         wanderer[i].drawIt(context)
     }
 }
-
-let told = 0, timer = 0, runs = 1
-const maxDt = 50
 
 function evaluate() {
     let bestIdx = 0;
@@ -109,22 +117,13 @@ function evaluate() {
     }
 }
 
+const maxDt = 50
 function render (time) {
   let dt = Math.floor(time - told)
   if (dt > maxDt) dt = maxDt
-  timer += dt
 
-  if (timer < Math.sqrt(Math.sqrt(runs)) * 1000) {
-    context.clearRect(0, 0, 500, 500)
-    
-    score(dt)
-    update(dt)
-    draw()
-  } else {
-    runs += 1
-    evaluate()
-    timer = 0
-  }
+	update(dt)
+	draw()
 
   window.requestAnimationFrame(render)
   told = time
