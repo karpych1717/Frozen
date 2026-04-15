@@ -2,11 +2,10 @@ import Matrix from './Matrix.js'
 import Vector from './Vector.js'
 
 class Brain {
-  constructor (inner, output, innerChance, outputChance) {
+  constructor (inner, output, th) {
     this.inner = inner
     this.output = output
-    this.innerChance = innerChance
-    this.outputChance = outputChance
+    this.th = th
   }
 
   sigmoid(x) {
@@ -30,14 +29,14 @@ class Brain {
   }
 
   mutate(k) {
-    this.innerChance.mutate(k)
-    this.inner.mutate2(k, this.innerChance)
-    this.outputChance.mutate(k)
-    this.output.mutate2(k, this.outputChance)
+    this.th += (Math.random() * 2 - 1) * k
+    this.th = Math.min(Math.max(this.th, 0), 1)
+    this.inner.mutate(k)
+    this.output.mutate(k)
   }
 
   clone() {
-    return new Brain(this.inner.clone(), this.output.clone(), this.innerChance.clone(), this.outputChance.clone())
+    return new Brain(this.inner.clone(), this.output.clone())
   }
 }
 

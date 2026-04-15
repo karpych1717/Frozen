@@ -30,7 +30,7 @@ for (let i = 0; i < wandererCount; i++) {
     wanderer[i] = new Wanderer(100, 100, 0)
 }
 
-const kAngle = 100
+const kAngle = 500
 function score(dt) {
     for (let idx = 0; idx < wandererCount; idx++) {
 
@@ -57,7 +57,6 @@ function score(dt) {
             wanderer[idx].score += (newAngle - lastAngle) * kAngle
         }
         
-        wanderer[idx].score -= Math.abs(wanderer[idx].square.a - (newAngle + Math.PI / 2))
         wanderer[idx].score += wanderer[idx].square.speed()
     }
 }
@@ -66,7 +65,7 @@ let told = 0, timer = 0, runs = 1
 
 function update(dt) {
   timer += dt
-	if (timer < Math.sqrt(Math.sqrt(runs)) * 1000) {
+	if (timer < Math.sqrt(runs) * 2000) {
 		context.clearRect(0, 0, 500, 500)
 			
 		score(dt)
@@ -108,11 +107,11 @@ function evaluate() {
         if (i == 0) {
             continue
         } else if (i <= wandererCount * 5 / 10) {
-            wanderer[i].mutate(1);
-        } else if (i <= wandererCount * 8 / 10) {
             wanderer[i].mutate(0.5);
-        } else {
+        } else if (i <= wandererCount * 8 / 10) {
             wanderer[i].mutate(1);
+        } else {
+            wanderer[i].mutate(2);
         }
     }
 }

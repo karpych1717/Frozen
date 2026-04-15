@@ -28,18 +28,12 @@ class Matrix {
     }
   }
 
-  mutate(k) {
+  mutate(k, th) {
     for (let i = 0; i < this.h; i++) {
       for (let j = 0; j < this.w; j++) {
-        this.arr[i][j] += (Math.random() * 2 - 1) * k
-      }
-    }
-  }
-
-  mutate2(k, matrix2) {
-    for (let i = 0; i < this.h; i++) {
-      for (let j = 0; j < this.w; j++) {
-        this.arr[i][j] += (Math.random() * 2 - 1) * k * matrix2.arr[i][j]
+        if (Math.random() >= th) {
+          this.arr[i][j] += (Math.random() * 2 - 1) * k
+        }
       }
     }
   }
