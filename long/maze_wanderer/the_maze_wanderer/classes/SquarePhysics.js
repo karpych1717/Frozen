@@ -2,9 +2,10 @@ import Point from "./Point.js"
 import Square from "./Square.js"
 import Line from './Line.js'
 import Ray from './Ray.js'
+import Eye from './Eye.js'
 
 class SquarePhysics extends Square {
-  constructor (x, y, a, l, col, g, Kr) {
+  constructor (x, y, a, l, col, g, Kr, eyeR1, eyeR2) {
     super(x, y, a, l, col)
     this.g = g
     this.Kr = Kr
@@ -26,6 +27,9 @@ class SquarePhysics extends Square {
 
     this.lastX = 0
     this.lastY = 0
+
+    this.eyeL = new Eye(0, 0, eyeR1, eyeR2)
+    this.eyeR = new Eye(0, 0, eyeR1, eyeR2)
   }
 
   setPosition(x, y, a) {
@@ -33,6 +37,19 @@ class SquarePhysics extends Square {
     this.y = y
     this.a = a
     this.resetLine()
+  }
+
+  updateEyes() {
+    const da = Math.PI / 4
+
+    this.eyeL.updateIt(
+      this.x + Math.cos(this.a-da) * this.l/3,
+      this.y + Math.sin(this.a-da) * this.l/3
+    )
+    this.eyeR.updateIt(
+      this.x + Math.cos(this.a+da) * this.l/3,
+      this.y + Math.sin(this.a+da) * this.l/3
+    )
   }
 
   resetVariables() {
@@ -48,6 +65,9 @@ class SquarePhysics extends Square {
 
     this.lastX = 0
     this.lastY = 0
+    
+    this.eyeL = new Eye(0, 0, eyeR1, eyeR2)
+    this.eyeR = new Eye(0, 0, eyeR1, eyeR2)
   }
 
   resetLine() {
@@ -85,17 +105,9 @@ class SquarePhysics extends Square {
       context.fill()
     }
     context.stroke()
-    context.beginPath()
-    context.moveTo(this.x,this.y)
-    context.lineTo(
-        this.x + Math.cos(this.a) * this.l,
-        this.y + Math.sin(this.a) * this.l
-    )
-    context.strokeStyle = "black"
-    context.lineWidth = 1
-    context.fillStyle = "black"
-    context.fill()
-    context.stroke()
+    
+    this.eyeL.drawIt(context)
+    this.eyeR.drawIt(context)
 
     if (drawLines) {
       for (let i = 0; i < 3; i++) {
@@ -131,6 +143,8 @@ class SquarePhysics extends Square {
     else this.vy += this.aFy * dt
     
     this.a += this.va * dt
+
+    this.updateEyes()
   }
 
   updateItX(dt) {

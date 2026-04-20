@@ -30,14 +30,14 @@ for (let i = 0; i < wandererCount; i++) {
     wanderer[i] = new Wanderer(100, 100, 0)
 }
 
-const kAngle = 500
+const kAngle = 30
 function score(dt) {
     for (let idx = 0; idx < wandererCount; idx++) {
 
         const next = wanderer[idx].square.copy()
         next.updateIt(dt)
         if (map.checkSquare(next)) {
-            wanderer[idx].score -= 100
+            wanderer[idx].score -= Math.abs(wanderer[idx].score) / 4
         }
         
         const lastAngle = Math.atan2(
@@ -121,7 +121,7 @@ function render (time) {
   let dt = Math.floor(time - told)
   if (dt > maxDt) dt = maxDt
 
-	update(dt)
+    for (let i = 0; i < 5; i++) update(dt)
 	draw()
 
   window.requestAnimationFrame(render)
