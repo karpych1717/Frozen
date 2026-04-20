@@ -41,6 +41,27 @@ class Map {
     }
     return false
   }
+
+  eraseArc(x, y, a1, a2, R, r) {
+    for (let a = a1; a >= a2; a -= 0.01) {
+      for (let l = r; l <= R; l += 1) {
+        const xi = Math.round(x + l * Math.sin(a))
+        const yi = Math.round(y + l * Math.cos(a))
+        this.map[
+          Math.min(Math.max(xi, 0), this.n-1)][
+          Math.min(Math.max(yi, 0), this.m-1)
+        ] = null
+      }
+    }
+  }
+
+  eraseRect(x1, y1, x2, y2) {
+    for (let i = x1; i <= x2; i++) {
+      for (let j = y1; j <= y2; j++) {
+        this.map[i][j] = null
+      }
+    }
+  }
 }
 
 export default Map

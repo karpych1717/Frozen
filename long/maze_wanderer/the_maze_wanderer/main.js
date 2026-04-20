@@ -3,6 +3,7 @@
 import SquarePhysics from "./classes/SquarePhysics.js"
 import Wanderer from "./classes/Wanderer.js"
 import Map from "./classes/Map.js"
+import Goal from "./classes/Goal.js"
 
 _canvas.width = 500
 _canvas.height = 500
@@ -14,58 +15,85 @@ document.body.style.justifyContent = 'center'
 
 const context = _canvas.getContext('2d')
 
-const map = new Map(50, 50, 10)
+const map = new Map(100, 100, 5)
+map.eraseArc(25, 25, -Math.PI / 2, -Math.PI, 20, 5)
+map.eraseArc(30, 25, -Math.PI / 2, -Math.PI, 20, 5)
+map.eraseRect(25, 5, 75, 20)
+map.eraseArc(75, 25, -Math.PI, -Math.PI * 2, 20, 5)
+map.eraseRect(60, 30, 75, 45)
+map.eraseArc(60, 50, 0, -Math.PI, 20, 5)
+map.eraseRect(60, 55, 75, 70)
+map.eraseArc(75, 75, -Math.PI, -Math.PI * 2, 20, 5)
+map.eraseRect(25, 80, 75, 95)
+map.eraseArc(25, 75, 0, -Math.PI / 2, 20, 5)
+map.eraseArc(30, 75, 0, -Math.PI / 2, 20, 5)
+map.eraseRect(5, 25, 25, 75)
 
-for (let r = 10; r <= 24; r++) {
-    for (let angle = 0; angle < 360; angle += 0.5) {
-        const x = Math.ceil(25 + r * Math.sin(angle))-1
-        const y = Math.ceil(25 + r * Math.cos(angle))-1
-        map.map[x][y] = null
-    }
-}
 
 const wandererCount = 10
 const wanderer = new Array(wandererCount)
 for (let i = 0; i < wandererCount; i++) {
-    wanderer[i] = new Wanderer(100, 100, 0)
+    wanderer[i] = new Wanderer(75, 300, -Math.PI/2)
 }
 
-const kAngle = 30
+const waypointCount = 9
+const waypoint = new Array(waypointCount)
+waypoint[0] = new Goal(95, 85, Math.PI*3/4)
+waypoint[1] = new Goal(415, 80, Math.PI*5/4)
+waypoint[2] = new Goal(405, 170, Math.PI*7/4)
+waypoint[3] = new Goal(350, 180, Math.PI*8/4)
+waypoint[4] = new Goal(250, 250, Math.PI*6/4)
+waypoint[5] = new Goal(265, 300, Math.PI*5/4)
+waypoint[6] = new Goal(415, 320, Math.PI*5/4)
+waypoint[7] = new Goal(415, 420, Math.PI*7/4)
+waypoint[8] = new Goal(95, 415, Math.PI*1/4)
+const wandererProgress = new Array(wandererCount)
+for (let i = 0; i < wandererCount; i++) wandererProgress[i] = 0
+
 function score(dt) {
     for (let idx = 0; idx < wandererCount; idx++) {
 
         const next = wanderer[idx].square.copy()
         next.updateIt(dt)
         if (map.checkSquare(next)) {
-            wanderer[idx].score -= Math.abs(wanderer[idx].score) / 4
+            wanderer[idx].score -= Math.abs(wanderer[idx].score) / 50
         }
-        
-        const lastAngle = Math.atan2(
-            wanderer[idx].square.lastY-250,
-            wanderer[idx].square.lastX-250
-        )
-        const newAngle = Math.atan2(
-            wanderer[idx].square.y-250,
-            wanderer[idx].square.x-250
-        )
 
-        if (newAngle < -3 && lastAngle > 3) {
-            wanderer[idx].score += (newAngle - lastAngle + Math.PI * 2) * kAngle
-        } else if (lastAngle < -3 && newAngle > 3) {
-            wanderer[idx].score -= 10
-        } else {
-            wanderer[idx].score += (newAngle - lastAngle) * kAngle
+        const lastPoint = (wandererProgress[idx] + waypointCount - 1) % waypointCount
+        if (!waypoint[lastPoint].check(wanderer[idx])) {
+            wanderer[idx].score -= 1000
+            wandererProgress[idx] = lastPoint
         }
         
-        wanderer[idx].score += wanderer[idx].square.speed()
+        const nextPoint = (wandererProgress[idx] + 1) % waypointCount
+        if (waypoint[wandererProgress[idx]].check(wanderer[idx])) {
+            wanderer[idx].score += 100
+            wandererProgress[idx] = nextPoint
+        }
+
+        const lastLength2 =
+            (wanderer[idx].square.lastX -waypoint[wandererProgress[idx]].x)**2+
+            (wanderer[idx].square.lastY -waypoint[wandererProgress[idx]].y)**2
+        
+        const dx = waypoint[wandererProgress[idx]].x - wanderer[idx].square.x
+        const dy = waypoint[wandererProgress[idx]].y - wanderer[idx].square.y
+        
+        const length2 = dx**2 + dy**2
+        wanderer[idx].score += (lastLength2 - length2) * 0.01
+
+        const dAngle = Math.abs(Math.atan2(dy, dx) - wanderer[idx].square.a % (Math.PI * 2))
+
+        if (dAngle > 5 * Math.PI/180) wanderer[idx].score -= dAngle * 10
+
+        wanderer[idx].score -= Math.abs(0.01 - wanderer[idx].square.speed()) * 10
     }
 }
 
 let told = 0, timer = 0, runs = 1
 
 function update(dt) {
-  timer += dt
-	if (timer < Math.sqrt(runs) * 2000) {
+    timer += dt
+	if (timer < Math.sqrt(runs) * 3000) {
 		context.clearRect(0, 0, 500, 500)
 			
 		score(dt)
@@ -83,6 +111,9 @@ function draw() {
     map.drawIt(context)
     for (let i = 0; i < wandererCount; i++) {
         wanderer[i].drawIt(context)
+    }
+    for (let i = 0; i < waypointCount; i++) {
+        waypoint[i].drawIt(context)
     }
 }
 
@@ -102,7 +133,7 @@ function evaluate() {
 
     for (let i = 0; i < wandererCount; i++) {
         const angle = 0
-        wanderer[i] = new Wanderer(100, 100, 0);
+        wanderer[i] = new Wanderer(75, 300, -Math.PI/2)
         wanderer[i].brain = bestBrain.clone();
         if (i == 0) {
             continue
@@ -114,6 +145,7 @@ function evaluate() {
             wanderer[i].mutate(2);
         }
     }
+    for (let i = 0; i < wandererCount; i++) wandererProgress[i] = 0
 }
 
 const maxDt = 50
@@ -121,7 +153,8 @@ function render (time) {
   let dt = Math.floor(time - told)
   if (dt > maxDt) dt = maxDt
 
-    for (let i = 0; i < 5; i++) update(dt)
+    if (runs % 10 != 0) for (let i = 0; i < 9; i++) update(dt)
+    update(dt)
 	draw()
 
   window.requestAnimationFrame(render)
