@@ -26,7 +26,7 @@ class Wanderer {
     this.square.va = (decision.arr[0][2] - decision.arr[0][3]) * 0.005
   }
 
-  updateIt(dt, map) {
+  updateIt(dt, map, list) {
     this.updateDecicion()
 
     const nextAx = this.square.copy()
@@ -34,19 +34,22 @@ class Wanderer {
     const nextAy = this.square.copy()
     nextAy.updateItY(dt)
 
-    if (map.checkSquare(nextAx)) {
+    const AxCollision = map.checkSquare(nextAx, list)
+    const AyCollision = map.checkSquare(nextAy, list)
+
+    if (AxCollision) {
       this.square.vx = -0.1 * this.square.vx
     }
-    if (map.checkSquare(nextAy)) {
+    if (AyCollision) {
       this.square.vy = -0.1 * this.square.vy
     }
-    if (map.checkSquare(nextAx) || map.checkSquare(nextAy)) {
+    if (AxCollision || AyCollision) {
       this.square.fxR = -0.1 * this.square.fxR
     }
 
     const nextA = this.square.copy()
     nextA.updateIt(dt)
-    if (map.checkSquare(nextA)) {
+    if (map.checkSquare(nextA, list)) {
       this.square.va = 0
     }
 

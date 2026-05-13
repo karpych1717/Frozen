@@ -5,6 +5,7 @@ import Wanderer from "./classes/Wanderer.js"
 import Map from "./classes/Map.js"
 import Goal from "./classes/Goal.js"
 import Square from "./classes/Square.js"
+import Vector from "./classes/Vector.js"
 
 _canvas.width = 500
 _canvas.height = 500
@@ -30,6 +31,23 @@ map.eraseArc(25, 75, 0, -Math.PI / 2, 20, 5)
 map.eraseArc(30, 75, 0, -Math.PI / 2, 20, 5)
 map.eraseRect(5, 25, 25, 75)
 
+const borders = new Array()
+for (let i = 0; i < map.n; i++) {
+    for (let j = 0; j < map.m; j++) {
+        if (map.map[i][j] == null) continue
+
+        let isBorder = false
+        if (i > 0 && map.map[i-1][j] == null) isBorder = true
+        if (i < map.n-1 && map.map[i+1][j] == null) isBorder = true
+        if (j > 0 && map.map[i][j-1] == null) isBorder = true
+        if (j < map.m-1 && map.map[i][j+1] == null) isBorder = true
+
+        if (isBorder) {
+            borders.push(new Vector(i, j))
+            map.map[i][j].col = "Lime"
+        }
+    }
+}
 
 const wandererCount = 10
 const wanderer = new Array(wandererCount)
@@ -40,26 +58,6 @@ for (let i = 0; i < wandererCount; i++) {
 const points = new Array(1)
 points[0] = new Square(0, 0, 0, 5, "red")
 
-function putPointsV(x, y, n, y2) {
-    for (let i = 0; i < n; i++) {
-        points.push(new Square(x, y + (y2 - y) * i / n, 0, 5, "red"))
-    }
-}
-function putPointsH(x, y, n, x2) {
-    for (let i = 0; i < n; i++) {
-        points.push(new Square(x + (x2 - x) * i / n, y, 0, 5, "red"))
-    }
-}
-
-
-putPointsV(70, 300, 20, 75)
-putPointsV(75, 300, 20, 75)
-putPointsV(80, 300, 20, 75)
-
-putPointsH(75, 70, 30, 400)
-putPointsH(75, 75, 30, 400)
-putPointsH(75, 80, 30, 400)
-
 const pointId = new Array(wandererCount)
 for (let i = 0; i < wandererCount; i++) {
     pointId[i] = 0
@@ -69,7 +67,7 @@ function score(dt) {
     for (let idx = 0; idx < wandererCount; idx++) {
         const next = wanderer[idx].square.copy()
         next.updateIt(dt)
-        if (map.checkSquare(next)) {
+        if (map.checkSquare(next, borders)) {
             wanderer[idx].score -= 1
         }
 
@@ -88,12 +86,10 @@ let told = 0, timer = 0, runs = 1
 function update(dt) {
     timer += dt
 	if (timer < Math.sqrt(runs) * 3000) {
-		context.clearRect(0, 0, 500, 500)
-			
 		score(dt)
-    for (let idx = 0; idx < wandererCount; idx++) {
-      wanderer[idx].updateIt(dt, map)
-    }
+        for (let idx = 0; idx < wandererCount; idx++) {
+            wanderer[idx].updateIt(dt, map, borders)
+        }
 	} else {
 		runs += 1
 		evaluate()
@@ -102,6 +98,7 @@ function update(dt) {
 }
 
 function draw() {
+    context.clearRect(0, 0, 500, 500)
     map.drawIt(context)
     for (let i = 0; i < wandererCount; i++) {
         wanderer[i].drawIt(context)
@@ -147,7 +144,7 @@ function render (time) {
   let dt = Math.floor(time - told)
   if (dt > maxDt) dt = maxDt
 
-    if (runs % 10 != 0) for (let i = 0; i < 9; i++) update(dt)
+    //if (runs % 10 != 0) for (let i = 0; i < 9; i++) update(dt)
     update(dt)
 	draw()
 
@@ -155,3 +152,39 @@ function render (time) {
   told = time
 }
 window.requestAnimationFrame(render)
+
+let mouseDown = false
+
+function mouseUpHandler(event) {
+    let p = new Vector(event.offsetX, event.offsetY)
+    mouseDown = false
+}
+
+function pointerDownHandler(event) {
+    let p = new Vector(event.offsetX, event.offsetY)
+    mouseDown = true
+}
+
+function mouseMoveHandler(event) {
+    let p = new Vector(event.offsetX, event.offsetY)
+    if (mouseDown) {
+        const dist2 =
+        (points[points.length-1].x - p.x) ** 2 +
+        (points[points.length-1].y - p.y) ** 2
+        if (dist2 >= 50) {
+            points.push(new Square(p.x, p.y, 0, 10, "red"))
+        }
+    }
+}
+
+function keyUpHandler(event) {
+}
+
+function keyDownHandler(event) {
+}
+
+document.onmouseup = mouseUpHandler
+document.onpointerdown = pointerDownHandler
+document.onmousemove = mouseMoveHandler
+document.onkeydown = keyDownHandler
+document.onkeyup = keyUpHandler

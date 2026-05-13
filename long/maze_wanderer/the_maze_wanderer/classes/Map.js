@@ -30,14 +30,11 @@ class Map {
     }
   }
 
-  checkSquare(sq) {
-    for (let i = 0; i < this.n; i++) {
-        for (let j = 0; j < this.m; j++) {
-            if (this.map[i][j] == null) continue;
-            if (sq.squareIntersecting(this.map[i][j])) {
-                return true
-            }
-        }
+  checkSquare(sq, list) {
+    for (let i = 0; i < list.length; i++) {
+      if (sq.squareIntersecting(this.map[list[i].x][list[i].y])) {
+        return true
+      }
     }
     return false
   }
