@@ -92,13 +92,14 @@ function score(dt) {
         }
 
         let newId = pointId[idx]
-        for (let i = pointId[idx]; i < points.length; i++) {
+        for (let i = pointId[idx]; i < Math.min(points.length, pointId[idx] + 50); i++) {
             if (wanderer[idx].square.squareIntersecting(points[i])) {
                 newId = i+1
                 newId %= points.length
-                wanderer[idx].score += 5
             }
         }
+        wanderer[idx].score += (newId - pointId[idx]) * 100
+        pointId[idx] = newId
     }
 }
 
@@ -125,6 +126,14 @@ function draw() {
     for (let i = 0; i < points.length; i++) {
         points[i].drawIt(context)
     }
+    
+    let rating = new Array(wandererCount)
+    for (let i = 0; i < wandererCount; i++) rating[i] = [wanderer[i].score, i]
+    rating.sort((a, b) => a[0] - b[0])
+    for (let i = 0; i < wandererCount; i++) {
+        wanderer[rating[i][1]].square.col = `rgb(${0}, ${0}, ${50 + 155 / wandererCount * i})`
+    }
+
     for (let i = 0; i < wandererCount; i++) {
         wanderer[i].drawIt(context)
     }
