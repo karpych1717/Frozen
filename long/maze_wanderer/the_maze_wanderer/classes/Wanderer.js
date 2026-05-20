@@ -14,9 +14,9 @@ class Wanderer {
 
   updateDecicion() {
     const input = [[
-        this.square.rays[0].length(),
-        this.square.rays[1].length(),
-        this.square.rays[2].length(),
+        this.square.rays[0].length() / 100,
+        this.square.rays[1].length() / 100,
+        this.square.rays[2].length() / 100,
         this.square.speed()
     ]]
     

@@ -122,10 +122,12 @@ function update(dt) {
 
 function draw() {
     context.clearRect(0, 0, 500, 500)
-    map.drawIt(context)
     for (let i = 0; i < points.length; i++) {
         points[i].drawIt(context)
     }
+
+    
+    map.drawIt(context)
     
     let rating = new Array(wandererCount)
     for (let i = 0; i < wandererCount; i++) rating[i] = [wanderer[i].score, i]
@@ -137,6 +139,8 @@ function draw() {
     for (let i = 0; i < wandererCount; i++) {
         wanderer[i].drawIt(context)
     }
+
+    wanderer[rating[0][1]].brain.drawIt(context, 100, 100)
 }
 
 function evaluate() {
@@ -206,7 +210,7 @@ function mouseMoveHandler(event) {
         (points[points.length-1].x - p.x) ** 2 +
         (points[points.length-1].y - p.y) ** 2
         if (dist2 >= 50) {
-            points.push(new Square(p.x, p.y, 0, 50, "red"))
+            points.push(new Square(p.x, p.y, 0, 50, "gray"))
         }
     }
 }

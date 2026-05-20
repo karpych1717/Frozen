@@ -1,11 +1,16 @@
 import Matrix from './Matrix.js'
 import Vector from './Vector.js'
+import Circle from './Circle.js'
 
 class Brain {
   constructor (inner, output, th) {
     this.inner = inner
     this.output = output
     this.th = th
+
+    this.lastInput = null
+    this.lastA = null
+    this.lastB = null
   }
 
   sigmoid(x) {
@@ -23,8 +28,11 @@ class Brain {
 
   calculate(input) {
     input = this.sigmoidMatrix(input)
+    this.lastInput = input
     const a = this.sigmoidMatrix(input.multiply(this.inner))
+    this.lastA = a
     const b = this.sigmoidMatrix(a.multiply(this.output))
+    this.lastB = b
     return b
   }
 
@@ -39,6 +47,15 @@ class Brain {
 
   clone() {
     return new Brain(this.inner.clone(), this.output.clone(), this.th)
+  }
+
+  drawIt(context, x, y, s) {
+    if (this.lastInput == null) return
+    for (let i = 0; i < this.lastInput.w; i++) {
+      let val = this.lastInput.arr[0][i] * 255
+      let c = new Circle(x, y + 25 * i, 10, `rgb(${val}, ${val}, ${val})`)
+      c.drawIt(context)
+    }
   }
 }
 
