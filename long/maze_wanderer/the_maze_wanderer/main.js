@@ -6,6 +6,7 @@ import Map from "./classes/Map.js"
 import Goal from "./classes/Goal.js"
 import Square from "./classes/Square.js"
 import Vector from "./classes/Vector.js"
+import TreeNode from "./classes/TreeNode.js"
 
 _canvas.width = 500
 _canvas.height = 500
@@ -31,29 +32,47 @@ map.eraseArc(25, 75, 0, -Math.PI / 2, 20, 5)
 map.eraseArc(30, 75, 0, -Math.PI / 2, 20, 5)
 map.eraseRect(5, 25, 25, 75)
 
-const borders = new Array()
-for (let i = 0; i < map.n; i++) {
-    for (let j = 0; j < map.m; j++) {
-        if (map.map[i][j] == null) continue
 
-        let isBorder = false
-        if (i > 0 && map.map[i-1][j] == null) isBorder = true
-        if (i < map.n-1 && map.map[i+1][j] == null) isBorder = true
-        if (j > 0 && map.map[i][j-1] == null) isBorder = true
-        if (j < map.m-1 && map.map[i][j+1] == null) isBorder = true
 
-        if (isBorder) {
-            borders.push(new Vector(i, j))
-            map.map[i][j].col = "Lime"
-        }
-    }
+const TREE_DEPTH = 2
+const treeArrayLength = (Math.pow(4, TREE_DEPTH+1)-1) / 3 + 1;
+const tree = new Array(treeArrayLength)
+function buildTree(v, d, x, y, l, sqX, sqY, sqL) {
+    tree[v] = new TreeNode(v, d, x, y, l, sqX, sqY, sqL)
+    if (d == 0) return
+    let m = l / 2, sqM = sqL / 2, sqQ = sqL / 4
+    buildTree(v*4-2, d-1, x  , y  , m, sqX-sqQ, sqY-sqQ, sqM)
+    buildTree(v*4-1, d-1, x+m, y  , m, sqX+sqQ, sqY-sqQ, sqM)
+    buildTree(v*4  , d-1, x  , y+m, m, sqX-sqQ, sqY+sqQ, sqM)
+    buildTree(v*4+1, d-1, x+m, y+m, m, sqX+sqQ, sqY+sqQ, sqM)
 }
+buildTree(1, TREE_DEPTH, 0, 0, 100, 250, 250, 500)
+
+
 
 const wandererCount = 10
 const wanderer = new Array(wandererCount)
 for (let i = 0; i < wandererCount; i++) {
     wanderer[i] = new Wanderer(75, 300, -Math.PI/2)
 }
+
+
+
+const waypointCount = 9
+const waypoint = new Array(waypointCount)
+waypoint[0] = new Goal(95, 85, Math.PI*3/4)
+waypoint[1] = new Goal(415, 80, Math.PI*5/4)
+waypoint[2] = new Goal(405, 170, Math.PI*7/4)
+waypoint[3] = new Goal(350, 180, Math.PI*8/4)
+waypoint[4] = new Goal(250, 250, Math.PI*6/4)
+waypoint[5] = new Goal(265, 300, Math.PI*5/4)
+waypoint[6] = new Goal(415, 320, Math.PI*5/4)
+waypoint[7] = new Goal(415, 420, Math.PI*7/4)
+waypoint[8] = new Goal(95, 415, Math.PI*1/4)
+const wandererProgress = new Array(wandererCount)
+for (let i = 0; i < wandererCount; i++) wandererProgress[i] = 0
+
+
 
 const points = new Array(1)
 points[0] = new Square(0, 0, 0, 5, "red")
@@ -63,23 +82,52 @@ for (let i = 0; i < wandererCount; i++) {
     pointId[i] = 0
 }
 
+
 function score(dt) {
     for (let idx = 0; idx < wandererCount; idx++) {
+
         const next = wanderer[idx].square.copy()
         next.updateIt(dt)
-        if (map.checkSquare(next, borders)) {
-            wanderer[idx].score -= 1
+        if (map.checkSquare(next, tree, 1)) {
+            wanderer[idx].score -= 0
         }
 
-        let newId = pointId[idx]
-        for (let i = pointId[idx]; i < points.length; i++) {
-            if (wanderer[idx].square.squareIntersecting(points[i])) {
-                newId = i+1
-                wanderer[idx].score += 5
-            }
+        wanderer[idx].score--
+
+        const lastPoint = (wandererProgress[idx] + waypointCount - 1) % waypointCount
+        if (!waypoint[lastPoint].check(wanderer[idx])) {
+            wanderer[idx].score -= 100
+            wandererProgress[idx] = lastPoint
         }
+        
+        const nextPoint = (wandererProgress[idx] + 1) % waypointCount
+        if (waypoint[wandererProgress[idx]].check(wanderer[idx])) {
+            wanderer[idx].score += 100 * (wandererProgress[idx]+1)
+            wandererProgress[idx] = nextPoint
+        }
+
+        const lastLength2 =
+            (wanderer[idx].square.lastX -waypoint[wandererProgress[idx]].x)**2+
+            (wanderer[idx].square.lastY -waypoint[wandererProgress[idx]].y)**2
+        
+        const dx = waypoint[wandererProgress[idx]].x - wanderer[idx].square.x
+        const dy = waypoint[wandererProgress[idx]].y - wanderer[idx].square.y
+        
+        const length2 = dx**2 + dy**2
+        wanderer[idx].score += (lastLength2 - length2) * 0.05
+
+        const dAngle = Math.abs(Math.atan2(dy, dx) - wanderer[idx].square.a % (Math.PI * 2))
+
+        if (dAngle > 5 * Math.PI/180) wanderer[idx].score -= dAngle * 15
+
+        //wanderer[idx].score -= Math.abs(0.01 - wanderer[idx].square.speed()) * 10
+        const change2 =
+            (wanderer[idx].square.lastX - wanderer[idx].square.x)**2+
+            (wanderer[idx].square.lastY - wanderer[idx].square.y)**2
+        wanderer[idx].score += change2 * 0.005
     }
 }
+
 
 let told = 0, timer = 0, runs = 1
 
@@ -88,7 +136,7 @@ function update(dt) {
 	if (timer < Math.sqrt(runs) * 3000) {
 		score(dt)
         for (let idx = 0; idx < wandererCount; idx++) {
-            wanderer[idx].updateIt(dt, map, borders)
+            wanderer[idx].updateIt(dt, map, tree)
         }
 	} else {
 		runs += 1
@@ -105,6 +153,9 @@ function draw() {
     }
     for (let i = 0; i < points.length; i++) {
         points[i].drawIt(context)
+    }
+    for (let i = 0; i < waypointCount; i++) {
+        waypoint[i].drawIt(context)
     }
 }
 
@@ -136,7 +187,10 @@ function evaluate() {
             wanderer[i].mutate(2);
         }
     }
+
     for (let i = 0; i < wandererCount; i++) pointId[i] = 0
+    
+    for (let i = 0; i < wandererCount; i++) wandererProgress[i] = 0
 }
 
 const maxDt = 50
@@ -144,7 +198,7 @@ function render (time) {
   let dt = Math.floor(time - told)
   if (dt > maxDt) dt = maxDt
 
-    //if (runs % 10 != 0) for (let i = 0; i < 9; i++) update(dt)
+    if (runs % 10 != 0) for (let i = 0; i < 9; i++) update(dt)
     update(dt)
 	draw()
 

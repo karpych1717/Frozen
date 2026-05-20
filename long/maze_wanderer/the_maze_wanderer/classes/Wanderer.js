@@ -19,14 +19,16 @@ class Wanderer {
         this.square.rays[2].length(),
         this.square.speed()
     ]]
-
+    
     const decision = this.brain.calculate(new Matrix(4, 1, input))
 
     this.square.fxR = (decision.arr[0][0] - decision.arr[0][1]) * 0.001
     this.square.va = (decision.arr[0][2] - decision.arr[0][3]) * 0.005
   }
 
-  updateIt(dt, map, list) {
+  updateIt(dt, map, tree) {
+    this.square.updateLine(tree, map.map)
+
     this.updateDecicion()
 
     const nextAx = this.square.copy()
@@ -34,8 +36,8 @@ class Wanderer {
     const nextAy = this.square.copy()
     nextAy.updateItY(dt)
 
-    const AxCollision = map.checkSquare(nextAx, list)
-    const AyCollision = map.checkSquare(nextAy, list)
+    const AxCollision = map.checkSquare(nextAx, tree, 1)
+    const AyCollision = map.checkSquare(nextAy, tree, 1)
 
     if (AxCollision) {
       this.square.vx = -0.1 * this.square.vx
@@ -49,7 +51,7 @@ class Wanderer {
 
     const nextA = this.square.copy()
     nextA.updateIt(dt)
-    if (map.checkSquare(nextA, list)) {
+    if (map.checkSquare(nextA, tree, 1)) {
       this.square.va = 0
     }
 

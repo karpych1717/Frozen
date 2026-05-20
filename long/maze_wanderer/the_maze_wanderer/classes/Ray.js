@@ -46,6 +46,34 @@ class Ray extends Line {
       }
     }
   }
+
+  updateByTree(tree, map, v) {
+    if (tree[v].d == 0) {
+      for (let i = tree[v].x; i < tree[v].x + tree[v].l; i++) {
+        for (let j = tree[v].y; j < tree[v].y + tree[v].l; j++) {
+          if (map[i][j] == null) continue
+          this.updateBySquare(map[i][j])
+        }
+      }
+      return
+    }
+
+    let blocks = new Array()
+    for (let i = -2; i <= 1; i++) {
+      let r = new Ray(this.x0, this.y0, this.a)
+      r.updateBySquare(tree[4*v+i].sq)
+      if (r.length() < r.maxLength-10) {
+        blocks.push([r.length(), v*4+i])
+      }
+    }
+
+    blocks.sort((a, b) => a[0] - b[0])
+    for (let i = 0; i < blocks.length; i++) {
+      if (blocks[i][0] >= this.length()) break
+      this.updateByTree(tree, map, blocks[i][1])
+      if (this.length() < this.maxLength - 10) return
+    }
+  }
 }
 
 export default Ray

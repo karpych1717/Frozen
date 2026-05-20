@@ -30,12 +30,27 @@ class Map {
     }
   }
 
-  checkSquare(sq, list) {
-    for (let i = 0; i < list.length; i++) {
-      if (sq.squareIntersecting(this.map[list[i].x][list[i].y])) {
-        return true
+  checkSquare(sq, tree, v) {
+    if (tree[v].d == 0) {
+      for (let i = tree[v].x; i < tree[v].x + tree[v].l; i++) {
+        for (let j = tree[v].y; j < tree[v].y + tree[v].l; j++) {
+          if (this.map[i][j] == null) continue
+          if (sq.squareIntersecting(this.map[i][j])) {
+            return true
+          }
+        }
+      }
+      return false
+    }
+
+    for (let i = -2; i <= 1; i++) {
+      if (sq.squareIntersecting(tree[v*4+i].sq)) {
+        if (this.checkSquare(sq, tree, v*4+i)) {
+          return true
+        }
       }
     }
+
     return false
   }
 

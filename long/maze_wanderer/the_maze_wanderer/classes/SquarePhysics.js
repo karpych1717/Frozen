@@ -76,9 +76,9 @@ class SquarePhysics extends Square {
     this.rays[2].update(this.x, this.y, this.a - Math.PI / 4)
   }
 
-  updateLine(square) {
+  updateLine(tree, map) {
     for (let i = 0; i < 3; i++) {
-      this.rays[i].updateBySquare(square)
+      this.rays[i].updateByTree(tree, map, 1)
     }
   }
 
