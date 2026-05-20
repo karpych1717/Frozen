@@ -85,46 +85,20 @@ for (let i = 0; i < wandererCount; i++) {
 
 function score(dt) {
     for (let idx = 0; idx < wandererCount; idx++) {
-
         const next = wanderer[idx].square.copy()
         next.updateIt(dt)
         if (map.checkSquare(next, tree, 1)) {
-            wanderer[idx].score -= 0
+            wanderer[idx].score -= 1
         }
 
-        wanderer[idx].score--
-
-        const lastPoint = (wandererProgress[idx] + waypointCount - 1) % waypointCount
-        if (!waypoint[lastPoint].check(wanderer[idx])) {
-            wanderer[idx].score -= 100
-            wandererProgress[idx] = lastPoint
+        let newId = pointId[idx]
+        for (let i = pointId[idx]; i < points.length; i++) {
+            if (wanderer[idx].square.squareIntersecting(points[i])) {
+                newId = i+1
+                newId %= points.length
+                wanderer[idx].score += 5
+            }
         }
-        
-        const nextPoint = (wandererProgress[idx] + 1) % waypointCount
-        if (waypoint[wandererProgress[idx]].check(wanderer[idx])) {
-            wanderer[idx].score += 100 * (wandererProgress[idx]+1)
-            wandererProgress[idx] = nextPoint
-        }
-
-        const lastLength2 =
-            (wanderer[idx].square.lastX -waypoint[wandererProgress[idx]].x)**2+
-            (wanderer[idx].square.lastY -waypoint[wandererProgress[idx]].y)**2
-        
-        const dx = waypoint[wandererProgress[idx]].x - wanderer[idx].square.x
-        const dy = waypoint[wandererProgress[idx]].y - wanderer[idx].square.y
-        
-        const length2 = dx**2 + dy**2
-        wanderer[idx].score += (lastLength2 - length2) * 0.05
-
-        const dAngle = Math.abs(Math.atan2(dy, dx) - wanderer[idx].square.a % (Math.PI * 2))
-
-        if (dAngle > 5 * Math.PI/180) wanderer[idx].score -= dAngle * 15
-
-        //wanderer[idx].score -= Math.abs(0.01 - wanderer[idx].square.speed()) * 10
-        const change2 =
-            (wanderer[idx].square.lastX - wanderer[idx].square.x)**2+
-            (wanderer[idx].square.lastY - wanderer[idx].square.y)**2
-        wanderer[idx].score += change2 * 0.005
     }
 }
 
@@ -148,14 +122,11 @@ function update(dt) {
 function draw() {
     context.clearRect(0, 0, 500, 500)
     map.drawIt(context)
-    for (let i = 0; i < wandererCount; i++) {
-        wanderer[i].drawIt(context)
-    }
     for (let i = 0; i < points.length; i++) {
         points[i].drawIt(context)
     }
-    for (let i = 0; i < waypointCount; i++) {
-        waypoint[i].drawIt(context)
+    for (let i = 0; i < wandererCount; i++) {
+        wanderer[i].drawIt(context)
     }
 }
 
@@ -226,7 +197,7 @@ function mouseMoveHandler(event) {
         (points[points.length-1].x - p.x) ** 2 +
         (points[points.length-1].y - p.y) ** 2
         if (dist2 >= 50) {
-            points.push(new Square(p.x, p.y, 0, 10, "red"))
+            points.push(new Square(p.x, p.y, 0, 50, "red"))
         }
     }
 }
