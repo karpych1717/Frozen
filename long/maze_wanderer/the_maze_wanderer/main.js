@@ -7,6 +7,7 @@ import Goal from "./classes/Goal.js"
 import Square from "./classes/Square.js"
 import Vector from "./classes/Vector.js"
 import TreeNode from "./classes/TreeNode.js"
+import Point from "./classes/Point.js"
 
 _canvas.width = 500
 _canvas.height = 500
@@ -48,7 +49,7 @@ function buildTree(v, d, x, y, l, sqX, sqY, sqL) {
 }
 buildTree(1, TREE_DEPTH, 0, 0, 100, 250, 250, 500)
 
-
+let showId = 0
 
 const wandererCount = 10
 const wanderer = new Array(wandererCount)
@@ -91,14 +92,23 @@ function score(dt) {
             wanderer[idx].score -= 1
         }
 
-        let newId = pointId[idx]
-        for (let i = pointId[idx]; i < Math.min(points.length, pointId[idx] + 50); i++) {
+        let newId = Math.max(0, pointId[idx] - 5)
+        for (let i = pointId[idx]; i < Math.min(points.length, pointId[idx] + 10); i++) {
             if (wanderer[idx].square.squareIntersecting(points[i])) {
                 newId = i+1
                 newId %= points.length
             }
         }
-        wanderer[idx].score += (newId - pointId[idx]) * 100
+        if (newId > points.length - 10) {
+            wanderer[idx].score += 1000
+            newId = 0
+        } else {
+            if (newId >= pointId[idx]) {
+                wanderer[idx].score += (newId - pointId[idx]) * 100
+            } else {
+                wanderer[idx].score += (newId - pointId[idx]) * 50
+            }
+        }
         pointId[idx] = newId
     }
 }
@@ -140,7 +150,7 @@ function draw() {
         wanderer[i].drawIt(context)
     }
 
-    wanderer[rating[0][1]].brain.drawIt(context, 100, 100)
+    wanderer[showId].brain.drawIt(context, 150, 120)
 }
 
 function evaluate() {
@@ -199,8 +209,14 @@ function mouseUpHandler(event) {
 }
 
 function pointerDownHandler(event) {
-    let p = new Vector(event.offsetX, event.offsetY)
+    let p = new Point(event.offsetX, event.offsetY)
     mouseDown = true
+
+    for (let i = 0; i < wandererCount; i++) {
+        if (wanderer[i].square.isPointIn(p)) {
+            showId = i
+        }
+    }
 }
 
 function mouseMoveHandler(event) {

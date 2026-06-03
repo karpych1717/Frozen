@@ -17,7 +17,7 @@ class Wanderer {
         this.square.rays[0].length() / 100,
         this.square.rays[1].length() / 100,
         this.square.rays[2].length() / 100,
-        this.square.speed()
+        this.square.speed() * 50
     ]]
     
     const decision = this.brain.calculate(new Matrix(4, 1, input))

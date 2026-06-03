@@ -53,7 +53,17 @@ class Brain {
     if (this.lastInput == null) return
     for (let i = 0; i < this.lastInput.w; i++) {
       let val = this.lastInput.arr[0][i] * 255
-      let c = new Circle(x, y + 25 * i, 10, `rgb(${val}, ${val}, ${val})`)
+      let c = new Circle(x, y + 20 * i, 7, `rgb(${val}, ${val}, ${val})`)
+      c.drawIt(context)
+    }
+    for (let i = 0; i < this.lastA.w; i++) {
+      let val = this.lastA.arr[0][i] * 255
+      let c = new Circle(x + 25, y + 20 * i + 10, 7, `rgb(${val}, ${val}, ${val})`)
+      c.drawIt(context)
+    }
+    for (let i = 0; i < this.lastB.w; i++) {
+      let val = this.lastB.arr[0][i] * 255
+      let c = new Circle(x + 50, y + 20 * i, 7, `rgb(${val}, ${val}, ${val})`)
       c.drawIt(context)
     }
   }
