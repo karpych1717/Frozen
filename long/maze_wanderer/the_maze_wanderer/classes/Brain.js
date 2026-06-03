@@ -51,19 +51,52 @@ class Brain {
 
   drawIt(context, x, y, s) {
     if (this.lastInput == null) return
+
+    context.lineWidth = 3
     for (let i = 0; i < this.lastInput.w; i++) {
-      let val = this.lastInput.arr[0][i] * 255
-      let c = new Circle(x, y + 20 * i, 7, `rgb(${val}, ${val}, ${val})`)
-      c.drawIt(context)
+      for (let j = 0; j < this.lastA.w; j++) {
+        let val = this.inner.arr[i][j]
+        context.beginPath()
+        context.moveTo(x, y + 30*i)
+        context.lineTo(x + 60, y + 30*j + 15)
+        if (val >= 0) context.strokeStyle = `rgb(${0}, ${0}, ${val*255})`
+        else context.strokeStyle = `rgb(${val*255}, ${0}, ${0})`
+        context.stroke()
+      }
     }
     for (let i = 0; i < this.lastA.w; i++) {
+      for (let j = 0; j < this.lastB.w; j++) {
+        let val = this.output.arr[i][j]
+        context.beginPath()
+        context.moveTo(x + 60, y + 30*i + 15)
+        context.lineTo(x + 120, y + 30*j)
+        if (val >= 0) context.strokeStyle = `rgb(${0}, ${0}, ${val*255})`
+        else context.strokeStyle = `rgb(${val*255}, ${0}, ${0})`
+        context.stroke()
+      }
+    }
+    context.lineWidth = 0.25
+
+    for (let i = 0; i < this.lastInput.w; i++) {
+      let val = this.lastInput.arr[0][i]
+      let c = new Circle(x, y + 30 * i, 7, `rgb(${0}, ${0}, ${0})`)
+      if (val >= 0) c.c = `rgb(${0}, ${0}, ${val*255})`
+      else c.c = `rgb(${val*255}, ${0}, ${0})`
+      c.drawIt(context)
+    }
+
+    for (let i = 0; i < this.lastA.w; i++) {
       let val = this.lastA.arr[0][i] * 255
-      let c = new Circle(x + 25, y + 20 * i + 10, 7, `rgb(${val}, ${val}, ${val})`)
+      let c = new Circle(x + 60, y + 30 * i + 15, 7, `rgb(${0}, ${0}, ${0})`)
+      if (val >= 0) c.c = `rgb(${0}, ${0}, ${val*255})`
+      else c.c = `rgb(${val*255}, ${0}, ${0})`
       c.drawIt(context)
     }
     for (let i = 0; i < this.lastB.w; i++) {
       let val = this.lastB.arr[0][i] * 255
-      let c = new Circle(x + 50, y + 20 * i, 7, `rgb(${val}, ${val}, ${val})`)
+      let c = new Circle(x + 120, y + 30 * i, 7, `rgb(${0}, ${0}, ${0})`)
+      if (val >= 0) c.c = `rgb(${0}, ${0}, ${val*255})`
+      else c.c = `rgb(${val*255}, ${0}, ${0})`
       c.drawIt(context)
     }
   }
