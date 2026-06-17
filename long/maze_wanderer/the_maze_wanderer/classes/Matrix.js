@@ -80,6 +80,16 @@ class Matrix {
     return new Matrix(this.w, this.h, m3Array)
   }
 
+  multiplyNumber(n) {
+    let m3Array = new Array(this.h)
+    for (let i = 0; i < this.h; i++) {
+      m3Array[i] = new Array(this.w)
+      for (let j = 0; j < this.w; j++)
+        m3Array[i][j] = this.arr[i][j] * n
+    }
+    return new Matrix(this.w, this.h, m3Array)
+  }
+
   clone() {
     return new Matrix(this.w, this.h, this.arr)
   }

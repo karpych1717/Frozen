@@ -104,7 +104,7 @@ function score(dt) {
             newId = 0
         } else {
             if (newId >= pointId[idx]) {
-                wanderer[idx].score += (newId - pointId[idx]) * 100
+                wanderer[idx].score += (newId - pointId[idx]) * 50
             } else {
                 wanderer[idx].score += (newId - pointId[idx]) * 50
             }
@@ -154,23 +154,28 @@ function draw() {
 }
 
 function evaluate() {
-    let bestIdx = 0;
-    for (let i = 1; i < wandererCount; i++) {
-        if (wanderer[bestIdx].score < wanderer[i].score) {
-            bestIdx = i;
-        }
-    }
+    let rating = new Array(wandererCount)
+    for (let i = 0; i < wandererCount; i++) rating[i] = [wanderer[i].score, i]
+    rating.sort((a, b) => b[0] - a[0])
 
-    console.log(wanderer[bestIdx].score)
-    if (runs % 10 == 0) {
-        console.log(wanderer[bestIdx])
+    const Amount = 3.0
+    const brain = wanderer[rating[0][1]].brain.clone()
+    for (let i = 1; i < Amount; i++) {
+        brain.inner.addMatrix(wanderer[rating[i][1]].brain.inner)
+        brain.output.addMatrix(wanderer[rating[i][1]].brain.output)
     }
-    const bestBrain = wanderer[bestIdx].brain.clone();
+    brain.inner.multiplyNumber(1.0/Amount)
+    brain.output.multiplyNumber(1.0/Amount)
+
+    console.log(wanderer[rating[0][1]].score)
+    if (runs % 10 == 0) {
+        console.log(wanderer[rating[0][1]])
+    }
 
     for (let i = 0; i < wandererCount; i++) {
         const angle = 0
         wanderer[i] = new Wanderer(75, 300, -Math.PI/2)
-        wanderer[i].brain = bestBrain.clone();
+        wanderer[i].brain = brain.clone();
         if (i == 0) {
             continue
         } else if (i <= wandererCount * 5 / 10) {
