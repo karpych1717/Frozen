@@ -9,8 +9,26 @@ import Vector from "./classes/Vector.js"
 import TreeNode from "./classes/TreeNode.js"
 import Point from "./classes/Point.js"
 
+const increaseButton = document.getElementById("increase");
+increaseButton.style.width = "30px"
+increaseButton.style.height = "30px"
+increaseButton.style.marginTop = "510px"
+increaseButton.style.marginLeft = "-480px"
+const decreaseButton = document.getElementById("decrease");
+decreaseButton.style.width = "30px"
+decreaseButton.style.height = "30px"
+decreaseButton.style.marginTop = "510px"
+decreaseButton.style.marginLeft = "-450px"
+const numberDisplay = document.getElementById("number");
+numberDisplay.style.display = "inline-block"
+numberDisplay.style.marginTop = "515px"
+numberDisplay.style.marginLeft = "-495px"
+
+let numberOfBest = 1
+numberDisplay.textContent = numberOfBest
+
 _canvas.width = 500
-_canvas.height = 500
+_canvas.height = 700
 _canvas.style.background = 'gray'
 _canvas.style.border = '3px solid black'
 
@@ -92,7 +110,7 @@ function score(dt) {
             wanderer[idx].score -= 1
         }
 
-        let newId = Math.max(0, pointId[idx] - 5)
+        let newId = Math.max(0, pointId[idx])
         for (let i = pointId[idx]; i < Math.min(points.length, pointId[idx] + 10); i++) {
             if (wanderer[idx].square.squareIntersecting(points[i])) {
                 newId = i+1
@@ -104,11 +122,12 @@ function score(dt) {
             newId = 0
         } else {
             if (newId >= pointId[idx]) {
-                wanderer[idx].score += (newId - pointId[idx]) * 50
+                wanderer[idx].score += (newId - pointId[idx]) * 20
             } else {
-                wanderer[idx].score += (newId - pointId[idx]) * 50
+                wanderer[idx].score += (newId - pointId[idx]) * 10
             }
         }
+        wanderer[idx].score += newId *0.01
         pointId[idx] = newId
     }
 }
@@ -118,7 +137,7 @@ let told = 0, timer = 0, runs = 1
 
 function update(dt) {
     timer += dt
-	if (timer < Math.sqrt(runs) * 3000) {
+	if (timer < Math.sqrt(runs) * 10000) {
 		score(dt)
         for (let idx = 0; idx < wandererCount; idx++) {
             wanderer[idx].updateIt(dt, map, tree)
@@ -132,6 +151,8 @@ function update(dt) {
 
 function draw() {
     context.clearRect(0, 0, 500, 500)
+    context.fillStyle = "white"
+    context.fillRect(0, 500, 500, 700)
     for (let i = 0; i < points.length; i++) {
         points[i].drawIt(context)
     }
@@ -150,7 +171,7 @@ function draw() {
         wanderer[i].drawIt(context)
     }
 
-    wanderer[showId].brain.drawIt(context, 150, 120)
+    wanderer[showId].brain.drawIt(context, 350, 550)
 }
 
 function evaluate() {
@@ -158,14 +179,13 @@ function evaluate() {
     for (let i = 0; i < wandererCount; i++) rating[i] = [wanderer[i].score, i]
     rating.sort((a, b) => b[0] - a[0])
 
-    const Amount = 3.0
     const brain = wanderer[rating[0][1]].brain.clone()
-    for (let i = 1; i < Amount; i++) {
+    for (let i = 1; i < numberOfBest; i++) {
         brain.inner.addMatrix(wanderer[rating[i][1]].brain.inner)
         brain.output.addMatrix(wanderer[rating[i][1]].brain.output)
     }
-    brain.inner.multiplyNumber(1.0/Amount)
-    brain.output.multiplyNumber(1.0/Amount)
+    brain.inner.multiplyNumber(1.0/numberOfBest)
+    brain.output.multiplyNumber(1.0/numberOfBest)
 
     console.log(wanderer[rating[0][1]].score)
     if (runs % 10 == 0) {
@@ -224,14 +244,22 @@ function pointerDownHandler(event) {
     }
 }
 
+const targetSize = 50
 function mouseMoveHandler(event) {
     let p = new Vector(event.offsetX, event.offsetY)
     if (mouseDown) {
+        let p2 = new Vector(0, 0)
+        p2.x = Math.min(Math.max(p.x, targetSize/2), 500-targetSize/2)
+        p2.y = Math.min(Math.max(p.y, targetSize/2), 500-targetSize/2)
         const dist2 =
-        (points[points.length-1].x - p.x) ** 2 +
-        (points[points.length-1].y - p.y) ** 2
-        if (dist2 >= 50) {
-            points.push(new Square(p.x, p.y, 0, 50, "gray"))
+        (points[points.length-1].x - p2.x) ** 2 +
+        (points[points.length-1].y - p2.y) ** 2
+        if (dist2 >= targetSize) {
+            points.push(new Square(
+                p2.x,
+                p2.y,
+                0, 50, "gray"
+            ))
         }
     }
 }
@@ -241,6 +269,18 @@ function keyUpHandler(event) {
 
 function keyDownHandler(event) {
 }
+
+increaseButton.addEventListener('click', () => {
+  numberOfBest++
+  if (numberOfBest > wandererCount) numberOfBest = wandererCount
+  numberDisplay.textContent = numberOfBest
+})
+
+decreaseButton.addEventListener('click', () => {
+  numberOfBest--
+  if (numberOfBest < 1) numberOfBest = 1
+  numberDisplay.textContent = numberOfBest
+})
 
 document.onmouseup = mouseUpHandler
 document.onpointerdown = pointerDownHandler

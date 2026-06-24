@@ -38,7 +38,7 @@ class Ray extends Line {
           (this.y0 >= this.y1 && intersects[i].y >= this.y1) ||
           (this.y0 <= this.y1 && intersects[i].y <= this.y1)
         ) {
-          if (Math.abs(this.line.y1 - intersects[i].y) < Math.abs(this.y0 - this.y1)) {
+          if (Math.abs(this.y1 - intersects[i].y) < Math.abs(this.y0 - this.y1)) {
             this.x1 = intersects[i].x
             this.y1 = intersects[i].y
           }
