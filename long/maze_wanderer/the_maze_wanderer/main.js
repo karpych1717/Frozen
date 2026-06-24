@@ -111,7 +111,7 @@ function score(dt) {
         }
 
         let newId = Math.max(0, pointId[idx])
-        for (let i = pointId[idx]; i < Math.min(points.length, pointId[idx] + 10); i++) {
+        for (let i = pointId[idx]; i < Math.min(points.length, pointId[idx] + 50); i++) {
             if (wanderer[idx].square.squareIntersecting(points[i])) {
                 newId = i+1
                 newId %= points.length
