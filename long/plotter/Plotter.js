@@ -37,6 +37,8 @@ class Plotter {
 
   plot (x, y, color = "Black") {
     for (let i = 0; i < x.length; i++) {
+      y[i] = this.h - y[i]
+
       this.minX = Math.min(this.minX, x[i])
       this.maxX = Math.max(this.maxX, x[i])
       this.minY = Math.min(this.minY, y[i])
