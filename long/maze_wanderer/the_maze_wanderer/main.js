@@ -14,15 +14,23 @@ increaseButton.style.width = "30px"
 increaseButton.style.height = "30px"
 increaseButton.style.marginTop = "510px"
 increaseButton.style.marginLeft = "-480px"
+
 const decreaseButton = document.getElementById("decrease");
 decreaseButton.style.width = "30px"
 decreaseButton.style.height = "30px"
 decreaseButton.style.marginTop = "510px"
 decreaseButton.style.marginLeft = "-450px"
+
 const numberDisplay = document.getElementById("number");
 numberDisplay.style.display = "inline-block"
 numberDisplay.style.marginTop = "515px"
 numberDisplay.style.marginLeft = "-495px"
+
+const resetButton = document.getElementById("reset");
+resetButton.style.width = "50px"
+resetButton.style.height = "30px"
+resetButton.style.marginTop = "560px"
+resetButton.style.marginLeft = "-480px"
 
 let numberOfBest = 1
 numberDisplay.textContent = numberOfBest
@@ -171,7 +179,7 @@ function draw() {
         wanderer[i].drawIt(context)
     }
 
-    wanderer[showId].brain.drawIt(context, 350, 550)
+    wanderer[showId].brain.drawIt(context, 300, 550)
 }
 
 function evaluate() {
@@ -181,10 +189,12 @@ function evaluate() {
 
     const brain = wanderer[rating[0][1]].brain.clone()
     for (let i = 1; i < numberOfBest; i++) {
-        brain.inner.addMatrix(wanderer[rating[i][1]].brain.inner)
+        brain.inner1.addMatrix(wanderer[rating[i][1]].brain.inner1)
+        brain.inner2.addMatrix(wanderer[rating[i][1]].brain.inner2)
         brain.output.addMatrix(wanderer[rating[i][1]].brain.output)
     }
-    brain.inner.multiplyNumber(1.0/numberOfBest)
+    brain.inner1.multiplyNumber(1.0/numberOfBest)
+    brain.inner2.multiplyNumber(1.0/numberOfBest)
     brain.output.multiplyNumber(1.0/numberOfBest)
 
     console.log(wanderer[rating[0][1]].score)
@@ -217,7 +227,7 @@ function render (time) {
   let dt = Math.floor(time - told)
   if (dt > maxDt) dt = maxDt
 
-    if (runs % 10 != 0) for (let i = 0; i < 9; i++) update(dt)
+    for (let i = 0; i < 9; i++) update(dt)
     update(dt)
 	draw()
 
@@ -254,11 +264,11 @@ function mouseMoveHandler(event) {
         const dist2 =
         (points[points.length-1].x - p2.x) ** 2 +
         (points[points.length-1].y - p2.y) ** 2
-        if (dist2 >= targetSize) {
+        if (dist2 >= targetSize/2) {
             points.push(new Square(
                 p2.x,
                 p2.y,
-                0, 50, "gray"
+                0, targetSize, "gray"
             ))
         }
     }
@@ -280,6 +290,14 @@ decreaseButton.addEventListener('click', () => {
   numberOfBest--
   if (numberOfBest < 1) numberOfBest = 1
   numberDisplay.textContent = numberOfBest
+})
+
+resetButton.addEventListener('click', () => {
+  for (let i = 0; i < wandererCount; i++) {
+    wanderer[i].brain.inner1.random()
+    wanderer[i].brain.inner2.random()
+    wanderer[i].brain.output.random()
+  }
 })
 
 document.onmouseup = mouseUpHandler

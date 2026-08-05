@@ -5,8 +5,9 @@ import Brain from './Brain.js'
 class Wanderer {
   constructor (x, y, a) {
     this.square = new SquarePhysics(x, y, a, 12, "blue", 9.8, 0.001, 2, 1.25)
-    this.brain = new Brain(new Matrix(5, 4), new Matrix(4, 5), 0.5)
-    this.brain.inner.random()
+    this.brain = new Brain(new Matrix(5, 4), new Matrix(5, 5), new Matrix(4, 5), 0.5)
+    this.brain.inner1.random()
+    this.brain.inner2.random()
     this.brain.output.random()
 
     this.score = 0
