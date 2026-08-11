@@ -17,14 +17,19 @@ const plotter = new Plotter(_canvas)
 
 const size = 100
 let dx = 1, dy
+const h = 0.001
 let ans1x = new Array(size), ans1y = new Array(size)
 ans1x[0] = 0
 ans1y[0] = 3
 for (let i = 1; i < size; i++) {
-    dy = -2 * ans1y[i-1] * dx
+    let y = ans1y[i-1]
+    for (let t = 0; t < dx; t += h) {
+        dy = -2 * y * h
+        y = y + dy
+    }
 
     ans1x[i] = ans1x[i-1] + dx
-    ans1y[i] = ans1y[i-1] + dy
+    ans1y[i] = y
 }
 
 let ans2x = new Array(size), ans2y = new Array(size)
