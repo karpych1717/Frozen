@@ -15,8 +15,8 @@ const context = _canvas.getContext('2d')
 
 const plotter = new Plotter(_canvas)
 
-const size = 50
-const x0 = 0, xMax = 10
+const size = 100
+const x0 = 0, xMax = 1
 let dx = (xMax - x0 + 1) / size, dy
 const h = 0.001
 
@@ -26,7 +26,7 @@ ans1y[0] = 0
 for (let i = 1; i < size; i++) {
     let y = ans1y[i-1]
     for (let t = 0; t < dx; t += h) {
-        dy = (y + Math.sin(ans1x[i-1] + t)) * h
+        dy = (y + Math.sin((ans1x[i-1] + t) * 25)) * h
         y = y + dy
     }
 
@@ -39,7 +39,7 @@ ans2x[0] = x0
 ans2y[0] = 0
 for (let i = 1; i < size; i++) {
     ans2x[i] = ans2x[i-1] + dx
-    ans2y[i] = 0.5 * Math.exp(ans2x[i]) - 0.5 * (Math.sin(ans2x[i]) + Math.cos(ans2x[i]))
+    ans2y[i] = (25/626) * Math.exp(ans2x[i]) - (1/626) * Math.sin(ans2x[i]*25) - (25/626) * Math.cos(ans2x[i]*25)
 }
 
 plotter.plot(ans1x, ans1y, "red")
