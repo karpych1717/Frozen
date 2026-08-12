@@ -16,10 +16,12 @@ const context = _canvas.getContext('2d')
 const plotter = new Plotter(_canvas)
 
 const size = 50
-let dx = 0.1, dy
+const x0 = 0, xMax = 10
+let dx = (xMax - x0 + 1) / size, dy
 const h = 0.001
+
 let ans1x = new Array(size), ans1y = new Array(size)
-ans1x[0] = 0
+ans1x[0] = x0
 ans1y[0] = 0
 for (let i = 1; i < size; i++) {
     let y = ans1y[i-1]
@@ -33,7 +35,7 @@ for (let i = 1; i < size; i++) {
 }
 
 let ans2x = new Array(size), ans2y = new Array(size)
-ans2x[0] = 0
+ans2x[0] = x0
 ans2y[0] = 0
 for (let i = 1; i < size; i++) {
     ans2x[i] = ans2x[i-1] + dx
@@ -43,4 +45,4 @@ for (let i = 1; i < size; i++) {
 plotter.plot(ans1x, ans1y, "red")
 plotter.plot(ans2x, ans2y, "blue")
 
-console.log("x0:", ans1x[0], "xMax:", plotter.maxX, "N:", size*dx)
+console.log("x0:", x0, "xMax:", xMax, "N:", size)
