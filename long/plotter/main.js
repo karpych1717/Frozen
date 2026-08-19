@@ -18,17 +18,15 @@ const plotter = new Plotter(_canvas)
 const x0 = 0, xMax = 1, N_steps = 100
 const y0 = 5
 let dx = (xMax - x0) / N_steps, dy
-const h = 0.01
 
 let ans1x = new Array(N_steps + 1), ans1y = new Array(N_steps + 1)
 ans1x[0] = x0
 ans1y[0] = y0
 for (let i = 1; i <= N_steps; i++) {
     let y = ans1y[i-1]
-    for (let t = 0; t < dx; t += h) {
-        dy = (y + 100 * Math.cos(10 * (ans1x[i-1] + t)) - 10 * Math.sin(10 * (ans1x[i-1] + t))) * h
-        y = y + dy
-    }
+    
+    dy = (y + 100 * Math.cos(10 * ans1x[i-1]) - 10 * Math.sin(10 * ans1x[i-1])) * dx
+    y = y + dy
 
     ans1x[i] = ans1x[i-1] + dx
     ans1y[i] = y
